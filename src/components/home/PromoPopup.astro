@@ -1,11 +1,12 @@
 ---
 // Promo Popup component
+import Icon from '../icons/Icon.astro';
 ---
 
 <div class="promo-overlay" id="promoOverlay"></div>
 <div class="promo-popup" id="promoPopup">
   <button class="promo-close" id="promoClose" aria-label="Lukk">
-    <i class="fas fa-times"></i>
+    <Icon name="times" size={20} />
   </button>
   <span class="promo-badge">Begrenset tilbud</span>
   <h3>Gratis nettside!</h3>

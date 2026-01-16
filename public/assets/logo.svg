@@ -1,23 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 50">
-  <defs>
-    <style>
-      .logo-text { font-family: Inter, Arial, sans-serif; font-size: 36px; font-weight: 700; }
-    </style>
-  </defs>
-
-  <!-- E (rød) -->
-  <text x="0" y="38" class="logo-text" fill="#ef4444">E</text>
-
-  <!-- FFF (hvit) -->
-  <text x="26" y="38" class="logo-text" fill="#ffffff">FFF</text>
-
-  <!-- Rød strek gjennom FFF -->
-  <rect x="28" y="22" width="63" height="8" fill="#ef4444"/>
-
-  <!-- E (rød) -->
-  <text x="94" y="38" class="logo-text" fill="#ef4444">E</text>
-
-  <!-- KT (hvit) og punktum (rød) -->
-  <text x="120" y="38" class="logo-text" fill="#ffffff">KT</text>
-  <text x="168" y="38" class="logo-text" fill="#ef4444">.</text>
+<svg width="455" height="92" viewBox="0 0 455 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M71.7148 89.4V0H131.355V14.4H88.0348V39.12H125.955V53.52H88.0348V89.4H71.7148Z" fill="white"/>
+<path d="M124.027 89.4V0H183.667V14.4H140.347V39.12H178.267V53.52H140.347V89.4H124.027Z" fill="white"/>
+<path d="M176.34 89.4V0H235.98V14.4H192.66V39.12H230.58V53.52H192.66V89.4H176.34Z" fill="white"/>
+<path d="M246.758 91.4V2.00002H306.158V16.4H263.078V39.32H303.758V53.72H263.078V77H306.158V91.4H246.758Z" fill="#FF2529"/>
+<path d="M318.125 91.4V2.00002H334.445V48.56L330.005 47L368.045 2.00002H388.565L352.925 44.24L353.885 32.72L389.645 91.4H370.445L346.445 52.04L334.445 66.32V91.4H318.125Z" fill="white"/>
+<path d="M415.41 91.4V16.4H392.25V2.00002H454.65V16.4H431.85V91.4H415.41Z" fill="white"/>
+<path d="M0 91.4V2H59.4V16.4H16.32V39.32H304.044V53.72H16.32V77H59.4V91.4H0Z" fill="#FF2529"/>
 </svg>

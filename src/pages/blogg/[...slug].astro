@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import Icon from '../../components/icons/Icon.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -23,7 +24,7 @@ const { Content } = await post.render();
     <div class="container">
       <header class="blog-post-header reveal">
         <a href="/blogg" class="back-link">
-          <i class="fas fa-arrow-left"></i> Tilbake til bloggen
+          <Icon name="arrow-left" size={14} /> Tilbake til bloggen
         </a>
         <time datetime={post.data.publishedDate.toISOString()}>
           {post.data.publishedDate.toLocaleDateString('no-NO', {
@@ -49,10 +50,10 @@ const { Content } = await post.render();
 
       <footer class="blog-post-footer">
         <a href="/blogg" class="btn btn-ghost">
-          <i class="fas fa-arrow-left"></i> Alle innlegg
+          <Icon name="arrow-left" size={14} /> Alle innlegg
         </a>
         <a href="/#kontakt" class="btn btn-primary">
-          Kontakt oss <i class="fas fa-arrow-right"></i>
+          Kontakt oss <Icon name="arrow-right" size={14} />
         </a>
       </footer>
     </div>

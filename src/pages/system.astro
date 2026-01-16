@@ -1,6 +1,7 @@
 ---
 import ServiceLayout from '../layouts/ServiceLayout.astro';
 import { Image } from 'astro:assets';
+import Icon from '../components/icons/Icon.astro';
 import sanderImg from '../assets/sander.jpg';
 import danielImg from '../assets/daniel.jpg';
 
@@ -55,7 +56,7 @@ const faqItems = [
           </div>
         </div>
         <a href="#kontakt" class="btn btn-primary btn-large">
-          <i class="fas fa-comments"></i> Book gratis samtale
+          <Icon name="comments" size={16} /> Book gratis samtale
         </a>
       </div>
     </div>
@@ -69,32 +70,32 @@ const faqItems = [
       </div>
       <div class="included-grid" data-aos="fade-up" data-aos-delay="100">
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-users"></i></div>
+          <div class="included-icon"><Icon name="users" size={24} /></div>
           <h3>Kunde- og prosjektoversikt</h3>
           <p>All informasjon samlet på ett sted. Søk, filtrer og finn det du trenger raskt.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-bell"></i></div>
+          <div class="included-icon"><Icon name="bell" size={24} /></div>
           <h3>Automatiske varsler</h3>
           <p>Påminnelser for forfall, oppgaver og viktige datoer. Aldri glem noe igjen.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-file-pdf"></i></div>
+          <div class="included-icon"><Icon name="file-pdf" size={24} /></div>
           <h3>PDF-generering</h3>
           <p>Lag rapporter, fakturaer og dokumenter med ett klikk.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="included-icon"><Icon name="mobile-alt" size={24} /></div>
           <h3>Mobilvennlig dashboard</h3>
           <p>Full tilgang fra mobil og nettbrett. Jobb fra hvor som helst.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-user-lock"></i></div>
+          <div class="included-icon"><Icon name="user-lock" size={24} /></div>
           <h3>Brukerinnlogging og roller</h3>
           <p>Gi ansatte tilgang til det de trenger. Administrator, bruker, kun lesning.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-plug"></i></div>
+          <div class="included-icon"><Icon name="plug" size={24} /></div>
           <h3>Integrasjoner</h3>
           <p>Koble på e-post, kalender, regnskap og andre verktøy du allerede bruker.</p>
         </div>
@@ -113,7 +114,7 @@ const faqItems = [
           <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">
               <span>{item.question}</span>
-              <i class="fas fa-chevron-down"></i>
+              <Icon name="chevron-down" size={16} />
             </button>
             <div class="faq-answer">
               <p>{item.answer}</p>
@@ -133,15 +134,15 @@ const faqItems = [
           <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
           <div class="contact-trust">
             <div class="trust-item">
-              <i class="fas fa-gift"></i>
+              <Icon name="gift" size={16} />
               <span>Gratis demo først</span>
             </div>
             <div class="trust-item">
-              <i class="fas fa-check-circle"></i>
+              <Icon name="check-circle" size={16} />
               <span>Fastpris - ingen overraskelser</span>
             </div>
             <div class="trust-item">
-              <i class="fas fa-key"></i>
+              <Icon name="key" size={16} />
               <span>Du eier alt selv</span>
             </div>
           </div>
@@ -153,7 +154,7 @@ const faqItems = [
               <div class="contact-person-info">
                 <strong>Sander Martinsen</strong>
                 <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4745140089" class="contact-phone"><i class="fas fa-phone"></i> +47 451 40 089</a>
+                <a href="tel:+4745140089" class="contact-phone"><Icon name="phone" size={14} /> +47 451 40 089</a>
               </div>
             </div>
             <div class="contact-person">
@@ -161,7 +162,7 @@ const faqItems = [
               <div class="contact-person-info">
                 <strong>Daniel Barlag</strong>
                 <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4798035064" class="contact-phone"><i class="fas fa-phone"></i> +47 980 35 064</a>
+                <a href="tel:+4798035064" class="contact-phone"><Icon name="phone" size={14} /> +47 980 35 064</a>
               </div>
             </div>
           </div>
@@ -186,7 +187,7 @@ const faqItems = [
               <textarea id="message" name="message" rows="3" placeholder="Hva slags system trenger du?"></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-large btn-full">
-              <i class="fas fa-paper-plane"></i> Send forespørsel
+              <Icon name="paper-plane" size={16} /> Send forespørsel
             </button>
           </form>
         </div>
@@ -202,12 +203,12 @@ const faqItems = [
       </div>
       <div class="other-services-grid" data-aos="fade-up" data-aos-delay="100">
         <a href="/nettside" class="other-service-card">
-          <i class="fas fa-globe"></i>
+          <Icon name="globe" size={24} />
           <h3>Profesjonell nettside</h3>
           <span class="other-price">Fra 14.900 kr</span>
         </a>
         <a href="/ai" class="other-service-card">
-          <i class="fas fa-robot"></i>
+          <Icon name="robot" size={24} />
           <h3>AI-integrasjon</h3>
           <span class="other-price">Fra 9.900 kr</span>
         </a>

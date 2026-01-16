@@ -7,6 +7,9 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   site: 'https://efffekt.no',
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     sitemap({
       i18n: {

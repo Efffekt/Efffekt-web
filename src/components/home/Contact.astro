@@ -1,6 +1,7 @@
 ---
 // Contact section component
 import { Image } from 'astro:assets';
+import Icon from '../icons/Icon.astro';
 import sanderImg from '../../assets/sander.jpg';
 import danielImg from '../../assets/daniel.jpg';
 // import michaelImg from '../../assets/michael.jpg'; // MIDLERTIDIG SKJULT
@@ -26,8 +27,8 @@ import danielImg from '../../assets/daniel.jpg';
             <div class="contact-person-info">
               <strong>Sander Martinsen</strong>
               <span class="contact-specialty">System & AI</span>
-              <a href="tel:+4745140089" class="contact-phone"><i class="fas fa-phone"></i> +47 451 40 089</a>
-              <a href="mailto:sander@efffekt.no" class="contact-email"><i class="fas fa-envelope"></i> sander@efffekt.no</a>
+              <a href="tel:+4745140089" class="contact-phone"><Icon name="phone" size={14} /> +47 451 40 089</a>
+              <a href="mailto:sander@efffekt.no" class="contact-email"><Icon name="envelope" size={14} /> sander@efffekt.no</a>
             </div>
           </div>
           <div class="contact-person">
@@ -35,8 +36,8 @@ import danielImg from '../../assets/daniel.jpg';
             <div class="contact-person-info">
               <strong>Daniel Barlag</strong>
               <span class="contact-specialty">System & AI</span>
-              <a href="tel:+4798035064" class="contact-phone"><i class="fas fa-phone"></i> +47 980 35 064</a>
-              <a href="mailto:danielbarlag@efffekt.no" class="contact-email"><i class="fas fa-envelope"></i> danielbarlag@efffekt.no</a>
+              <a href="tel:+4798035064" class="contact-phone"><Icon name="phone" size={14} /> +47 980 35 064</a>
+              <a href="mailto:danielbarlag@efffekt.no" class="contact-email"><Icon name="envelope" size={14} /> danielbarlag@efffekt.no</a>
             </div>
           </div>
         </div>

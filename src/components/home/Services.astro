@@ -1,5 +1,6 @@
 ---
 // Services section component
+import Icon from '../icons/Icon.astro';
 ---
 
 <section id="tjenester" class="section section-dark">
@@ -14,7 +15,7 @@
       <div class="service reveal reveal-delay-1">
         <div class="service-header">
           <div class="service-icon">
-            <i class="far fa-window-maximize"></i>
+            <Icon name="window-maximize" size={24} />
           </div>
           <div class="service-info">
             <h3>Nettside</h3>
@@ -43,7 +44,7 @@
         <div class="service-badge">Populær</div>
         <div class="service-header">
           <div class="service-icon">
-            <i class="far fa-rectangle-list"></i>
+            <Icon name="rectangle-list" size={24} />
           </div>
           <div class="service-info">
             <h3>Skreddersydd System</h3>
@@ -53,7 +54,7 @@
         <p class="service-desc">
           Slutt på Excel-kaos og post-it-lapper. Få alt samlet på ett sted med automatiske påminnelser og full oversikt - slik at ingenting faller mellom stolene.
         </p>
-        <p class="service-proof"><i class="fas fa-quote-left"></i> 80% mindre manuelt arbeid <span>- <a href="#arbeid">El-Kontroll</a></span></p>
+        <p class="service-proof"><Icon name="quote-left" size={14} /> 80% mindre manuelt arbeid <span>- <a href="#arbeid">El-Kontroll</a></span></p>
         <ul class="service-features">
           <li>Kunde- og prosjektoversikt</li>
           <li>Automatiske varsler og påminnelser</li>
@@ -73,7 +74,7 @@
       <div class="service reveal reveal-delay-4">
         <div class="service-header">
           <div class="service-icon">
-            <i class="far fa-message"></i>
+            <Icon name="message" size={24} />
           </div>
           <div class="service-info">
             <h3>AI-integrasjon</h3>

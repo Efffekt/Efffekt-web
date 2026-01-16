@@ -1,5 +1,6 @@
 ---
 import ServiceLayout from '../layouts/ServiceLayout.astro';
+import Icon from '../components/icons/Icon.astro';
 // import { Image } from 'astro:assets'; // MIDLERTIDIG SKJULT - MICHAEL
 // import michaelImg from '../assets/michael.jpg'; // MIDLERTIDIG SKJULT - MICHAEL
 
@@ -51,7 +52,7 @@ const faqItems = [
           </div>
         </div>
         <a href="#kontakt" class="btn btn-primary btn-large">
-          <i class="fas fa-comments"></i> Book gratis samtale
+          <Icon name="comments" size={16} /> Book gratis samtale
         </a>
       </div>
     </div>
@@ -65,32 +66,32 @@ const faqItems = [
       </div>
       <div class="included-grid" data-aos="fade-up" data-aos-delay="100">
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-palette"></i></div>
+          <div class="included-icon"><Icon name="palette" size={24} /></div>
           <h3>Skreddersydd design</h3>
           <p>Tilpasset din merkevare og bransje. Ikke en ferdig mal alle andre bruker.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="included-icon"><Icon name="mobile-alt" size={24} /></div>
           <h3>Fungerer overalt</h3>
           <p>Responsivt design som ser bra ut på mobil, nettbrett og PC.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-search"></i></div>
+          <div class="included-icon"><Icon name="search" size={24} /></div>
           <h3>Google-synlig</h3>
           <p>SEO-optimalisert slik at kunder faktisk finner deg.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-envelope"></i></div>
+          <div class="included-icon"><Icon name="envelope" size={24} /></div>
           <h3>Kontaktskjema</h3>
           <p>Henvendelser sendes rett til din e-post. Enkelt og effektivt.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-bolt"></i></div>
+          <div class="included-icon"><Icon name="bolt" size={24} /></div>
           <h3>Rask lasting</h3>
           <p>Optimalisert for hastighet. Ingen venter på trege sider.</p>
         </div>
         <div class="included-item">
-          <div class="included-icon"><i class="fas fa-lock"></i></div>
+          <div class="included-icon"><Icon name="lock" size={24} /></div>
           <h3>SSL-sertifikat</h3>
           <p>Hengelås i nettleseren. Trygt for deg og kundene.</p>
         </div>
@@ -109,7 +110,7 @@ const faqItems = [
           <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">
               <span>{item.question}</span>
-              <i class="fas fa-chevron-down"></i>
+              <Icon name="chevron-down" size={16} />
             </button>
             <div class="faq-answer">
               <p>{item.answer}</p>
@@ -129,15 +130,15 @@ const faqItems = [
           <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
           <div class="contact-trust">
             <div class="trust-item">
-              <i class="fas fa-gift"></i>
+              <Icon name="gift" size={16} />
               <span>Gratis demo først</span>
             </div>
             <div class="trust-item">
-              <i class="fas fa-check-circle"></i>
+              <Icon name="check-circle" size={16} />
               <span>Fastpris - ingen overraskelser</span>
             </div>
             <div class="trust-item">
-              <i class="fas fa-headset"></i>
+              <Icon name="headset" size={16} />
               <span>3 mnd gratis support</span>
             </div>
           </div>
@@ -164,7 +165,7 @@ const faqItems = [
               <textarea id="message" name="message" rows="3" placeholder="Hva slags nettside trenger du?"></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-large btn-full">
-              <i class="fas fa-paper-plane"></i> Send forespørsel
+              <Icon name="paper-plane" size={16} /> Send forespørsel
             </button>
           </form>
         </div>
@@ -180,12 +181,12 @@ const faqItems = [
       </div>
       <div class="other-services-grid" data-aos="fade-up" data-aos-delay="100">
         <a href="/system" class="other-service-card">
-          <i class="fas fa-laptop-code"></i>
+          <Icon name="laptop-code" size={24} />
           <h3>Skreddersydd system</h3>
           <span class="other-price">Fra 44.900 kr</span>
         </a>
         <a href="/ai" class="other-service-card">
-          <i class="fas fa-robot"></i>
+          <Icon name="robot" size={24} />
           <h3>AI-integrasjon</h3>
           <span class="other-price">Fra 9.900 kr</span>
         </a>

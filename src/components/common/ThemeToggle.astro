@@ -1,5 +1,6 @@
 ---
 // Theme toggle component with system preference support
+import Icon from '../icons/Icon.astro';
 ---
 
 <button
@@ -8,8 +9,8 @@
   aria-label="Bytt tema"
   title="Bytt mellom lyst og mørkt tema"
 >
-  <i class="fas fa-sun theme-icon-light"></i>
-  <i class="fas fa-moon theme-icon-dark"></i>
+  <span class="theme-icon-light"><Icon name="sun" size={16} /></span>
+  <span class="theme-icon-dark"><Icon name="moon" size={16} /></span>
 </button>
 
 <style>
@@ -35,7 +36,6 @@
   .theme-icon-light,
   .theme-icon-dark {
     position: absolute;
-    font-size: 1rem;
     color: var(--text-secondary);
     transition: all 0.3s var(--ease-out);
   }
