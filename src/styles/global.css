@@ -1138,8 +1138,9 @@ a {
 
 /* ===== Team ===== */
 .team {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
   max-width: 1000px;
   margin: 0 auto;
@@ -1156,6 +1157,8 @@ a {
   border-radius: var(--radius-lg);
   transition: all 0.4s var(--ease-out);
   position: relative;
+  width: 300px;
+  flex-shrink: 0;
 }
 
 .team-member:hover {
