@@ -84,7 +84,7 @@ import '../styles/global.css';
     "name": "EFFFEKT",
     "url": "https://efffekt.no",
     "logo": "https://efffekt.no/assets/logo.svg",
-    "description": "Tre utviklere som bygger nettsider, webapplikasjoner og AI-løsninger for norske bedrifter.",
+    "description": "To utviklere som bygger nettsider, webapplikasjoner og AI-løsninger for norske bedrifter.",
     "email": "sander@efffekt.no",
     "telephone": "+47 451 40 089",
     "address": {
@@ -142,7 +142,108 @@ import '../styles/global.css';
 
   <slot name="head" />
 </head>
-<body>
+<body class="intro-active">
+
+  <!-- Video Background (single video that blurs on scroll) -->
+  <div class="video-background intro-hidden" id="hero-video-container">
+    <video id="hero-video" autoplay muted loop playsinline preload="metadata">
+      <source src="/assets/video/hero.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay" id="video-overlay"></div>
+  </div>
+
+  <script is:inline>
+    (function() {
+      let scrollHandler = null;
+
+      function initVideoBlur() {
+        const video = document.getElementById('hero-video');
+        const overlay = document.getElementById('video-overlay');
+
+        if (video) {
+          video.currentTime = 2;
+          video.playbackRate = 0.75;
+          // Reset blur on init (viktig for navigasjon)
+          video.style.filter = 'blur(0px)';
+          video.style.transform = 'scale(1)';
+        }
+
+        if (overlay) {
+          overlay.style.opacity = '0';
+        }
+
+        // Fjern gammel handler hvis den finnes
+        if (scrollHandler) {
+          window.removeEventListener('scroll', scrollHandler);
+        }
+
+        scrollHandler = () => {
+          const scrollY = window.scrollY;
+          const windowHeight = window.innerHeight;
+
+          const blurAmount = Math.min(8, (scrollY / windowHeight) * 8);
+          const overlayOpacity = Math.min(0.5, (scrollY / windowHeight) * 0.5);
+
+          if (video) {
+            video.style.filter = `blur(${blurAmount}px)`;
+            video.style.transform = `scale(${1 + blurAmount * 0.01})`;
+          }
+
+          if (overlay) {
+            overlay.style.opacity = overlayOpacity;
+          }
+        };
+
+        window.addEventListener('scroll', scrollHandler);
+
+        // Kjør umiddelbart for å sette riktig tilstand basert på scroll-posisjon
+        scrollHandler();
+      }
+
+      // Kjør ved første lasting
+      initVideoBlur();
+
+      // Re-initialiser ved View Transitions navigasjon
+      document.addEventListener('astro:page-load', initVideoBlur);
+    })();
+  </script>
+
+  <!-- Intro Animation Controller -->
+  <script is:inline>
+    function initIntro() {
+      const heroContainer = document.getElementById('hero-video-container');
+
+      // Skip intro if already seen this session or on navigation
+      const hasSeenIntro = sessionStorage.getItem('intro-seen');
+      const isNavigation = window.performance && window.performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (hasSeenIntro || isNavigation || prefersReducedMotion) {
+        document.body.classList.remove('intro-active');
+        if (heroContainer) heroContainer.classList.remove('intro-hidden');
+        return;
+      }
+
+      // Start intro animation
+      sessionStorage.setItem('intro-seen', 'true');
+
+      if (heroContainer) {
+        heroContainer.classList.remove('intro-hidden');
+        heroContainer.classList.add('intro-animating');
+      }
+
+      setTimeout(() => {
+        document.body.classList.remove('intro-active');
+        if (heroContainer) {
+          heroContainer.classList.remove('intro-animating');
+        }
+      }, 500);
+    }
+
+    initIntro();
+    document.addEventListener('astro:page-load', initIntro);
+  </script>
+
   <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
 
   <Header transition:persist />

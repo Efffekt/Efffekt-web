@@ -1,0 +1,196 @@
+---
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+import Icon from '../components/icons/Icon.astro';
+
+const faqItems = [
+  {
+    question: "Hva er en plugin?",
+    answer: "En plugin er en tilleggsmodul som utvider funksjonaliteten til et eksisterende system. Vi bygger skreddersydde plugins for WordPress, Shopify, WooCommerce og andre plattformer."
+  },
+  {
+    question: "Hvilke plattformer støtter dere?",
+    answer: "Vi har erfaring med WordPress, WooCommerce, Shopify, Magento, og flere. Har du en annen plattform? Ta kontakt - vi finner en løsning."
+  },
+  {
+    question: "Hvordan håndteres oppdateringer?",
+    answer: "Vi sørger for at pluginen er kompatibel med nye versjoner av plattformen din. Oppdateringer og feilrettinger er inkludert i abonnementet."
+  },
+  {
+    question: "Kan jeg få støtte hvis noe ikke fungerer?",
+    answer: "Ja! Support er inkludert i prisen. Vi hjelper deg med installasjon, konfigurasjon og eventuelle problemer som oppstår."
+  },
+  {
+    question: "Er det bindingstid?",
+    answer: "Nei, ingen bindingstid. Du kan avslutte når som helst. Vi tror på å levere verdi hver måned, ikke låse deg inne i lange kontrakter."
+  }
+];
+---
+
+<ServiceLayout
+  title="Plugin | Fra 649 kr/mnd | EFFFEKT"
+  description="Skreddersydde plugins for WordPress, Shopify og andre plattformer. Utvid funksjonaliteten til ditt eksisterende system. Ingen bindingstid."
+  canonical="https://efffekt.no/plugin"
+  serviceName="Skreddersydd Plugin"
+  serviceDescription="Skreddersydde plugins som utvider funksjonaliteten til ditt eksisterende system. WordPress, Shopify, WooCommerce og mer."
+  price="6490"
+  faqItems={faqItems}
+>
+  <!-- Hero Section -->
+  <section class="service-hero">
+    <div class="container">
+      <div class="service-hero-content reveal">
+        <h1>Utvid <span class="gradient-text">mulighetene</span></h1>
+        <p class="service-hero-subtitle">Få funksjonaliteten du trenger - uten å bytte system. Skreddersydde plugins som passer perfekt inn.</p>
+        <div class="service-hero-prices">
+          <div class="price-box featured">
+            <span class="price-label">Plugin</span>
+            <span class="price-amount">Fra 649 kr/mnd</span>
+            <span class="price-alt">Support og oppdateringer inkludert</span>
+          </div>
+        </div>
+        <a href="#kontakt" class="btn btn-primary btn-large">
+          <Icon name="comments" size={16} /> Book gratis samtale
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included -->
+  <section class="service-details">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Hva du <span class="gradient-text">får</span></h2>
+      </div>
+      <div class="included-grid reveal">
+        <div class="included-item">
+          <div class="included-icon"><Icon name="puzzle-piece" size={24} /></div>
+          <h3>Skreddersydd funksjonalitet</h3>
+          <p>Plugin bygget for akkurat dine behov. Ikke en standard løsning med funksjoner du ikke trenger.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="plug" size={24} /></div>
+          <h3>Integrer med ditt system</h3>
+          <p>Fungerer sømløst med WordPress, Shopify, WooCommerce eller din valgte plattform.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="sync" size={24} /></div>
+          <h3>Enkel oppdatering</h3>
+          <p>Vi holder pluginen oppdatert og kompatibel med nye versjoner av plattformen.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="headset" size={24} /></div>
+          <h3>Support inkludert</h3>
+          <p>Hjelp med installasjon, konfigurasjon og eventuelle spørsmål. Vi er her for deg.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="code" size={24} /></div>
+          <h3>Dokumentert kode</h3>
+          <p>Ryddig og dokumentert kode som er enkel å forstå og vedlikeholde.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="check-circle" size={24} /></div>
+          <h3>Testing inkludert</h3>
+          <p>Grundig testet før lansering. Vi sørger for at alt fungerer som det skal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
+      </div>
+      <div class="faq-list reveal">
+        {faqItems.map(item => (
+          <div class="faq-item">
+            <button class="faq-question" >
+              <span>{item.question}</span>
+              <Icon name="chevron-down" size={16} />
+            </button>
+            <div class="faq-answer">
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section id="kontakt" class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text reveal-left">
+          <h2>Klar for en <span class="gradient-text">ny plugin?</span></h2>
+          <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
+          <div class="contact-trust">
+            <div class="trust-item">
+              <Icon name="gift" size={16} />
+              <span>Gratis demo først</span>
+            </div>
+            <div class="trust-item">
+              <Icon name="check-circle" size={16} />
+              <span>Ingen bindingstid</span>
+            </div>
+            <div class="trust-item">
+              <Icon name="headset" size={16} />
+              <span>Support inkludert</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-wrapper reveal-right">
+          <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
+            <input type="hidden" name="_cc" value="daniel@efffekt.no">
+            <input type="hidden" name="_subject" value="Forespørsel: Plugin">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="form-group">
+              <label for="name">Navn *</label>
+              <input type="text" id="name" name="name" required placeholder="Ditt navn">
+            </div>
+            <div class="form-group">
+              <label for="email">E-post *</label>
+              <input type="email" id="email" name="email" required placeholder="din@epost.no">
+            </div>
+            <div class="form-group">
+              <label for="message">Fortell kort om behovet</label>
+              <textarea id="message" name="message" rows="3" placeholder="Hvilken plattform bruker du, og hva vil du utvide?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-full">
+              <Icon name="paper-plane" size={16} /> Send forespørsel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Services -->
+  <section class="other-services">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Andre <span class="gradient-text">tjenester</span></h2>
+      </div>
+      <div class="other-services-grid reveal">
+        <a href="/nettside" class="other-service-card">
+          <Icon name="globe" size={24} />
+          <h3>Profesjonell nettside</h3>
+          <span class="other-price">Fra 549 kr/mnd</span>
+        </a>
+        <a href="/integrasjon" class="other-service-card">
+          <Icon name="plug" size={24} />
+          <h3>Integrasjon</h3>
+          <span class="other-price">Fra 799 kr/mnd</span>
+        </a>
+        <a href="/ai" class="other-service-card">
+          <Icon name="robot" size={24} />
+          <h3>AI-automatisering</h3>
+          <span class="other-price">Fra 999 kr/mnd</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

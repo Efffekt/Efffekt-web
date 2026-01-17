@@ -1,14 +1,11 @@
 ---
 import ServiceLayout from '../layouts/ServiceLayout.astro';
-import { Image } from 'astro:assets';
 import Icon from '../components/icons/Icon.astro';
-import sanderImg from '../assets/sander.jpg';
-import danielImg from '../assets/daniel.jpg';
 
 const faqItems = [
   {
     question: "Hva koster et skreddersydd system?",
-    answer: "Pris avhenger av kompleksitet, men starter fra 44.900 kr. Vi gir alltid et fast pristilbud før du bestemmer deg, slik at du vet nøyaktig hva det koster."
+    answer: "Fra 649 kr/mnd med alt inkludert - utvikling, hosting, vedlikehold og support. Ingen bindingstid, avslutt når du vil."
   },
   {
     question: "Hvor lang tid tar utvikling?",
@@ -19,19 +16,19 @@ const faqItems = [
     answer: "Ja! Vi har erfaring med å koble på regnskapssystemer, e-post, kalendere, betalingsløsninger og andre verktøy bedriften din allerede bruker."
   },
   {
-    question: "Hvem eier systemet?",
-    answer: "Du eier alt. Kildekode, design, data - alt tilhører deg. Vi gir deg full tilgang og dokumentasjon slik at du aldri er avhengig av oss."
+    question: "Er det bindingstid?",
+    answer: "Nei, ingen bindingstid. Du kan avslutte når som helst. Vi tror på å levere verdi hver måned, ikke låse deg inne i lange kontrakter."
   },
   {
-    question: "Hva med vedlikehold og oppdateringer?",
-    answer: "Vi tilbyr vedlikeholdsavtaler fra 990 kr/mnd som inkluderer sikkerhetsoppdateringer, backup og support. Men du kan også vedlikeholde det selv eller bruke andre."
+    question: "Hva er inkludert i prisen?",
+    answer: "Alt du trenger: Utvikling, hosting, SSL, vedlikehold, sikkerhetsoppdateringer, backup og support. Du trenger ikke tenke på noe teknisk."
   }
 ];
 ---
 
 <ServiceLayout
-  title="Skreddersydd System | Fra 44.900 kr | EFFFEKT"
-  description="Skreddersydde systemløsninger for norske bedrifter. Slutt på Excel-kaos. Kundeoversikt, automatisering og full kontroll. Gratis demo."
+  title="Skreddersydd System | Fra 649 kr/mnd | EFFFEKT"
+  description="Skreddersydde systemløsninger for norske bedrifter. Slutt på Excel-kaos. Kundeoversikt, automatisering og full kontroll. Ingen bindingstid."
   canonical="https://efffekt.no/system"
   serviceName="Skreddersydd System"
   serviceDescription="Skreddersydde systemløsninger for norske bedrifter. Kundeoversikt, automatisering, PDF-generering og dashboard."
@@ -41,18 +38,14 @@ const faqItems = [
   <!-- Hero Section -->
   <section class="service-hero">
     <div class="container">
-      <div class="service-hero-content" data-aos="fade-up">
-        <div class="specialist-badge">
-          <Image src={sanderImg} alt="Sander Martinsen" class="specialist-avatar" width={48} height={48} />
-          <Image src={danielImg} alt="Daniel Barlag" class="specialist-avatar" width={48} height={48} />
-          <span class="section-badge">Sander & Daniels spesialitet</span>
-        </div>
+      <div class="service-hero-content reveal">
         <h1>Slutt på <span class="gradient-text">Excel-kaos</span></h1>
         <p class="service-hero-subtitle">Få alt på ett sted. Kundeoversikt, automatiske påminnelser, og full kontroll - uten å tape oversikten.</p>
         <div class="service-hero-prices">
           <div class="price-box featured">
             <span class="price-label">Skreddersydd system</span>
-            <span class="price-amount">Fra 44.900 kr</span>
+            <span class="price-amount">Fra 649 kr/mnd</span>
+            <span class="price-alt">Ingen bindingstid, alt inkludert</span>
           </div>
         </div>
         <a href="#kontakt" class="btn btn-primary btn-large">
@@ -65,10 +58,10 @@ const faqItems = [
   <!-- What's Included -->
   <section class="service-details">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Hva du <span class="gradient-text">får</span></h2>
       </div>
-      <div class="included-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="included-grid reveal">
         <div class="included-item">
           <div class="included-icon"><Icon name="users" size={24} /></div>
           <h3>Kunde- og prosjektoversikt</h3>
@@ -106,13 +99,13 @@ const faqItems = [
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
       </div>
-      <div class="faq-list" data-aos="fade-up" data-aos-delay="100">
+      <div class="faq-list reveal">
         {faqItems.map(item => (
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">
+            <button class="faq-question" >
               <span>{item.question}</span>
               <Icon name="chevron-down" size={16} />
             </button>
@@ -129,7 +122,7 @@ const faqItems = [
   <section id="kontakt" class="contact-section">
     <div class="container">
       <div class="contact-grid">
-        <div class="contact-text" data-aos="fade-right">
+        <div class="contact-text reveal-left">
           <h2>Klar for et <span class="gradient-text">nytt system?</span></h2>
           <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
           <div class="contact-trust">
@@ -139,35 +132,15 @@ const faqItems = [
             </div>
             <div class="trust-item">
               <Icon name="check-circle" size={16} />
-              <span>Fastpris - ingen overraskelser</span>
+              <span>Ingen bindingstid</span>
             </div>
             <div class="trust-item">
-              <Icon name="key" size={16} />
-              <span>Du eier alt selv</span>
-            </div>
-          </div>
-
-          <div class="contact-people">
-            <h4>Snakk med oss direkte</h4>
-            <div class="contact-person">
-              <Image src={sanderImg} alt="Sander Martinsen" class="contact-avatar" width={48} height={48} />
-              <div class="contact-person-info">
-                <strong>Sander Martinsen</strong>
-                <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4745140089" class="contact-phone"><Icon name="phone" size={14} /> +47 451 40 089</a>
-              </div>
-            </div>
-            <div class="contact-person">
-              <Image src={danielImg} alt="Daniel Barlag" class="contact-avatar" width={48} height={48} />
-              <div class="contact-person-info">
-                <strong>Daniel Barlag</strong>
-                <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4798035064" class="contact-phone"><Icon name="phone" size={14} /> +47 980 35 064</a>
-              </div>
+              <Icon name="gift" size={16} />
+              <span>Alt inkludert i prisen</span>
             </div>
           </div>
         </div>
-        <div class="contact-form-wrapper" data-aos="fade-left">
+        <div class="contact-form-wrapper reveal-right">
           <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
             <input type="hidden" name="_cc" value="daniel@efffekt.no,michael@efffekt.no">
             <input type="hidden" name="_subject" value="Forespørsel: Skreddersydd System">
@@ -198,19 +171,19 @@ const faqItems = [
   <!-- Other Services -->
   <section class="other-services">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Andre <span class="gradient-text">tjenester</span></h2>
       </div>
-      <div class="other-services-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="other-services-grid reveal">
         <a href="/nettside" class="other-service-card">
           <Icon name="globe" size={24} />
           <h3>Profesjonell nettside</h3>
-          <span class="other-price">Fra 14.900 kr</span>
+          <span class="other-price">Fra 549 kr/mnd</span>
         </a>
         <a href="/ai" class="other-service-card">
           <Icon name="robot" size={24} />
-          <h3>AI-integrasjon</h3>
-          <span class="other-price">Fra 9.900 kr</span>
+          <h3>AI-automatisering</h3>
+          <span class="other-price">Fra 999 kr/mnd</span>
         </a>
       </div>
     </div>

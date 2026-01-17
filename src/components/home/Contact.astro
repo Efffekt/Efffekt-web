@@ -4,7 +4,6 @@ import { Image } from 'astro:assets';
 import Icon from '../icons/Icon.astro';
 import sanderImg from '../../assets/sander.jpg';
 import danielImg from '../../assets/daniel.jpg';
-// import michaelImg from '../../assets/michael.jpg'; // MIDLERTIDIG SKJULT
 ---
 
 <section id="kontakt" class="section">
@@ -12,16 +11,15 @@ import danielImg from '../../assets/daniel.jpg';
     <div class="contact-grid">
       <div class="contact-info reveal-left">
         <p class="section-label">Ta kontakt</p>
-        <h2>La oss snakke om<br>ditt <span class="text-accent">prosjekt</span></h2>
+        <h2>Klar for å <span class="text-accent">prøve?</span></h2>
         <p class="contact-text">
-          Fyll ut skjemaet eller ring oss direkte. Vi svarer vanligvis innen 24 timer.
+          Book en uforpliktende samtale eller send oss en melding. Vi svarer vanligvis innen 24 timer.
         </p>
         <div class="contact-methods">
         </div>
 
         <div class="contact-people">
           <h4>Snakk med oss direkte</h4>
-          <!-- MIDLERTIDIG SKJULT - MICHAEL: contact-person blokk -->
           <div class="contact-person">
             <Image src={sanderImg} alt="Sander Martinsen" class="contact-avatar" width={48} height={48} />
             <div class="contact-person-info">
@@ -61,10 +59,11 @@ import danielImg from '../../assets/daniel.jpg';
           <label for="project-type">Hva trenger du?</label>
           <select id="project-type" name="project-type" required>
             <option value="" disabled selected>Velg type</option>
-            <option value="nettside">Nettside</option>
-            <option value="system">Skreddersydd system</option>
-            <option value="ai">AI-integrasjon</option>
-            <option value="annet">Annet</option>
+            <option value="nettside">Nettside (fra 549 kr/mnd)</option>
+            <option value="integrasjon">Integrasjon (fra 799 kr/mnd)</option>
+            <option value="plugin">Plugin (fra 649 kr/mnd)</option>
+            <option value="ai">AI-automatisering (fra 999 kr/mnd)</option>
+            <option value="annet">Annet / Usikker</option>
           </select>
         </div>
         <div class="form-group">
@@ -72,7 +71,7 @@ import danielImg from '../../assets/daniel.jpg';
           <textarea id="message" name="message" rows="4"></textarea>
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-full btn-shimmer glow-focus">
-          Send foresporsel
+          Send forespørsel
         </button>
       </form>
     </div>

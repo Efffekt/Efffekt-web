@@ -1,9 +1,6 @@
 ---
 import ServiceLayout from '../layouts/ServiceLayout.astro';
-import { Image } from 'astro:assets';
 import Icon from '../components/icons/Icon.astro';
-import sanderImg from '../assets/sander.jpg';
-import danielImg from '../assets/daniel.jpg';
 
 const faqItems = [
   {
@@ -24,14 +21,14 @@ const faqItems = [
   },
   {
     question: "Hva koster AI-løsninger?",
-    answer: "Engangsoppsett fra 9.900 kr + eventuelle månedlige API-kostnader (typisk 200-1000 kr/mnd avhengig av bruk). Du får et fast pristilbud før vi starter."
+    answer: "Fra 999 kr/mnd med alt inkludert - utvikling, hosting, vedlikehold og API-kostnader. Ingen bindingstid, avslutt når du vil."
   }
 ];
 ---
 
 <ServiceLayout
-  title="AI-integrasjon | Fra 9.900 kr | EFFFEKT"
-  description="AI-løsninger for norske bedrifter. Chatbot, automatisering og smart dokumenthåndtering. Spar 10+ timer i uka. GDPR-vennlig."
+  title="AI-automatisering | Fra 999 kr/mnd | EFFFEKT"
+  description="AI-løsninger for norske bedrifter. Chatbot, automatisering og smart dokumenthåndtering. Spar 10+ timer i uka. Ingen bindingstid."
   canonical="https://efffekt.no/ai"
   serviceName="AI-integrasjon"
   serviceDescription="AI-løsninger for norske bedrifter. Chatbot, automatisering, smart dokumentgenerering og naturlig språk-søk."
@@ -41,19 +38,14 @@ const faqItems = [
   <!-- Hero Section -->
   <section class="service-hero">
     <div class="container">
-      <div class="service-hero-content" data-aos="fade-up">
-        <div class="specialist-badge">
-          <Image src={sanderImg} alt="Sander Martinsen" class="specialist-avatar" width={48} height={48} />
-          <Image src={danielImg} alt="Daniel Barlag" class="specialist-avatar" width={48} height={48} />
-          <span class="section-badge">Sander & Daniels spesialitet</span>
-        </div>
+      <div class="service-hero-content reveal">
         <h1>AI som <span class="gradient-text">faktisk hjelper</span></h1>
         <p class="service-hero-subtitle">Spar 10+ timer i uka. La AI svare kunder, sortere henvendelser og generere dokumenter - mens du fokuserer på det viktige.</p>
         <div class="service-hero-prices">
           <div class="price-box featured">
-            <span class="price-label">AI-integrasjon</span>
-            <span class="price-amount">Fra 9.900 kr</span>
-            <span class="price-alt">eller fra 799 kr/mnd</span>
+            <span class="price-label">AI-automatisering</span>
+            <span class="price-amount">Fra 999 kr/mnd</span>
+            <span class="price-alt">Ingen bindingstid, alt inkludert</span>
           </div>
         </div>
         <a href="#kontakt" class="btn btn-primary btn-large">
@@ -66,10 +58,10 @@ const faqItems = [
   <!-- What's Included -->
   <section class="service-details">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Hva du <span class="gradient-text">får</span></h2>
       </div>
-      <div class="included-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="included-grid reveal">
         <div class="included-item">
           <div class="included-icon"><Icon name="robot" size={24} /></div>
           <h3>Chatbot 24/7</h3>
@@ -107,13 +99,13 @@ const faqItems = [
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
       </div>
-      <div class="faq-list" data-aos="fade-up" data-aos-delay="100">
+      <div class="faq-list reveal">
         {faqItems.map(item => (
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">
+            <button class="faq-question" >
               <span>{item.question}</span>
               <Icon name="chevron-down" size={16} />
             </button>
@@ -130,7 +122,7 @@ const faqItems = [
   <section id="kontakt" class="contact-section">
     <div class="container">
       <div class="contact-grid">
-        <div class="contact-text" data-aos="fade-right">
+        <div class="contact-text reveal-left">
           <h2>Klar for <span class="gradient-text">AI?</span></h2>
           <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
           <div class="contact-trust">
@@ -147,28 +139,8 @@ const faqItems = [
               <span>Spar 10+ timer/uke</span>
             </div>
           </div>
-
-          <div class="contact-people">
-            <h4>Snakk med oss direkte</h4>
-            <div class="contact-person">
-              <Image src={sanderImg} alt="Sander Martinsen" class="contact-avatar" width={48} height={48} />
-              <div class="contact-person-info">
-                <strong>Sander Martinsen</strong>
-                <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4745140089" class="contact-phone"><Icon name="phone" size={14} /> +47 451 40 089</a>
-              </div>
-            </div>
-            <div class="contact-person">
-              <Image src={danielImg} alt="Daniel Barlag" class="contact-avatar" width={48} height={48} />
-              <div class="contact-person-info">
-                <strong>Daniel Barlag</strong>
-                <span class="contact-specialty">System & AI</span>
-                <a href="tel:+4798035064" class="contact-phone"><Icon name="phone" size={14} /> +47 980 35 064</a>
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="contact-form-wrapper" data-aos="fade-left">
+        <div class="contact-form-wrapper reveal-right">
           <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
             <input type="hidden" name="_cc" value="daniel@efffekt.no,michael@efffekt.no">
             <input type="hidden" name="_subject" value="Forespørsel: AI-integrasjon">
@@ -199,19 +171,19 @@ const faqItems = [
   <!-- Other Services -->
   <section class="other-services">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
+      <div class="section-header reveal">
         <h2>Andre <span class="gradient-text">tjenester</span></h2>
       </div>
-      <div class="other-services-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="other-services-grid reveal">
         <a href="/nettside" class="other-service-card">
           <Icon name="globe" size={24} />
           <h3>Profesjonell nettside</h3>
-          <span class="other-price">Fra 14.900 kr</span>
+          <span class="other-price">Fra 549 kr/mnd</span>
         </a>
         <a href="/system" class="other-service-card">
           <Icon name="laptop-code" size={24} />
           <h3>Skreddersydd system</h3>
-          <span class="other-price">Fra 44.900 kr</span>
+          <span class="other-price">Fra 649 kr/mnd</span>
         </a>
       </div>
     </div>

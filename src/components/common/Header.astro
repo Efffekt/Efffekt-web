@@ -1,20 +1,25 @@
 ---
 // Header component with navigation
+interface Props {
+  showCenteredLogo?: boolean;
+}
+
+const { showCenteredLogo = true } = Astro.props;
 ---
 
-<header class="header">
+<header class="header" data-centered-logo={showCenteredLogo}>
   <div class="header-line"></div>
   <div class="container">
     <nav class="nav">
-      <a href="/" class="logo">
-        <img src="/assets/logo.svg" alt="EFFFEKT" width="180" height="36">
+      <a href="/" class="logo intro-hidden">
+        <img src="/assets/logo.svg" alt="EFFFEKT" width="140" height="28">
       </a>
-      <div class="nav-links">
+      <div class="nav-links" id="nav-links">
         <a href="/#scanner">Gratis analyse</a>
         <a href="/#tjenester">Tjenester</a>
         <a href="/#kontakt" class="btn btn-primary btn-sm">Kontakt oss</a>
       </div>
-      <button class="nav-toggle" aria-label="Meny">
+      <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
         <span></span>
         <span></span>
         <span></span>
@@ -23,22 +28,248 @@
   </div>
 </header>
 
-<script>
-  function initHeader() {
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
+{showCenteredLogo && (
+  <div class="welcome-text intro-hidden" id="welcomeText">Velkommen til</div>
+)}
 
-    // Mobile nav toggle
-    navToggle?.addEventListener('click', () => {
-      navLinks?.classList.toggle('active');
-      navToggle.classList.toggle('active');
-    });
-
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-      document.querySelector('.header')?.classList.toggle('scrolled', window.scrollY > 50);
-    });
+<style is:global>
+  /* Skjul elementer før intro-animasjon */
+  .intro-hidden {
+    opacity: 0 !important;
   }
+
+  /* Fade-in klasser */
+  .intro-fade-in {
+    opacity: 1 !important;
+    transition: opacity 1.2s ease-out, filter 1.2s ease-out;
+  }
+
+  .intro-fade-in-logo {
+    opacity: 1 !important;
+    transition: opacity 1.5s ease-out, filter 1.5s ease-out;
+  }
+</style>
+
+<script>
+  import { createListenerScope } from '../../utils/events';
+  import { $, $id } from '../../utils/dom';
+
+  // Store the current listener scope for cleanup
+  let listenerScope: ReturnType<typeof createListenerScope> | null = null;
+
+  function initHeader(): void {
+    // Cleanup previous listeners to prevent memory leaks
+    listenerScope?.cleanup();
+    listenerScope = createListenerScope();
+
+    // Query DOM elements with null safety
+    const navToggle = $<HTMLButtonElement>('.nav-toggle');
+    const navLinks = $<HTMLElement>('.nav-links');
+    const header = $<HTMLElement>('.header');
+    const headerLine = $<HTMLElement>('.header-line');
+    const logo = $<HTMLAnchorElement>('.logo');
+    const welcomeText = $id('welcomeText');
+
+    // Early return if required elements are missing
+    if (!header || !logo || !headerLine || !navLinks) {
+      console.warn('[Header] Required elements not found, skipping initialization');
+      return;
+    }
+
+    const showCenteredLogo = header.dataset.centeredLogo === 'true';
+
+    // Forhindre reload når man klikker logo på forsiden (unngå duplikate listeners)
+    if (!logo.dataset.clickHandlerAdded) {
+      logo.dataset.clickHandlerAdded = 'true';
+      listenerScope.add(logo, 'click', (e: MouseEvent) => {
+        if (window.location.pathname === '/') {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+
+    // Lagre logoens naturlige posisjon (uten transform)
+    logo.style.transform = 'none';
+    const logoRect = logo.getBoundingClientRect();
+    const logoNaturalPos = {
+      x: logoRect.left + logoRect.width / 2,
+      y: logoRect.top + logoRect.height / 2
+    };
+
+    // Beregn offset for å sentrere logo på skjermen
+    const getCenterOffset = (): { x: number; y: number } => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      return {
+        x: centerX - logoNaturalPos.x,
+        y: centerY - logoNaturalPos.y
+      };
+    };
+
+    // Sjekk om vi allerede har scrollet forbi intro
+    const alreadyScrolled = window.scrollY > window.innerHeight * 0.8;
+
+    // Skala for sentrert logo (større)
+    const centeredScale = 1.8;
+
+    if (showCenteredLogo && !alreadyScrolled) {
+      // Sett logo til sentrum FØRST (mens den er usynlig)
+      const offset = getCenterOffset();
+      logo.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${centeredScale})`;
+      logo.style.filter = 'blur(15px)';
+
+      // Fade-in velkommen først
+      if (welcomeText) {
+        welcomeText.style.filter = 'blur(10px)';
+
+        setTimeout(() => {
+          welcomeText.classList.remove('intro-hidden');
+          welcomeText.classList.add('intro-fade-in');
+          welcomeText.style.filter = 'blur(0)';
+        }, 100);
+      }
+
+      // Fade-in logo etter velkommen
+      setTimeout(() => {
+        logo.classList.remove('intro-hidden');
+        logo.classList.add('intro-fade-in-logo');
+        logo.style.filter = 'blur(0)';
+      }, 800);
+
+      // Etter intro-animasjon, fjern klasser for scroll-håndtering
+      setTimeout(() => {
+        logo.classList.remove('intro-fade-in-logo');
+        if (welcomeText) welcomeText.classList.remove('intro-fade-in');
+      }, 2500);
+
+    } else if (!showCenteredLogo) {
+      // På undersider: vis header umiddelbart
+      logo.classList.remove('intro-hidden');
+      logo.style.transform = 'none';
+      logo.style.opacity = '1';
+      headerLine.style.transform = 'scaleX(1)';
+      navLinks.style.opacity = '1';
+      navLinks.style.transform = 'none';
+      header.classList.add('header-visible');
+      header.style.setProperty('--header-progress', '1');
+    } else {
+      // Allerede scrollet - vis alt umiddelbart
+      logo.classList.remove('intro-hidden');
+      if (welcomeText) welcomeText.classList.remove('intro-hidden');
+    }
+
+    // Mobile nav toggle with aria-expanded
+    if (navToggle) {
+      listenerScope.add(navToggle, 'click', () => {
+        navLinks.classList.toggle('active');
+        navToggle.classList.toggle('active');
+
+        // Update aria-expanded for accessibility
+        const isExpanded = navLinks.classList.contains('active');
+        navToggle.setAttribute('aria-expanded', String(isExpanded));
+      });
+    }
+
+    // Dynamisk header basert på scroll
+    const handleScroll = (): void => {
+      // På undersider: hopp over senterlogo-logikk
+      if (!showCenteredLogo) {
+        header.classList.toggle('scrolled', window.scrollY > 100);
+        return;
+      }
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+
+      // Header-animasjon starter ved 70% og er ferdig ved 100%
+      const headerStart = viewportHeight * 0.7;
+      const headerEnd = viewportHeight * 1.0;
+
+      // Logo fade: 30% til 60%
+      const logoFadeStart = viewportHeight * 0.3;
+      const logoFadeEnd = viewportHeight * 0.6;
+
+      // Beregn progress for header (0 til 1)
+      let headerProgress = 0;
+      if (scrollY >= headerEnd) {
+        headerProgress = 1;
+      } else if (scrollY > headerStart) {
+        headerProgress = (scrollY - headerStart) / (headerEnd - headerStart);
+      }
+
+      // Sett CSS custom property for dynamisk animasjon
+      header.style.setProperty('--header-progress', String(headerProgress));
+
+      // Header synlighet - aktiver border når header begynner å vises
+      header.classList.toggle('header-visible', headerProgress > 0);
+
+      // Strek - tegnes med scroll (scaleX)
+      headerLine.style.transform = `scaleX(${headerProgress})`;
+
+      // Nav-links - fade og slide inn
+      navLinks.style.opacity = String(headerProgress);
+      navLinks.style.transform = `translateX(${(1 - headerProgress) * 20}px)`;
+
+      // Logo i header - fade inn når header vises
+      if (headerProgress > 0) {
+        // Header-modus: logo i sin naturlige posisjon, normal størrelse
+        logo.style.transform = 'none';
+        logo.style.opacity = String(headerProgress);
+        logo.style.filter = 'blur(0)';
+      } else {
+        // Sentrum-modus: logo i midten av skjermen, skalert opp
+        const offset = getCenterOffset();
+        logo.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${centeredScale})`;
+
+        // Fade ut logo og velkomsttekst når man scroller
+        let opacity = 1;
+        if (scrollY <= logoFadeStart) {
+          opacity = 1;
+        } else if (scrollY >= logoFadeEnd) {
+          opacity = 0;
+        } else {
+          const fadeProgress = (scrollY - logoFadeStart) / (logoFadeEnd - logoFadeStart);
+          opacity = 1 - fadeProgress;
+        }
+        logo.style.opacity = String(opacity);
+        if (welcomeText) welcomeText.style.opacity = String(opacity);
+      }
+
+      // Skjul velkomsttekst når header vises
+      if (welcomeText) {
+        welcomeText.style.display = headerProgress > 0 ? 'none' : 'block';
+      }
+
+      // Scrolled state for kompakt header
+      header.classList.toggle('scrolled', scrollY > viewportHeight);
+    };
+
+    // Handle resize to update logo position
+    const handleResize = (): void => {
+      // Oppdater naturlig posisjon ved resize
+      logo.style.transform = 'none';
+      const rect = logo.getBoundingClientRect();
+      logoNaturalPos.x = rect.left + rect.width / 2;
+      logoNaturalPos.y = rect.top + rect.height / 2;
+      handleScroll();
+    };
+
+    // Add managed listeners (will be cleaned up on navigation)
+    listenerScope.add(window, 'scroll', handleScroll);
+    listenerScope.add(window, 'resize', handleResize);
+
+    // Ikke kall handleScroll umiddelbart - la fade-in fullføre først
+    setTimeout(() => {
+      handleScroll();
+    }, 2500);
+  }
+
+  // Cleanup on page navigation (View Transitions)
+  document.addEventListener('astro:before-swap', () => {
+    listenerScope?.cleanup();
+    listenerScope = null;
+  });
 
   // Initialize on page load and View Transitions
   initHeader();

@@ -1,0 +1,365 @@
+---
+import Icon from '../icons/Icon.astro';
+
+const steps = [
+  {
+    number: 1,
+    title: 'Fortell oss hva du trenger',
+    description: 'Book en gratis 15-minutters prat. Vi hører på dine utfordringer og foreslår en løsning.'
+  },
+  {
+    number: 2,
+    title: 'Vi bygger en demo',
+    description: 'Se løsningen før du betaler noe. Ingen forpliktelser, ingen risiko.'
+  },
+  {
+    number: 3,
+    title: 'Start når du er klar',
+    description: 'Fast månedspris, avslutt når du vil. Alt av vedlikehold og forbedringer er inkludert.'
+  }
+];
+
+const products = [
+  {
+    icon: 'globe',
+    name: 'Nettside',
+    price: 549,
+    hook: 'Bli funnet av nye kunder',
+    features: [
+      'Profesjonell design',
+      'Mobilvennlig',
+      'SEO-optimalisert',
+      'Vedlikehold inkludert'
+    ],
+    href: '/nettside'
+  },
+  {
+    icon: 'plug',
+    name: 'Integrasjon',
+    price: 799,
+    hook: 'Koble systemene dine sammen',
+    features: [
+      'API-tilkoblinger',
+      'Automatisk dataflyt',
+      'Sanntidssynkronisering',
+      'Overvåkning inkludert'
+    ],
+    href: '/integrasjon'
+  },
+  {
+    icon: 'laptop-code',
+    name: 'Plugin',
+    price: 649,
+    hook: 'Utvid eksisterende løsninger',
+    features: [
+      'Skreddersydd funksjonalitet',
+      'Integrer med ditt system',
+      'Enkel oppdatering',
+      'Support inkludert'
+    ],
+    href: '/plugin'
+  },
+  {
+    icon: 'robot',
+    name: 'AI-automatisering',
+    price: 999,
+    hook: 'La maskinen gjøre jobben',
+    features: [
+      'Automatiser rutinearbeid',
+      'Spar 10+ timer i uka',
+      'Intelligente beslutninger',
+      'Kontinuerlig forbedring'
+    ],
+    href: '/ai'
+  }
+];
+---
+
+<section id="produkter" class="section products-section">
+  <div class="container">
+    <!-- Hovedbudskap -->
+    <div class="hero-intro">
+      <p class="hero-label">Digitale systemer på abonnement</p>
+      <h2 class="hero-heading">Systemer som <span class="text-accent">fungerer</span><br>fra 500 kr/mnd</h2>
+      <p class="hero-text">
+        Nettside, integrasjon, plugin eller AI-automatisering.
+        Prøv uten risiko, avslutt når som helst.
+      </p>
+      <div class="hero-actions">
+        <a href="#kontakt" class="btn btn-primary btn-lg">Prøv gratis</a>
+        <a href="#tjenester" class="btn btn-ghost btn-lg">Se tjenester</a>
+      </div>
+
+      <!-- Trust indicators -->
+      <div class="trust-bar reveal">
+      <div class="trust-bar-item">
+        <Icon name="check-circle" size={18} />
+        <span>Ingen bindingstid</span>
+      </div>
+      <div class="trust-bar-item">
+        <Icon name="gift" size={18} />
+        <span>Alt inkludert i prisen</span>
+      </div>
+      <div class="trust-bar-item">
+        <Icon name="bolt" size={18} />
+        <span>Gratis demo først</span>
+      </div>
+      <div class="trust-bar-item">
+        <Icon name="clock" size={18} />
+        <span>Svar innen 24 timer</span>
+      </div>
+      </div>
+    </div>
+
+    <!-- Prosessen -->
+    <div id="hvordan" class="how-it-works">
+      <div class="section-header reveal">
+        <span class="section-label">Prosessen</span>
+        <h2 class="efffekt-bar center">Så enkelt er det</h2>
+        <p>Fra første samtale til ferdig løsning - uten skjulte kostnader eller overraskelser.</p>
+      </div>
+
+      <div class="steps-container">
+        {steps.map((step, index) => (
+          <div class="step reveal" style={`animation-delay: ${index * 0.15}s`}>
+            <div class="step-number">{step.number}</div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="cta-container reveal">
+        <a href="#kontakt" class="btn btn-primary btn-lg">
+          Book gratis samtale
+        </a>
+      </div>
+    </div>
+
+    <!-- Produkter -->
+    <div id="tjenester" class="section-header reveal">
+      <span class="section-label">Våre tjenester</span>
+      <h2 class="efffekt-bar center">Velg systemet som passer deg</h2>
+      <p>Fire kategorier, samme lave månedspris. Alt inkluderer vedlikehold og forbedringer.</p>
+    </div>
+
+    <div class="product-grid">
+      {products.map((product, index) => (
+        <article class="product-card reveal" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="product-card-icon">
+            <Icon name={product.icon} size={24} />
+          </div>
+
+          <div class="price-prefix">fra</div>
+          <div class="price-monthly">
+            {product.price}<span class="currency">kr/mnd</span>
+          </div>
+
+          <h3>{product.name}</h3>
+          <p class="hook">{product.hook}</p>
+
+          <ul class="features">
+            {product.features.map((feature) => (
+              <li>
+                <Icon name="check" size={16} />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a href={product.href} class="btn btn-ghost btn-full">
+            Se mer
+            <Icon name="arrow-right" size={16} />
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .products-section {
+    padding-top: 0;
+  }
+
+  .hero-intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 0;
+  }
+
+  .hero-intro .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    background: var(--accent-light);
+    border-radius: 100px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .hero-intro .hero-heading {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+
+  .hero-intro .hero-text {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-intro .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .hero-intro .trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .hero-intro .trust-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .hero-intro .trust-bar-item :global(svg) {
+    color: var(--accent);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card .btn {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+
+  /* How it works / Prosessen */
+  .how-it-works {
+    background: var(--bg-dark);
+    border-radius: 24px;
+    padding: 80px 40px;
+    margin-bottom: 80px;
+  }
+
+  .how-it-works .steps-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .how-it-works .step {
+    text-align: center;
+  }
+
+  .how-it-works .step-number {
+    width: 64px;
+    height: 64px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 20px;
+    opacity: 1;
+    -webkit-text-fill-color: #fff;
+  }
+
+  .how-it-works .step h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .how-it-works .step p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .how-it-works .cta-container {
+    text-align: center;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .how-it-works {
+      padding: 60px 24px;
+    }
+
+    .how-it-works .steps-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

@@ -27,3 +27,8 @@ pnpm-debug.log*
 # Snyk Security Extension - AI Rules (auto-generated)
 .github/instructions/snyk_rules.instructions.md
 .vercel
+
+# Large video files in root (source files - not for production)
+/*.mp4
+/*.mov
+Skjermbilde*.png

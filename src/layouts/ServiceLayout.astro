@@ -117,9 +117,51 @@ import '../styles/global.css';
 
 </head>
 <body>
-  <Header transition:persist />
+  <!-- Video Background (same as homepage) -->
+  <div class="video-background" id="hero-video-container">
+    <video id="hero-video" autoplay muted loop playsinline preload="metadata">
+      <source src="/assets/video/hero.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay" id="video-overlay"></div>
+  </div>
 
-  <main transition:animate="fade">
+  <script is:inline>
+    (function() {
+      const video = document.getElementById('hero-video');
+      const overlay = document.getElementById('video-overlay');
+
+      if (video) {
+        video.currentTime = 2;
+        video.playbackRate = 0.75;
+      }
+
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+
+        // Blur increases as you scroll (0 to 8px over first viewport)
+        const blurAmount = Math.min(8, (scrollY / windowHeight) * 8);
+
+        // Overlay darkens video slightly when scrolled (0 to 0.5 opacity)
+        const overlayOpacity = Math.min(0.5, (scrollY / windowHeight) * 0.5);
+
+        if (video) {
+          video.style.filter = `blur(${blurAmount}px)`;
+          video.style.transform = `scale(${1 + blurAmount * 0.01})`; // Compensate for blur edges
+        }
+
+        if (overlay) {
+          overlay.style.opacity = overlayOpacity;
+        }
+      });
+    })();
+  </script>
+
+  <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
+
+  <Header showCenteredLogo={false} transition:persist />
+
+  <main id="main-content" transition:animate="fade">
     <slot />
   </main>
 
@@ -128,6 +170,8 @@ import '../styles/global.css';
   <script>
     function initServiceLayout() {
       // Smooth scroll for anchor links
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
           e.preventDefault();
@@ -135,7 +179,7 @@ import '../styles/global.css';
           if (href) {
             const target = document.querySelector(href);
             if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
               // Close mobile menu if open
               document.querySelector('.nav-links')?.classList.remove('active');
               document.querySelector('.nav-toggle')?.classList.remove('active');
@@ -143,22 +187,6 @@ import '../styles/global.css';
           }
         });
       });
-
-      // FAQ toggle
-      (window as any).toggleFaq = function(btn: HTMLElement) {
-        const item = btn.parentElement;
-        const isOpen = item?.classList.contains('open');
-
-        // Close all
-        document.querySelectorAll('.faq-item.open').forEach(el => {
-          el.classList.remove('open');
-        });
-
-        // Open clicked if it wasn't open
-        if (!isOpen && item) {
-          item.classList.add('open');
-        }
-      }
     }
 
     // Initialize on page load and View Transitions
@@ -167,21 +195,24 @@ import '../styles/global.css';
   </script>
 
   <script>
-    // Lightweight scroll reveal with IntersectionObserver
+    // Modern scroll reveal animations (matching homepage)
     function initScrollReveal() {
-      const elements = document.querySelectorAll('[data-aos]');
-      if (!elements.length) return;
+      const revealElements = document.querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, [data-aos]'
+      );
+      if (!revealElements.length) return;
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('aos-animate');
+            entry.target.classList.add('visible');
+            entry.target.classList.add('aos-animate'); // Support legacy data-aos
             observer.unobserve(entry.target);
           }
         });
       }, { threshold: 0.1, rootMargin: '-50px' });
 
-      elements.forEach(el => {
+      revealElements.forEach(el => {
         el.classList.add('aos-init');
         observer.observe(el);
       });
@@ -189,6 +220,36 @@ import '../styles/global.css';
 
     initScrollReveal();
     document.addEventListener('astro:page-load', initScrollReveal);
+  </script>
+
+  <script is:inline>
+    // FAQ toggle - global event delegation med guard mot multiple registreringer
+    if (!window.__faqInitialized) {
+      window.__faqInitialized = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.faq-question');
+        if (!btn) return;
+
+        e.preventDefault();
+        var item = btn.parentElement;
+        if (!item) return;
+
+        var isOpen = item.classList.contains('open');
+
+        // Lukk alle åpne FAQ-items
+        document.querySelectorAll('.faq-item.open').forEach(function(el) {
+          el.classList.remove('open');
+          var elBtn = el.querySelector('.faq-question');
+          if (elBtn) elBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        // Åpne denne hvis den ikke var åpen
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
   </script>
 </body>
 </html>

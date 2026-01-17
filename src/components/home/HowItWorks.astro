@@ -1,0 +1,91 @@
+---
+const steps = [
+  {
+    number: 1,
+    title: 'Fortell oss hva du trenger',
+    description: 'Book en gratis 15-minutters prat. Vi hører på dine utfordringer og foreslår en løsning.'
+  },
+  {
+    number: 2,
+    title: 'Vi bygger en demo',
+    description: 'Se løsningen før du betaler noe. Ingen forpliktelser, ingen risiko.'
+  },
+  {
+    number: 3,
+    title: 'Start når du er klar',
+    description: 'Fast månedspris, avslutt når du vil. Alt av vedlikehold og forbedringer er inkludert.'
+  }
+];
+---
+
+<section id="hvordan" class="section section-dark">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Prosessen</span>
+      <h2 class="efffekt-bar center">Så enkelt er det</h2>
+      <p>Fra første samtale til ferdig løsning - uten skjulte kostnader eller overraskelser.</p>
+    </div>
+
+    <div class="steps-container">
+      {steps.map((step, index) => (
+        <div class="step reveal" style={`animation-delay: ${index * 0.15}s`}>
+          <div class="step-number">{step.number}</div>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="cta-container reveal">
+      <a href="#kontakt" class="btn btn-primary btn-lg">
+        Book gratis samtale
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-dark {
+    background: var(--bg-dark);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .cta-container {
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  .btn-lg {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+  }
+</style>

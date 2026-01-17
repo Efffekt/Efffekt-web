@@ -1,0 +1,196 @@
+---
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+import Icon from '../components/icons/Icon.astro';
+
+const faqItems = [
+  {
+    question: "Hvilke systemer kan dere integrere?",
+    answer: "Vi har erfaring med de fleste vanlige systemer: Tripletex, Fiken, Visma, HubSpot, Mailchimp, Shopify, WooCommerce, og mange flere. Har du et system som ikke er nevnt? Vi finner en løsning."
+  },
+  {
+    question: "Hvor lang tid tar en integrasjon?",
+    answer: "En standard integrasjon tar vanligvis 1-3 uker avhengig av kompleksitet. Du får en fungerende demo innen en uke som viser hvordan dataflyten vil fungere."
+  },
+  {
+    question: "Er det trygt å koble sammen systemer?",
+    answer: "Ja! Vi bruker sikre API-tilkoblinger med kryptering. All dataoverføring logges, og vi setter opp varsler hvis noe går galt. Data forblir hos deg - vi lagrer ingenting."
+  },
+  {
+    question: "Hva skjer hvis noe går galt?",
+    answer: "Vi bygger inn automatisk feilhåndtering og varsler. Hvis en integrasjon feiler, får du beskjed med en gang. Overvåkning og feilretting er inkludert i prisen."
+  },
+  {
+    question: "Kan jeg endre integrasjonene senere?",
+    answer: "Ja! Integrasjoner kan justeres når som helst. Trenger du å koble på et nytt system eller endre dataflyt? Det er inkludert i abonnementet."
+  }
+];
+---
+
+<ServiceLayout
+  title="Integrasjon | Fra 799 kr/mnd | EFFFEKT"
+  description="Koble systemene dine sammen. API-integrasjoner, automatisk dataflyt og sanntidssynkronisering. Ingen bindingstid, overvåkning inkludert."
+  canonical="https://efffekt.no/integrasjon"
+  serviceName="Systemintegrasjon"
+  serviceDescription="Koble systemene dine sammen med skreddersydde integrasjoner. Automatisk dataflyt, sanntidssynkronisering og overvåkning."
+  price="7900"
+  faqItems={faqItems}
+>
+  <!-- Hero Section -->
+  <section class="service-hero">
+    <div class="container">
+      <div class="service-hero-content reveal">
+        <h1>Koble systemene <span class="gradient-text">sammen</span></h1>
+        <p class="service-hero-subtitle">Slutt på manuell dataoverføring. La systemene snakke sammen automatisk - spar tid og unngå feil.</p>
+        <div class="service-hero-prices">
+          <div class="price-box featured">
+            <span class="price-label">Integrasjon</span>
+            <span class="price-amount">Fra 799 kr/mnd</span>
+            <span class="price-alt">Overvåkning og vedlikehold inkludert</span>
+          </div>
+        </div>
+        <a href="#kontakt" class="btn btn-primary btn-large">
+          <Icon name="comments" size={16} /> Book gratis samtale
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included -->
+  <section class="service-details">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Hva du <span class="gradient-text">får</span></h2>
+      </div>
+      <div class="included-grid reveal">
+        <div class="included-item">
+          <div class="included-icon"><Icon name="plug" size={24} /></div>
+          <h3>API-tilkoblinger</h3>
+          <p>Skreddersydde integrasjoner mot systemene du bruker. REST, GraphQL, webhooks - vi takler alt.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="sync" size={24} /></div>
+          <h3>Automatisk dataflyt</h3>
+          <p>Data overføres automatisk mellom systemene. Ingen manuell kopiering eller eksport/import.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="bolt" size={24} /></div>
+          <h3>Sanntidssynkronisering</h3>
+          <p>Endringer oppdateres umiddelbart i alle systemer. Alltid oppdatert informasjon.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="chart-line" size={24} /></div>
+          <h3>Overvåkning inkludert</h3>
+          <p>Vi overvåker integrasjonene 24/7. Får beskjed om problemer før du merker noe.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="exclamation-triangle" size={24} /></div>
+          <h3>Feilhåndtering</h3>
+          <p>Automatisk retry ved feil. Logging og varsler slik at ingenting går tapt.</p>
+        </div>
+        <div class="included-item">
+          <div class="included-icon"><Icon name="shield-alt" size={24} /></div>
+          <h3>Sikker datautveksling</h3>
+          <p>Kryptert dataoverføring. GDPR-vennlig oppsett med full sporbarhet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
+      </div>
+      <div class="faq-list reveal">
+        {faqItems.map(item => (
+          <div class="faq-item">
+            <button class="faq-question" >
+              <span>{item.question}</span>
+              <Icon name="chevron-down" size={16} />
+            </button>
+            <div class="faq-answer">
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section id="kontakt" class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text reveal-left">
+          <h2>Klar for å <span class="gradient-text">koble sammen?</span></h2>
+          <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
+          <div class="contact-trust">
+            <div class="trust-item">
+              <Icon name="gift" size={16} />
+              <span>Gratis demo først</span>
+            </div>
+            <div class="trust-item">
+              <Icon name="check-circle" size={16} />
+              <span>Ingen bindingstid</span>
+            </div>
+            <div class="trust-item">
+              <Icon name="chart-line" size={16} />
+              <span>Overvåkning inkludert</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-wrapper reveal-right">
+          <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
+            <input type="hidden" name="_cc" value="daniel@efffekt.no">
+            <input type="hidden" name="_subject" value="Forespørsel: Integrasjon">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="form-group">
+              <label for="name">Navn *</label>
+              <input type="text" id="name" name="name" required placeholder="Ditt navn">
+            </div>
+            <div class="form-group">
+              <label for="email">E-post *</label>
+              <input type="email" id="email" name="email" required placeholder="din@epost.no">
+            </div>
+            <div class="form-group">
+              <label for="message">Fortell kort om behovet</label>
+              <textarea id="message" name="message" rows="3" placeholder="Hvilke systemer vil du koble sammen?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-full">
+              <Icon name="paper-plane" size={16} /> Send forespørsel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Services -->
+  <section class="other-services">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Andre <span class="gradient-text">tjenester</span></h2>
+      </div>
+      <div class="other-services-grid reveal">
+        <a href="/nettside" class="other-service-card">
+          <Icon name="globe" size={24} />
+          <h3>Profesjonell nettside</h3>
+          <span class="other-price">Fra 549 kr/mnd</span>
+        </a>
+        <a href="/plugin" class="other-service-card">
+          <Icon name="laptop-code" size={24} />
+          <h3>Plugin</h3>
+          <span class="other-price">Fra 649 kr/mnd</span>
+        </a>
+        <a href="/ai" class="other-service-card">
+          <Icon name="robot" size={24} />
+          <h3>AI-automatisering</h3>
+          <span class="other-price">Fra 999 kr/mnd</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

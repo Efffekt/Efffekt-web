@@ -1,0 +1,104 @@
+---
+import Icon from '../icons/Icon.astro';
+
+const faqs = [
+  {
+    question: 'Hva er inkludert i månedsprisen?',
+    answer: 'Alt du trenger for at løsningen skal fungere optimalt: hosting, vedlikehold, sikkerhetskopier, oppdateringer og kontinuerlige forbedringer. Du får også support og hjelp når du trenger det.'
+  },
+  {
+    question: 'Kan jeg avslutte når som helst?',
+    answer: 'Ja, det er ingen bindingstid. Du kan avslutte abonnementet når som helst med én måneds varsel. Vi tror på å levere så god verdi at du ønsker å bli.'
+  },
+  {
+    question: 'Hvordan fungerer demoen?',
+    answer: 'Vi bygger en fungerende prototype basert på dine behov - helt gratis. Du får se og teste løsningen før du bestemmer deg. Liker du det du ser, starter vi samarbeidet. Hvis ikke, har du ikke tapt noe.'
+  },
+  {
+    question: 'Hvem eier løsningen?',
+    answer: 'Du eier all data og innhold. Hvis du avslutter, får du eksportert alt du trenger. For nettsider og systemer vi har utviklet, tilbyr vi også mulighet for å kjøpe ut kildekoden.'
+  },
+  {
+    question: 'Hva skjer hvis noe går galt?',
+    answer: 'Vi overvåker alle løsninger 24/7 og tar automatiske sikkerhetskopier daglig. Ved problemer varsles vi umiddelbart og fikser det - vanligvis før du merker noe. Support er alltid inkludert.'
+  }
+];
+---
+
+<section id="faq" class="section section-dark">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="efffekt-bar center">Ofte stilte spørsmål</h2>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((faq, index) => (
+        <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
+          <button class="faq-question" aria-expanded="false">
+            <span>{faq.question}</span>
+            <Icon name="chevron-down" size={20} />
+          </button>
+          <div class="faq-answer">
+            <p>{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // FAQ toggle - global event delegation med guard mot multiple registreringer
+  if (!window.__faqInitialized) {
+    window.__faqInitialized = true;
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.faq-question');
+      if (!btn) return;
+
+      e.preventDefault();
+      var item = btn.parentElement;
+      if (!item) return;
+
+      var isOpen = item.classList.contains('open');
+
+      // Lukk alle åpne FAQ-items
+      document.querySelectorAll('.faq-item.open').forEach(function(el) {
+        el.classList.remove('open');
+        var elBtn = el.querySelector('.faq-question');
+        if (elBtn) elBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      // Åpne denne hvis den ikke var åpen
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  }
+</script>
+
+<style>
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+</style>

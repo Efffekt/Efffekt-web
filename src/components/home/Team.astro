@@ -4,51 +4,67 @@ import { Image } from 'astro:assets';
 import Icon from '../icons/Icon.astro';
 import sanderImg from '../../assets/sander.jpg';
 import danielImg from '../../assets/daniel.jpg';
-// import michaelImg from '../../assets/michael.jpg'; // MIDLERTIDIG SKJULT
+
+const teamMembers = [
+  {
+    name: 'Sander Martinsen',
+    title: 'Erfaren Full-Stack Developer',
+    image: sanderImg,
+    description: 'Erfaren innen moderne webteknologi og systemintegrasjoner. Brenner for å bygge skalerbare løsninger som faktisk løser problemer, og automatisering som sparer tid.',
+    skills: ['React', 'Node.js', 'TypeScript', 'Astro', 'AWS'],
+    phone: '+4745140089',
+    phoneDisplay: '451 40 089',
+    email: 'sander@efffekt.no'
+  },
+  {
+    name: 'Daniel Barlag',
+    title: 'Solid Full-Stack Developer',
+    image: danielImg,
+    description: 'Solid bakgrunn innen backend-utvikling og datasikkerhet. Ekspert på databasearkitektur, API-design og å bygge robuste systemer som tåler å vokse.',
+    skills: ['Python', 'Node.js', 'PostgreSQL', 'API-design', 'Sikkerhet', 'Docker'],
+    phone: '+4798035064',
+    phoneDisplay: '980 35 064',
+    email: 'daniel@efffekt.no'
+  }
+];
 ---
 
 <section id="team" class="section">
   <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Møt utviklerne</p>
-      <h2>Tre utviklere, full <span class="text-accent">fokus</span></h2>
-      <p class="section-desc">Ingen byrå, ingen mellomledd. Du snakker direkte med de som bygger løsningen din.</p>
+    <div class="section-header first-section-reveal reveal-hero">
+      <p class="section-label">Din digitale partner</p>
+      <h2 class="split-words" data-split-text>Vi bygger <span class="text-accent">sammen</span></h2>
+      <p class="section-desc">Tett samarbeid fra første samtale til ferdig løsning. Vi er her for deg, ikke bare prosjektet.</p>
     </div>
 
     <div class="team reveal-stagger">
-      <div class="team-member card-tilt">
-        <div class="member-photo image-zoom-container">
-          <Image src={sanderImg} alt="Sander Martinsen" width={140} height={140} loading="lazy" />
-        </div>
-        <div class="member-info">
-          <h3>Sander Martinsen</h3>
-          <span class="member-title">Full-Stack Developer</span>
-          <p>Erfaren med Next.js, Supabase og komplekse systemløsninger. Brenner for å automatisere det kjedelige.</p>
-          <a href="tel:+4745140089" class="member-contact link-animated">
-            <Icon name="phone" size={14} /> 451 40 089
-          </a>
-          <a href="mailto:sander@efffekt.no" class="member-contact link-animated">
-            <Icon name="envelope" size={14} /> sander@efffekt.no
-          </a>
-        </div>
-      </div>
+      {teamMembers.map((member) => (
+        <div class="team-member card-tilt">
+          <div class="member-photo image-zoom-container">
+            <Image src={member.image} alt={member.name} width={160} height={160} loading="lazy" />
+          </div>
+          <div class="member-info">
+            <h3>{member.name}</h3>
+            <span class="member-title">{member.title}</span>
+            <p>{member.description}</p>
 
-      <div class="team-member card-tilt">
-        <div class="member-photo image-zoom-container">
-          <Image src={danielImg} alt="Daniel Barlag" width={140} height={140} loading="lazy" />
+            <div class="member-skills">
+              {member.skills.map((skill) => (
+                <span class="skill-tag">{skill}</span>
+              ))}
+            </div>
+
+            <div class="member-contacts">
+              <a href={`tel:${member.phone}`} class="member-contact link-animated">
+                <Icon name="phone" size={14} /> {member.phoneDisplay}
+              </a>
+              <a href={`mailto:${member.email}`} class="member-contact link-animated">
+                <Icon name="envelope" size={14} /> {member.email}
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="member-info">
-          <h3>Daniel Barlag</h3>
-          <span class="member-title">Full-Stack Developer</span>
-          <p>Mange års erfaring innen Python, JavaScript og backend. Spesialist på databasehåndtering og sikkerhet.</p>
-          <a href="tel:+4798035064" class="member-contact link-animated">
-            <Icon name="phone" size={14} /> 980 35 064
-          </a>
-          <a href="mailto:daniel@efffekt.no" class="member-contact link-animated">
-            <Icon name="envelope" size={14} /> daniel@efffekt.no
-          </a>
-        </div>
-      </div>
+      ))}
 
       <!-- MIDLERTIDIG SKJULT - MICHAEL: team-member blokk -->
     </div>

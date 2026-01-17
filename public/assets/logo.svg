@@ -1,4 +1,4 @@
-<svg width="455" height="92" viewBox="0 0 455 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="92" viewBox="0 0 480 92" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M71.7148 89.4V0H131.355V14.4H88.0348V39.12H125.955V53.52H88.0348V89.4H71.7148Z" fill="white"/>
 <path d="M124.027 89.4V0H183.667V14.4H140.347V39.12H178.267V53.52H140.347V89.4H124.027Z" fill="white"/>
 <path d="M176.34 89.4V0H235.98V14.4H192.66V39.12H230.58V53.52H192.66V89.4H176.34Z" fill="white"/>
@@ -6,4 +6,6 @@
 <path d="M318.125 91.4V2.00002H334.445V48.56L330.005 47L368.045 2.00002H388.565L352.925 44.24L353.885 32.72L389.645 91.4H370.445L346.445 52.04L334.445 66.32V91.4H318.125Z" fill="white"/>
 <path d="M415.41 91.4V16.4H392.25V2.00002H454.65V16.4H431.85V91.4H415.41Z" fill="white"/>
 <path d="M0 91.4V2H59.4V16.4H16.32V39.32H304.044V53.72H16.32V77H59.4V91.4H0Z" fill="#FF2529"/>
+<!-- Rødt punktum -->
+<circle cx="468" cy="82" r="10" fill="#FF2529"/>
 </svg>

@@ -1,6 +1,79 @@
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async ({ request }) => {
+// Simple in-memory rate limiting with cleanup
+const rateLimit = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX = 10; // 10 requests per minute per IP
+const CLEANUP_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+let lastCleanup = Date.now();
+
+/**
+ * Remove expired rate limit entries to prevent memory leak
+ */
+function cleanupExpiredEntries(): void {
+  const now = Date.now();
+  for (const [ip, record] of rateLimit.entries()) {
+    if (now > record.resetTime) {
+      rateLimit.delete(ip);
+    }
+  }
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+
+  // Periodic cleanup to prevent unbounded memory growth
+  if (now - lastCleanup > CLEANUP_INTERVAL) {
+    cleanupExpiredEntries();
+    lastCleanup = now;
+  }
+
+  const record = rateLimit.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimit.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+
+  if (record.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+
+  record.count++;
+  return false;
+}
+
+// Check for private/internal IP addresses to prevent SSRF
+function isPrivateUrl(hostname: string): boolean {
+  // Block localhost and common private IPs
+  const privatePatterns = [
+    /^localhost$/i,
+    /^127\./,
+    /^10\./,
+    /^172\.(1[6-9]|2[0-9]|3[0-1])\./,
+    /^192\.168\./,
+    /^0\.0\.0\.0$/,
+    /^::1$/,
+    /^fc00:/i,
+    /^fe80:/i,
+    /\.local$/i,
+    /\.internal$/i
+  ];
+
+  return privatePatterns.some(pattern => pattern.test(hostname));
+}
+
+export const GET: APIRoute = async ({ request, clientAddress }) => {
+  // Rate limiting
+  const ip = clientAddress || 'unknown';
+  if (isRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: 'For mange forespørsler. Vent litt og prøv igjen.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   const url = new URL(request.url).searchParams.get('url');
 
   if (!url) {
@@ -21,8 +94,27 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
+  // SSRF protection - block private/internal URLs
+  if (isPrivateUrl(parsedUrl.hostname)) {
+    return new Response(JSON.stringify({ error: 'Kan ikke analysere interne nettverksadresser.' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // Only allow http/https protocols
+  if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+    return new Response(JSON.stringify({ error: 'Kun HTTP/HTTPS URLer støttes.' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   try {
-    // First request to get HTML and initial timing
+    // First request to get HTML and initial timing with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const startTime = Date.now();
     const response = await fetch(url, {
       headers: {
@@ -32,8 +124,10 @@ export const GET: APIRoute = async ({ request }) => {
         'Accept-Encoding': 'gzip, deflate, br',
         'Cache-Control': 'no-cache'
       },
-      redirect: 'follow'
+      redirect: 'follow',
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
     const responseTime = Date.now() - startTime;
     const html = await response.text();
 
@@ -109,7 +203,15 @@ export const GET: APIRoute = async ({ request }) => {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    // Handle timeout specifically
+    if (error instanceof Error && error.name === 'AbortError') {
+      return new Response(JSON.stringify({ error: 'Nettsiden tok for lang tid å svare. Prøv igjen senere.' }), {
+        status: 504,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     console.error('Analyze error:', error);
     return new Response(JSON.stringify({ error: 'Kunne ikke analysere URL. Sjekk at nettsiden er tilgjengelig.' }), {
       status: 500,
