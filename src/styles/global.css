@@ -2209,6 +2209,8 @@ a {
 
   .nav-links.active {
     display: flex;
+    opacity: 1;
+    transform: none;
   }
 
   .nav-toggle {
