@@ -1,0 +1,236 @@
+---
+// Portfolio / Case Study section - TRE Allservice AS
+import Icon from '../icons/Icon.astro';
+import { Image } from 'astro:assets';
+import treAllserviceLogo from '../../assets/tre-allservice-logo.png';
+---
+
+<section id="portefolje" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Kunder vi har jobbet med</p>
+      <h2>TREkontroll: Full <span class="text-accent">oversikt</span> over kundene</h2>
+    </div>
+
+    <div class="case-content">
+      <div class="case-client reveal">
+        <a href="https://treallservice.no" target="_blank" rel="noopener" class="client-logo-link">
+          <Image src={treAllserviceLogo} alt="TRE Allservice AS logo" class="client-logo" />
+        </a>
+      </div>
+
+      <div class="case-intro reveal-left">
+        <p>
+          <strong>Kunden:</strong> TRE Allservice AS – elektro- og brannvernbedrift i Nord-Norge med el-kontroll, termografi og brannvarsling for næring, landbruk og bolig.
+        </p>
+        <p>
+          <strong>Utfordringen:</strong> Hundrevis av kunder med ulike kontrollintervaller. Vanskelig å holde oversikt over hvem som trengte inspeksjon, og mye tid gikk til manuell planlegging av kjøreruter.
+        </p>
+        <p class="case-price">
+          <Icon name="check-circle" size={18} />
+          <span>Kunden valgte <strong>fastpris</strong> for dette prosjektet</span>
+        </p>
+      </div>
+
+      <div class="case-results reveal-stagger">
+        <div class="case-result">
+          <span class="result-number">100%</span>
+          <span class="result-label">Kontroll på forfall</span>
+        </div>
+        <div class="case-result">
+          <span class="result-number">3x</span>
+          <span class="result-label">Raskere ruteplanlegging</span>
+        </div>
+        <div class="case-result">
+          <span class="result-number">0</span>
+          <span class="result-label">Glemte inspeksjoner</span>
+        </div>
+        <div class="case-result">
+          <span class="result-number">1</span>
+          <span class="result-label">System for alt</span>
+        </div>
+      </div>
+
+      <div class="case-solution reveal-right">
+        <h3>Løsningen vi bygget:</h3>
+        <ul>
+          <li><Icon name="check" size={16} /> Kundedatabase med søk, filtrering og kategorisering</li>
+          <li><Icon name="check" size={16} /> Forfallsoversikt med fargekoding og varsler</li>
+          <li><Icon name="check" size={16} /> Kartvisning med ruteoptimalisering for inspeksjoner</li>
+          <li><Icon name="check" size={16} /> Sjekklister og kontaktlogg for kvalitetssikring</li>
+          <li><Icon name="check" size={16} /> Dashboard med statistikk og datakvalitet</li>
+        </ul>
+      </div>
+
+      <div class="case-cta reveal-scale">
+        <a href="https://trekontroll.no" target="_blank" rel="noopener" class="btn btn-primary btn-lg btn-shimmer">
+          Se systemet <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .case-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .case-client {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .client-logo-link {
+    display: inline-block;
+    transition: transform 0.2s var(--ease-out), opacity 0.2s;
+  }
+
+  .client-logo-link:hover {
+    transform: scale(1.03);
+    opacity: 0.9;
+  }
+
+  .client-logo {
+    max-width: 280px;
+    height: auto;
+  }
+
+  .case-intro {
+    margin-bottom: 48px;
+  }
+
+  .case-intro p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .case-intro strong {
+    color: var(--text);
+  }
+
+  .case-price {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    margin-top: 8px;
+  }
+
+  .case-price :global(svg) {
+    color: var(--success);
+    flex-shrink: 0;
+  }
+
+  .case-results {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .case-result {
+    text-align: center;
+  }
+
+  .result-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .result-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  .case-solution {
+    margin-bottom: 48px;
+  }
+
+  .case-solution h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .case-solution ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .case-solution li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .case-solution li :global(svg) {
+    color: var(--success);
+    flex-shrink: 0;
+  }
+
+  .case-cta {
+    text-align: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(239, 68, 68, 0.35);
+  }
+
+  @media (max-width: 768px) {
+    .case-results {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 24px;
+    }
+
+    .result-number {
+      font-size: 2rem;
+    }
+
+    .case-intro p {
+      font-size: 1rem;
+    }
+
+    .case-solution li {
+      font-size: 1rem;
+    }
+  }
+</style>
