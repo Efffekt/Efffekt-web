@@ -140,6 +140,10 @@ const products = [
         </article>
       ))}
     </div>
+
+    <p class="ownership-note reveal">
+      Vil du heller betale en engangssum? <a href="#kontakt">Ta kontakt</a> for pris.
+    </p>
   </div>
 </section>
 
@@ -258,5 +262,17 @@ const products = [
       grid-template-columns: 1fr;
       gap: 40px;
     }
+  }
+
+  .ownership-note {
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .ownership-note a {
+    color: var(--accent);
+    text-decoration: underline;
   }
 </style>

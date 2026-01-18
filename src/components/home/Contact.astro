@@ -67,6 +67,14 @@ import danielImg from '../../assets/daniel.jpg';
           </select>
         </div>
         <div class="form-group">
+          <label for="payment-type">Hvordan vil du betale?</label>
+          <select id="payment-type" name="payment-type" required>
+            <option value="" disabled selected>Velg betalingstype</option>
+            <option value="leie">Leie (månedspris)</option>
+            <option value="kjop">Kjøpe (engangspris - eie koden)</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="message">Beskriv kort hva du trenger</label>
           <textarea id="message" name="message" rows="4"></textarea>
         </div>
