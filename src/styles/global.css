@@ -185,41 +185,49 @@ body.intro-active {
     display: none;
   }
 
-  .scroll-indicator.intro-hidden {
-    opacity: 0.8;
-    transform: translateX(-50%) translateY(0);
+  .scroll-arrow {
+    animation: none;
   }
 }
 
 .scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
+  position: fixed;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  color: white;
-  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.8;
-  animation: bounce 2s infinite;
+  letter-spacing: 0.15em;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
 .scroll-arrow {
-  width: 24px;
-  height: 24px;
-  border-right: 2px solid white;
-  border-bottom: 2px solid white;
+  width: 20px;
+  height: 20px;
+  border-right: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
   transform: rotate(45deg);
+  animation: scrollBounce 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-  40% { transform: translateX(-50%) translateY(-10px); }
-  60% { transform: translateX(-50%) translateY(-5px); }
+@keyframes scrollBounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); }
+  50% { transform: rotate(45deg) translateY(8px); }
+}
+
+/* Skjul på korte skjermer */
+@media (max-height: 500px) {
+  .scroll-indicator {
+    display: none;
+  }
 }
 
 /* Video Background - single video that blurs on scroll */
@@ -922,7 +930,7 @@ body.intro-active {
   padding: 100px 0;
   position: relative;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .section-dark {
@@ -1118,12 +1126,13 @@ a {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(18, 18, 24, 0.97);
+  background: rgba(18, 18, 24, 0.4);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   opacity: var(--header-progress, 0);
   z-index: -1;
   pointer-events: none;
+  transition: opacity 0.2s ease-out;
 }
 
 /* Border når header er synlig */
@@ -1150,20 +1159,32 @@ a {
   /* Ingen CSS transition - JS styrer direkte */
 }
 
-/* Velkomsttekst i sentrum */
+/* Velkomsttekst øverst i sentrum */
 .welcome-text {
   position: fixed;
-  top: 50%;
+  top: 100px;
   left: 50%;
-  transform: translate(-50%, calc(-50% - 50px));
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   z-index: 1001;
   pointer-events: none;
   opacity: 1;
+}
+
+.welcome-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-logo {
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
 }
 
 .nav {

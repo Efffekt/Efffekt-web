@@ -150,6 +150,7 @@ import '../styles/global.css';
     <div class="video-overlay" id="video-overlay"></div>
   </div>
 
+
   <script is:inline>
     (function() {
       let scrollHandler = null;
@@ -179,8 +180,13 @@ import '../styles/global.css';
           const scrollY = window.scrollY;
           const windowHeight = window.innerHeight;
 
-          const blurAmount = Math.min(8, (scrollY / windowHeight) * 8);
-          const overlayOpacity = Math.min(0.5, (scrollY / windowHeight) * 0.5);
+          // Myk overgang: blur øker gradvis over første 30% av viewport
+          const blurEnd = windowHeight * 0.3;
+          const progress = Math.min(1, scrollY / blurEnd);
+
+          // Blur fra 0 til 8px, overlay fra 0 til 0.4
+          const blurAmount = progress * 8;
+          const overlayOpacity = progress * 0.4;
 
           if (video) {
             video.style.filter = `blur(${blurAmount}px)`;

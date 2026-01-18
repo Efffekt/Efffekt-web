@@ -29,7 +29,10 @@ const { showCenteredLogo = true } = Astro.props;
 </header>
 
 {showCenteredLogo && (
-  <div class="welcome-text intro-hidden" id="welcomeText">Velkommen til</div>
+  <div class="welcome-text intro-hidden" id="welcomeText">
+    <span class="welcome-label">Velkommen til</span>
+    <img src="/assets/logo.svg" alt="EFFFEKT" class="welcome-logo" width="200" height="40">
+  </div>
 )}
 
 <style is:global>
@@ -89,37 +92,11 @@ const { showCenteredLogo = true } = Astro.props;
       });
     }
 
-    // Lagre logoens naturlige posisjon (uten transform)
-    logo.style.transform = 'none';
-    const logoRect = logo.getBoundingClientRect();
-    const logoNaturalPos = {
-      x: logoRect.left + logoRect.width / 2,
-      y: logoRect.top + logoRect.height / 2
-    };
-
-    // Beregn offset for å sentrere logo på skjermen
-    const getCenterOffset = (): { x: number; y: number } => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      return {
-        x: centerX - logoNaturalPos.x,
-        y: centerY - logoNaturalPos.y
-      };
-    };
-
     // Sjekk om vi allerede har scrollet forbi intro
     const alreadyScrolled = window.scrollY > window.innerHeight * 0.8;
 
-    // Skala for sentrert logo (større)
-    const centeredScale = 1.8;
-
     if (showCenteredLogo && !alreadyScrolled) {
-      // Sett logo til sentrum FØRST (mens den er usynlig)
-      const offset = getCenterOffset();
-      logo.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${centeredScale})`;
-      logo.style.filter = 'blur(15px)';
-
-      // Fade-in velkommen først
+      // Fade-in velkomsttekst
       if (welcomeText) {
         welcomeText.style.filter = 'blur(10px)';
 
@@ -128,20 +105,18 @@ const { showCenteredLogo = true } = Astro.props;
           welcomeText.classList.add('intro-fade-in');
           welcomeText.style.filter = 'blur(0)';
         }, 100);
+
+        // Fjern animasjonsklasse etter intro
+        setTimeout(() => {
+          welcomeText.classList.remove('intro-fade-in');
+        }, 2500);
       }
 
-      // Fade-in logo etter velkommen
-      setTimeout(() => {
-        logo.classList.remove('intro-hidden');
-        logo.classList.add('intro-fade-in-logo');
-        logo.style.filter = 'blur(0)';
-      }, 800);
-
-      // Etter intro-animasjon, fjern klasser for scroll-håndtering
-      setTimeout(() => {
-        logo.classList.remove('intro-fade-in-logo');
-        if (welcomeText) welcomeText.classList.remove('intro-fade-in');
-      }, 2500);
+      // Logo vises i header umiddelbart (ikke sentrert)
+      logo.classList.remove('intro-hidden');
+      logo.style.transform = 'none';
+      logo.style.opacity = '0';
+      logo.style.filter = 'blur(0)';
 
     } else if (!showCenteredLogo) {
       // På undersider: vis header umiddelbart
@@ -173,91 +148,53 @@ const { showCenteredLogo = true } = Astro.props;
 
     // Dynamisk header basert på scroll
     const handleScroll = (): void => {
-      // På undersider: hopp over senterlogo-logikk
-      if (!showCenteredLogo) {
-        header.classList.toggle('scrolled', window.scrollY > 100);
-        return;
-      }
-
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
 
-      // Header-animasjon starter ved 70% og er ferdig ved 100%
-      const headerStart = viewportHeight * 0.7;
-      const headerEnd = viewportHeight * 1.0;
+      // Myk overgang: synkronisert med video blur (30% av viewport)
+      const fadeEnd = viewportHeight * 0.3;
+      const headerProgress = Math.min(1, scrollY / fadeEnd);
 
-      // Logo fade: 30% til 60%
-      const logoFadeStart = viewportHeight * 0.3;
-      const logoFadeEnd = viewportHeight * 0.6;
-
-      // Beregn progress for header (0 til 1)
-      let headerProgress = 0;
-      if (scrollY >= headerEnd) {
-        headerProgress = 1;
-      } else if (scrollY > headerStart) {
-        headerProgress = (scrollY - headerStart) / (headerEnd - headerStart);
+      // På undersider: enklere logikk
+      if (!showCenteredLogo) {
+        header.classList.toggle('scrolled', scrollY > 100);
+        header.style.setProperty('--header-progress', String(headerProgress));
+        header.classList.toggle('header-visible', headerProgress > 0);
+        return;
       }
 
-      // Sett CSS custom property for dynamisk animasjon
+      // Sett CSS custom property for blur-bakgrunn
       header.style.setProperty('--header-progress', String(headerProgress));
 
-      // Header synlighet - aktiver border når header begynner å vises
+      // Header synlighet - aktiver border når scrollet
       header.classList.toggle('header-visible', headerProgress > 0);
 
-      // Strek - tegnes med scroll (scaleX)
+      // Strek - tegnes gradvis med scroll
       headerLine.style.transform = `scaleX(${headerProgress})`;
 
-      // Nav-links - fade og slide inn
+      // Nav-links - fade inn gradvis
       navLinks.style.opacity = String(headerProgress);
       navLinks.style.transform = `translateX(${(1 - headerProgress) * 20}px)`;
 
-      // Logo i header - fade inn når header vises
-      if (headerProgress > 0) {
-        // Header-modus: logo i sin naturlige posisjon, normal størrelse
-        logo.style.transform = 'none';
-        logo.style.opacity = String(headerProgress);
-        logo.style.filter = 'blur(0)';
-      } else {
-        // Sentrum-modus: logo i midten av skjermen, skalert opp
-        const offset = getCenterOffset();
-        logo.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${centeredScale})`;
+      // Logo i header - fade inn gradvis
+      logo.style.transform = 'none';
+      logo.style.opacity = String(headerProgress);
+      logo.style.filter = 'blur(0)';
 
-        // Fade ut logo og velkomsttekst når man scroller
-        let opacity = 1;
-        if (scrollY <= logoFadeStart) {
-          opacity = 1;
-        } else if (scrollY >= logoFadeEnd) {
-          opacity = 0;
-        } else {
-          const fadeProgress = (scrollY - logoFadeStart) / (logoFadeEnd - logoFadeStart);
-          opacity = 1 - fadeProgress;
-        }
-        logo.style.opacity = String(opacity);
-        if (welcomeText) welcomeText.style.opacity = String(opacity);
-      }
-
-      // Skjul velkomsttekst når header vises
+      // Velkomsttekst - fade ut raskt (over 10% av viewport)
       if (welcomeText) {
-        welcomeText.style.display = headerProgress > 0 ? 'none' : 'block';
+        const welcomeFadeEnd = viewportHeight * 0.1;
+        const welcomeProgress = Math.min(1, scrollY / welcomeFadeEnd);
+        welcomeText.style.opacity = String(1 - welcomeProgress);
+        welcomeText.style.display = welcomeProgress >= 1 ? 'none' : 'flex';
       }
 
       // Scrolled state for kompakt header
       header.classList.toggle('scrolled', scrollY > viewportHeight);
     };
 
-    // Handle resize to update logo position
-    const handleResize = (): void => {
-      // Oppdater naturlig posisjon ved resize
-      logo.style.transform = 'none';
-      const rect = logo.getBoundingClientRect();
-      logoNaturalPos.x = rect.left + rect.width / 2;
-      logoNaturalPos.y = rect.top + rect.height / 2;
-      handleScroll();
-    };
-
     // Add managed listeners (will be cleaned up on navigation)
     listenerScope.add(window, 'scroll', handleScroll);
-    listenerScope.add(window, 'resize', handleResize);
 
     // Ikke kall handleScroll umiddelbart - la fade-in fullføre først
     setTimeout(() => {
