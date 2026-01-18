@@ -172,17 +172,19 @@ const { showCenteredLogo = true } = Astro.props;
       // Strek - tegnes gradvis med scroll
       headerLine.style.transform = `scaleX(${headerProgress})`;
 
-      // Nav-links - fade inn gradvis
-      navLinks.style.opacity = String(headerProgress);
-      navLinks.style.transform = `translateX(${(1 - headerProgress) * 20}px)`;
+      // Nav-links - fade inn gradvis (kun på desktop)
+      if (window.innerWidth > 768) {
+        navLinks.style.opacity = String(headerProgress);
+        navLinks.style.transform = `translateX(${(1 - headerProgress) * 20}px)`;
+      }
 
       // Logo i header - fade inn gradvis
       logo.style.transform = 'none';
       logo.style.opacity = String(headerProgress);
       logo.style.filter = 'blur(0)';
 
-      // Velkomsttekst - fade ut raskt (over 10% av viewport)
-      if (welcomeText) {
+      // Velkomsttekst - fade ut raskt (over 10% av viewport), kun på desktop
+      if (welcomeText && window.innerWidth > 768) {
         const welcomeFadeEnd = viewportHeight * 0.1;
         const welcomeProgress = Math.min(1, scrollY / welcomeFadeEnd);
         welcomeText.style.opacity = String(1 - welcomeProgress);
