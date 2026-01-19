@@ -8,8 +8,8 @@
  * @param selector CSS selector
  * @returns Element or null
  */
-export function $<T extends HTMLElement = HTMLElement>(selector: string): T | null {
-  return document.querySelector<T>(selector);
+export function $(selector: string): HTMLElement | null {
+  return document.querySelector<HTMLElement>(selector);
 }
 
 /**
@@ -19,11 +19,11 @@ export function $<T extends HTMLElement = HTMLElement>(selector: string): T | nu
  * @param context Component name for logging
  * @returns Element or null with warning
  */
-export function $warn<T extends HTMLElement = HTMLElement>(
+export function $warn(
   selector: string,
-  context: string = 'Unknown'
-): T | null {
-  const el = document.querySelector<T>(selector);
+  context = 'Unknown'
+): HTMLElement | null {
+  const el = document.querySelector<HTMLElement>(selector);
   if (!el) {
     console.warn(`[${context}] Element not found: ${selector}`);
   }
@@ -37,11 +37,11 @@ export function $warn<T extends HTMLElement = HTMLElement>(
  * @param context Component name for error message
  * @throws Error if element not found
  */
-export function $required<T extends HTMLElement = HTMLElement>(
+export function $required(
   selector: string,
-  context: string = 'Unknown'
-): T {
-  const el = document.querySelector<T>(selector);
+  context = 'Unknown'
+): HTMLElement {
+  const el = document.querySelector<HTMLElement>(selector);
   if (!el) {
     throw new Error(`[${context}] Required element not found: ${selector}`);
   }
@@ -53,11 +53,11 @@ export function $required<T extends HTMLElement = HTMLElement>(
  * @param selector CSS selector
  * @param callback Function to execute with the element
  */
-export function $maybe<T extends HTMLElement = HTMLElement>(
+export function $maybe(
   selector: string,
-  callback: (el: T) => void
+  callback: (el: HTMLElement) => void
 ): void {
-  const el = document.querySelector<T>(selector);
+  const el = document.querySelector<HTMLElement>(selector);
   if (el) callback(el);
 }
 
@@ -93,10 +93,10 @@ export function $exists(selector: string): boolean {
  * @param el Child element
  * @returns Parent element or null
  */
-export function $parent<T extends HTMLElement = HTMLElement>(
+export function $parent(
   el: HTMLElement | null
-): T | null {
-  return el?.parentElement as T | null;
+): HTMLElement | null {
+  return el?.parentElement ?? null;
 }
 
 /**
@@ -105,9 +105,9 @@ export function $parent<T extends HTMLElement = HTMLElement>(
  * @param selector CSS selector for ancestor
  * @returns Matching ancestor or null
  */
-export function $closest<T extends HTMLElement = HTMLElement>(
+export function $closest(
   el: HTMLElement | null,
   selector: string
-): T | null {
-  return el?.closest(selector) as T | null;
+): HTMLElement | null {
+  return el?.closest<HTMLElement>(selector) ?? null;
 }

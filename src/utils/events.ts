@@ -115,7 +115,10 @@ export function registerCleanup(componentId: string, cleanup: CleanupFn): void {
   if (!componentCleanups.has(componentId)) {
     componentCleanups.set(componentId, []);
   }
-  componentCleanups.get(componentId)!.push(cleanup);
+  const cleanups = componentCleanups.get(componentId);
+  if (cleanups) {
+    cleanups.push(cleanup);
+  }
 }
 
 /**

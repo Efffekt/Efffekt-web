@@ -20,7 +20,7 @@
 export function escapeHtml(unsafe: string | null | undefined): string {
   if (unsafe == null) return '';
 
-  return String(unsafe)
+  return unsafe
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -67,7 +67,7 @@ export function escapeAttr(unsafe: string | null | undefined): string {
 export function sanitizeDataAttr(value: string | null | undefined): string {
   if (value == null) return '';
 
-  return String(value).replace(/[^a-zA-Z0-9_-]/g, '');
+  return value.replace(/[^a-zA-Z0-9_-]/g, '');
 }
 
 /**
@@ -87,7 +87,7 @@ export function sanitizeDataAttr(value: string | null | undefined): string {
 export function sanitizeUrl(url: string | null | undefined): string {
   if (url == null) return '';
 
-  const urlStr = String(url).trim();
+  const urlStr = url.trim();
 
   // Block dangerous protocols
   const dangerousProtocols = /^(javascript|data|vbscript):/i;
@@ -132,9 +132,19 @@ export function safeHtml(
 
   for (let i = 0; i < values.length; i++) {
     const value = values[i];
-    const escaped = typeof value === 'number'
-      ? String(value)
-      : escapeHtml(String(value ?? ''));
+    let escaped: string;
+    if (typeof value === 'number') {
+      escaped = String(value);
+    } else if (typeof value === 'string') {
+      escaped = escapeHtml(value);
+    } else if (value == null) {
+      escaped = '';
+    } else if (typeof value === 'boolean') {
+      escaped = String(value);
+    } else {
+      // For objects, use JSON.stringify for safe string conversion
+      escaped = escapeHtml(JSON.stringify(value));
+    }
     result += escaped + strings[i + 1];
   }
 
@@ -171,7 +181,7 @@ export function sanitizeCss(value: string | null | undefined): string {
   if (value == null) return '';
 
   // Remove characters that could break out of CSS context
-  return String(value)
+  return value
     .replace(/[;<>{}]/g, '')
     .replace(/expression\s*\(/gi, '')
     .replace(/url\s*\(/gi, 'url(')

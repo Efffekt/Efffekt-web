@@ -66,7 +66,7 @@ function isPrivateUrl(hostname: string): boolean {
 
 export const GET: APIRoute = async ({ request, clientAddress }) => {
   // Rate limiting
-  const ip = clientAddress || 'unknown';
+  const ip = clientAddress !== undefined && clientAddress !== '' ? clientAddress : 'unknown';
   if (isRateLimited(ip)) {
     return new Response(JSON.stringify({ error: 'For mange forespørsler. Vent litt og prøv igjen.' }), {
       status: 429,
@@ -113,7 +113,7 @@ export const GET: APIRoute = async ({ request, clientAddress }) => {
   try {
     // First request to get HTML and initial timing with timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    const timeoutId = setTimeout(() => { controller.abort(); }, 15000); // 15 second timeout
 
     const startTime = Date.now();
     const response = await fetch(url, {
@@ -136,7 +136,7 @@ export const GET: APIRoute = async ({ request, clientAddress }) => {
 
     // Analyze the page with detailed checks
     const performanceResult = analyzePerformance(responseTime, html, resources);
-    const seoResult = analyzeSEO(html, parsedUrl);
+    const seoResult = analyzeSEO(html);
     const securityResult = analyzeSecurity(parsedUrl, response.headers, html);
     const mobileResult = analyzeMobile(html);
     const accessibilityResult = analyzeAccessibility(html);
@@ -317,101 +317,107 @@ function extractResources(html: string): Resources {
   return resources;
 }
 
+interface AnalysisDetail {
+  severity?: string;
+  type?: string;
+  message: string;
+}
+
 interface AnalysisResult {
   score: number;
-  details: Array<{ severity?: string; type?: string; message: string }>;
+  details: AnalysisDetail[];
   metrics?: Record<string, unknown>;
   headers?: Record<string, boolean>;
 }
 
 function analyzePerformance(responseTime: number, html: string, resources: Resources): AnalysisResult {
   let score = 100;
-  const details: Array<{ severity?: string; type?: string; message: string }> = [];
-  const issues: Array<{ severity: string; message: string }> = [];
+  const details: AnalysisDetail[] = [];
+  const issues: { severity: string; message: string }[] = [];
 
   if (responseTime > 3000) {
     score -= 25;
-    issues.push({ severity: 'critical', message: `Veldig treg server-respons: ${responseTime}ms (bør være under 600ms)` });
+    issues.push({ severity: 'critical', message: `Veldig treg server-respons: ${String(responseTime)}ms (bør være under 600ms)` });
   } else if (responseTime > 1500) {
     score -= 15;
-    issues.push({ severity: 'warning', message: `Treg server-respons: ${responseTime}ms (bør være under 600ms)` });
+    issues.push({ severity: 'warning', message: `Treg server-respons: ${String(responseTime)}ms (bør være under 600ms)` });
   } else if (responseTime > 600) {
     score -= 8;
-    issues.push({ severity: 'info', message: `Server-respons kan forbedres: ${responseTime}ms` });
+    issues.push({ severity: 'info', message: `Server-respons kan forbedres: ${String(responseTime)}ms` });
   } else {
-    details.push({ type: 'success', message: `Rask server-respons: ${responseTime}ms` });
+    details.push({ type: 'success', message: `Rask server-respons: ${String(responseTime)}ms` });
   }
 
   const htmlSize = html.length;
   const htmlSizeKB = Math.round(htmlSize / 1024);
   if (htmlSize > 500000) {
     score -= 15;
-    issues.push({ severity: 'critical', message: `HTML-dokumentet er for stort: ${htmlSizeKB}KB (bør være under 100KB)` });
+    issues.push({ severity: 'critical', message: `HTML-dokumentet er for stort: ${String(htmlSizeKB)}KB (bør være under 100KB)` });
   } else if (htmlSize > 200000) {
     score -= 10;
-    issues.push({ severity: 'warning', message: `HTML-dokumentet er stort: ${htmlSizeKB}KB` });
+    issues.push({ severity: 'warning', message: `HTML-dokumentet er stort: ${String(htmlSizeKB)}KB` });
   } else if (htmlSize > 100000) {
     score -= 5;
-    issues.push({ severity: 'info', message: `HTML-dokumentet er litt stort: ${htmlSizeKB}KB` });
+    issues.push({ severity: 'info', message: `HTML-dokumentet er litt stort: ${String(htmlSizeKB)}KB` });
   }
 
   const totalScripts = resources.scripts.length;
-  const blockingScripts = resources.scripts.filter(s => !s.isInline && !s.isAsync && !s.isDefer).length;
+  const blockingScripts = resources.scripts.filter(s => s.isInline !== true && s.isAsync !== true && s.isDefer !== true).length;
 
   if (blockingScripts > 5) {
     score -= 12;
-    issues.push({ severity: 'critical', message: `${blockingScripts} render-blokkerende scripts (bruk async/defer)` });
+    issues.push({ severity: 'critical', message: `${String(blockingScripts)} render-blokkerende scripts (bruk async/defer)` });
   } else if (blockingScripts > 2) {
     score -= 6;
-    issues.push({ severity: 'warning', message: `${blockingScripts} render-blokkerende scripts` });
+    issues.push({ severity: 'warning', message: `${String(blockingScripts)} render-blokkerende scripts` });
   }
 
   if (totalScripts > 25) {
     score -= 8;
-    issues.push({ severity: 'warning', message: `For mange scripts: ${totalScripts} (bør konsolideres)` });
+    issues.push({ severity: 'warning', message: `For mange scripts: ${String(totalScripts)} (bør konsolideres)` });
   } else if (totalScripts > 15) {
     score -= 4;
-    issues.push({ severity: 'info', message: `Mange scripts: ${totalScripts}` });
+    issues.push({ severity: 'info', message: `Mange scripts: ${String(totalScripts)}` });
   }
 
   const externalStylesheets = resources.stylesheets.length;
-  const inlineStyleCount = (html.match(/<style[^>]*>/gi) || []).length;
+  const inlineStyleCount = (html.match(/<style[^>]*>/gi) ?? []).length;
 
   if (externalStylesheets > 8) {
     score -= 8;
-    issues.push({ severity: 'warning', message: `For mange CSS-filer: ${externalStylesheets} (bør kombineres)` });
+    issues.push({ severity: 'warning', message: `For mange CSS-filer: ${String(externalStylesheets)} (bør kombineres)` });
   } else if (externalStylesheets > 4) {
     score -= 4;
-    issues.push({ severity: 'info', message: `Flere CSS-filer: ${externalStylesheets}` });
+    issues.push({ severity: 'info', message: `Flere CSS-filer: ${String(externalStylesheets)}` });
   }
 
   const images = resources.images;
-  const imagesWithoutDimensions = images.filter(i => !i.hasDimensions).length;
-  const imagesWithoutLazyLoad = images.filter((i, idx) => !i.hasLazyLoading && idx > 2).length;
-  const imagesWithoutModernFormat = images.filter(i => i.src && !i.isModernFormat).length;
+  const imagesWithoutDimensions = images.filter(i => i.hasDimensions !== true).length;
+  const imagesWithoutLazyLoad = images.filter((i, idx) => i.hasLazyLoading !== true && idx > 2).length;
+  const imagesWithoutModernFormat = images.filter(i => i.src !== null && i.src !== undefined && i.isModernFormat !== true).length;
 
   if (images.length > 0) {
     if (imagesWithoutDimensions > 3) {
       score -= 6;
-      issues.push({ severity: 'warning', message: `${imagesWithoutDimensions} bilder mangler width/height (forårsaker layout shift)` });
+      issues.push({ severity: 'warning', message: `${String(imagesWithoutDimensions)} bilder mangler width/height (forårsaker layout shift)` });
     }
 
     if (imagesWithoutLazyLoad > 5) {
       score -= 5;
-      issues.push({ severity: 'warning', message: `${imagesWithoutLazyLoad} bilder under fold mangler lazy loading` });
+      issues.push({ severity: 'warning', message: `${String(imagesWithoutLazyLoad)} bilder under fold mangler lazy loading` });
     }
 
     if (imagesWithoutModernFormat > 5 && images.length > 3) {
       score -= 5;
-      issues.push({ severity: 'info', message: `${imagesWithoutModernFormat} bilder bruker ikke moderne formater (WebP/AVIF)` });
+      issues.push({ severity: 'info', message: `${String(imagesWithoutModernFormat)} bilder bruker ikke moderne formater (WebP/AVIF)` });
     }
   }
 
   const iframes = resources.iframes;
-  const iframesWithoutLazy = iframes.filter(i => !i.hasLazyLoading).length;
+  const iframesWithoutLazy = iframes.filter(i => i.hasLazyLoading !== true).length;
   if (iframesWithoutLazy > 0) {
     score -= 3;
-    issues.push({ severity: 'info', message: `${iframesWithoutLazy} iframes mangler lazy loading` });
+    issues.push({ severity: 'info', message: `${String(iframesWithoutLazy)} iframes mangler lazy loading` });
   }
 
   return {
@@ -428,12 +434,12 @@ function analyzePerformance(responseTime: number, html: string, resources: Resou
   };
 }
 
-function analyzeSEO(html: string, parsedUrl: URL): AnalysisResult {
+function analyzeSEO(html: string): AnalysisResult {
   let score = 100;
-  const details: Array<{ severity?: string; type?: string; message: string }> = [];
-  const issues: Array<{ severity: string; message: string }> = [];
+  const details: AnalysisDetail[] = [];
+  const issues: { severity: string; message: string }[] = [];
 
-  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const titleMatch = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html);
   if (!titleMatch) {
     score -= 15;
     issues.push({ severity: 'critical', message: 'Mangler title-tag' });
@@ -441,17 +447,17 @@ function analyzeSEO(html: string, parsedUrl: URL): AnalysisResult {
     const title = titleMatch[1].trim();
     if (title.length < 10) {
       score -= 10;
-      issues.push({ severity: 'warning', message: `Title er for kort: ${title.length} tegn (anbefalt 50-60)` });
+      issues.push({ severity: 'warning', message: `Title er for kort: ${String(title.length)} tegn (anbefalt 50-60)` });
     } else if (title.length > 70) {
       score -= 5;
-      issues.push({ severity: 'warning', message: `Title er for lang: ${title.length} tegn (anbefalt 50-60)` });
+      issues.push({ severity: 'warning', message: `Title er for lang: ${String(title.length)} tegn (anbefalt 50-60)` });
     } else if (title.length >= 50 && title.length <= 60) {
-      details.push({ type: 'success', message: `Optimal title-lengde: ${title.length} tegn` });
+      details.push({ type: 'success', message: `Optimal title-lengde: ${String(title.length)} tegn` });
     }
   }
 
-  const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i) ||
-                    html.match(/<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i);
+  const descMatch = /<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i.exec(html) ??
+                    /<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i.exec(html);
   if (!descMatch) {
     score -= 12;
     issues.push({ severity: 'critical', message: 'Mangler meta description' });
@@ -459,20 +465,20 @@ function analyzeSEO(html: string, parsedUrl: URL): AnalysisResult {
     const desc = descMatch[1];
     if (desc.length < 70) {
       score -= 6;
-      issues.push({ severity: 'warning', message: `Meta description er for kort: ${desc.length} tegn (anbefalt 150-160)` });
+      issues.push({ severity: 'warning', message: `Meta description er for kort: ${String(desc.length)} tegn (anbefalt 150-160)` });
     } else if (desc.length > 160) {
       score -= 3;
-      issues.push({ severity: 'info', message: `Meta description er litt lang: ${desc.length} tegn (kan bli avkortet)` });
+      issues.push({ severity: 'info', message: `Meta description er litt lang: ${String(desc.length)} tegn (kan bli avkortet)` });
     }
   }
 
-  const h1Matches = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) || [];
+  const h1Matches = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) ?? [];
   if (h1Matches.length === 0) {
     score -= 10;
     issues.push({ severity: 'critical', message: 'Mangler H1-overskrift' });
   } else if (h1Matches.length > 1) {
     score -= 5;
-    issues.push({ severity: 'warning', message: `Flere H1-overskrifter: ${h1Matches.length} (bør kun ha én)` });
+    issues.push({ severity: 'warning', message: `Flere H1-overskrifter: ${String(h1Matches.length)} (bør kun ha én)` });
   } else {
     details.push({ type: 'success', message: 'Korrekt bruk av H1-overskrift' });
   }
@@ -501,13 +507,13 @@ function analyzeSEO(html: string, parsedUrl: URL): AnalysisResult {
     details.push({ type: 'success', message: 'Komplett Open Graph-implementasjon' });
   }
 
-  const imgTags = html.match(/<img[^>]*>/gi) || [];
+  const imgTags = html.match(/<img[^>]*>/gi) ?? [];
   const imagesWithoutAlt = imgTags.filter(img => !/alt=/i.test(img)).length;
 
   if (imagesWithoutAlt > 0) {
     const penalty = Math.min(10, imagesWithoutAlt * 2);
     score -= penalty;
-    issues.push({ severity: 'warning', message: `${imagesWithoutAlt} bilder mangler alt-tekst` });
+    issues.push({ severity: 'warning', message: `${String(imagesWithoutAlt)} bilder mangler alt-tekst` });
   }
 
   const hasJsonLd = /<script[^>]*type=["']application\/ld\+json["']/i.test(html);
@@ -534,8 +540,8 @@ function analyzeSEO(html: string, parsedUrl: URL): AnalysisResult {
 
 function analyzeSecurity(parsedUrl: URL, headers: Headers, html: string): AnalysisResult {
   let score = 100;
-  const details: Array<{ severity?: string; type?: string; message: string }> = [];
-  const issues: Array<{ severity: string; message: string }> = [];
+  const details: AnalysisDetail[] = [];
+  const issues: { severity: string; message: string }[] = [];
 
   const headerObj: Record<string, string> = {};
   headers.forEach((value, key) => {
@@ -578,10 +584,10 @@ function analyzeSecurity(parsedUrl: URL, headers: Headers, html: string): Analys
     issues.push({ severity: 'warning', message: 'Mangler X-Content-Type-Options: nosniff' });
   }
 
-  const httpResources = html.match(/http:\/\/(?!localhost)[^"'\s>]+/gi) || [];
+  const httpResources = html.match(/http:\/\/(?!localhost)[^"'\s>]+/gi) ?? [];
   if (httpResources.length > 0 && parsedUrl.protocol === 'https:') {
     score -= 5;
-    issues.push({ severity: 'warning', message: `${httpResources.length} ressurser lastes over HTTP (mixed content)` });
+    issues.push({ severity: 'warning', message: `${String(httpResources.length)} ressurser lastes over HTTP (mixed content)` });
   }
 
   return {
@@ -589,20 +595,20 @@ function analyzeSecurity(parsedUrl: URL, headers: Headers, html: string): Analys
     details: [...details, ...issues],
     headers: {
       https: parsedUrl.protocol === 'https:',
-      hsts: !!hsts,
-      csp: !!csp,
-      xfo: !!xfo,
-      xcto: !!headerObj['x-content-type-options']
+      hsts: hsts !== undefined,
+      csp: csp !== undefined,
+      xfo: xfo !== undefined,
+      xcto: headerObj['x-content-type-options'] !== undefined
     }
   };
 }
 
 function analyzeMobile(html: string): AnalysisResult {
   let score = 100;
-  const details: Array<{ severity?: string; type?: string; message: string }> = [];
-  const issues: Array<{ severity: string; message: string }> = [];
+  const details: AnalysisDetail[] = [];
+  const issues: { severity: string; message: string }[] = [];
 
-  const viewportMatch = html.match(/<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']+)["']/i);
+  const viewportMatch = /<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']+)["']/i.exec(html);
   if (!viewportMatch) {
     score -= 25;
     issues.push({ severity: 'critical', message: 'Mangler viewport meta-tag' });
@@ -622,7 +628,7 @@ function analyzeMobile(html: string): AnalysisResult {
     }
   }
 
-  const imgTags = html.match(/<img[^>]*>/gi) || [];
+  const imgTags = html.match(/<img[^>]*>/gi) ?? [];
   const responsiveImages = imgTags.filter(img => /srcset=/i.test(img)).length;
 
   if (imgTags.length > 5 && responsiveImages === 0) {
@@ -630,14 +636,14 @@ function analyzeMobile(html: string): AnalysisResult {
     issues.push({ severity: 'warning', message: 'Ingen responsive bilder (srcset/picture)' });
   }
 
-  const mediaQueries = html.match(/@media[^{]*\{/gi) || [];
+  const mediaQueries = html.match(/@media[^{]*\{/gi) ?? [];
   const mobileQueries = mediaQueries.filter(mq => /max-width|min-width|screen/i.test(mq)).length;
 
   if (mobileQueries === 0) {
     score -= 10;
     issues.push({ severity: 'warning', message: 'Ingen CSS media queries for responsivt design' });
   } else if (mobileQueries >= 3) {
-    details.push({ type: 'success', message: `${mobileQueries} responsive media queries` });
+    details.push({ type: 'success', message: `${String(mobileQueries)} responsive media queries` });
   }
 
   const hasManifest = /<link[^>]*rel=["']manifest["']/i.test(html);
@@ -662,10 +668,10 @@ function analyzeMobile(html: string): AnalysisResult {
 
 function analyzeAccessibility(html: string): AnalysisResult {
   let score = 100;
-  const details: Array<{ severity?: string; type?: string; message: string }> = [];
-  const issues: Array<{ severity: string; message: string }> = [];
+  const details: AnalysisDetail[] = [];
+  const issues: { severity: string; message: string }[] = [];
 
-  const htmlLang = html.match(/<html[^>]*lang=["']([^"']+)["']/i);
+  const htmlLang = /<html[^>]*lang=["']([^"']+)["']/i.exec(html);
   if (!htmlLang) {
     score -= 8;
     issues.push({ severity: 'warning', message: 'Mangler lang-attributt på html-elementet' });
@@ -673,13 +679,13 @@ function analyzeAccessibility(html: string): AnalysisResult {
     details.push({ type: 'success', message: `Språk er definert: ${htmlLang[1]}` });
   }
 
-  const imgTags = html.match(/<img[^>]*>/gi) || [];
+  const imgTags = html.match(/<img[^>]*>/gi) ?? [];
   const imagesWithoutAlt = imgTags.filter(img => !/alt=/i.test(img));
 
   if (imagesWithoutAlt.length > 0) {
     const penalty = Math.min(15, imagesWithoutAlt.length * 3);
     score -= penalty;
-    issues.push({ severity: 'warning', message: `${imagesWithoutAlt.length} bilder mangler alt-attributt` });
+    issues.push({ severity: 'warning', message: `${String(imagesWithoutAlt.length)} bilder mangler alt-attributt` });
   } else if (imgTags.length > 0) {
     details.push({ type: 'success', message: 'Alle bilder har alt-attributt' });
   }
@@ -697,7 +703,7 @@ function analyzeAccessibility(html: string): AnalysisResult {
     details.push({ type: 'success', message: 'God bruk av semantiske landmarks' });
   }
 
-  const h1Matches = html.match(/<h1[^>]*>/gi) || [];
+  const h1Matches = html.match(/<h1[^>]*>/gi) ?? [];
   if (h1Matches.length === 0) {
     score -= 5;
     issues.push({ severity: 'warning', message: 'Mangler H1-overskrift' });
