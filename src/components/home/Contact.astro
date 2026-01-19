@@ -102,7 +102,9 @@ import danielImg from '../../assets/daniel.jpg';
           </div>
           <h3>Takk for din henvendelse!</h3>
           <p>Vi har mottatt meldingen din og svarer deg så raskt som mulig, vanligvis innen 24 timer.</p>
-          <button class="btn btn-ghost" id="send-another">Send ny melding</button>
+          <button class="btn btn-primary btn-lg btn-shimmer" id="send-another">
+            Send ny melding <Icon name="arrow-right" size={16} />
+          </button>
         </div>
       </div>
     </div>
@@ -110,6 +112,37 @@ import danielImg from '../../assets/daniel.jpg';
 </section>
 
 <script>
+  function launchConfetti() {
+    const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
+    const confettiCount = 100;
+    const container = document.getElementById('kontakt');
+    if (!container) return;
+
+    for (let i = 0; i < confettiCount; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.cssText = `
+        position: absolute;
+        width: ${Math.random() * 10 + 5}px;
+        height: ${Math.random() * 10 + 5}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        left: ${Math.random() * 100}%;
+        top: 0;
+        opacity: 1;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+        pointer-events: none;
+        z-index: 1000;
+        animation: confetti-fall ${Math.random() * 2 + 2}s ease-out forwards;
+        animation-delay: ${Math.random() * 0.5}s;
+      `;
+      container.style.position = 'relative';
+      container.style.overflow = 'hidden';
+      container.appendChild(confetti);
+
+      setTimeout(() => confetti.remove(), 4000);
+    }
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const submitBtn = document.getElementById('submit-btn');
@@ -167,6 +200,7 @@ import danielImg from '../../assets/daniel.jpg';
         if (response.ok) {
           form.style.display = 'none';
           formSuccess.classList.add('visible');
+          launchConfetti();
         } else {
           throw new Error('Form submission failed');
         }
@@ -188,3 +222,16 @@ import danielImg from '../../assets/daniel.jpg';
   initContactForm();
   document.addEventListener('astro:page-load', initContactForm);
 </script>
+
+<style>
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(600px) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
