@@ -3,21 +3,9 @@ import Icon from '../icons/Icon.astro';
 
 const testimonials = [
   {
-    name: 'Kundenavn',
-    company: 'Bedriftsnavn AS',
-    quote: 'EFFFEKT leverte over forventning. Løsningen har spart oss for flere timer hver uke, og supporten er fantastisk.',
-    rating: 5
-  },
-  {
-    name: 'Kundenavn',
-    company: 'Bedriftsnavn AS',
-    quote: 'Profesjonelt arbeid fra start til slutt. De forstod behovene våre og leverte en løsning som faktisk fungerer.',
-    rating: 5
-  },
-  {
-    name: 'Kundenavn',
-    company: 'Bedriftsnavn AS',
-    quote: 'Endelig en leverandør som holder det de lover. Fast pris, ingen overraskelser, og en løsning vi er stolte av.',
+    name: 'TRE Allservice AS',
+    company: 'Elektro og brannvern, Nord-Norge',
+    quote: 'Systemet har gjort hverdagen vår mye enklere. Vi har full oversikt over alle kunder og slipper å bekymre oss for å glemme inspeksjoner.',
     rating: 5
   }
 ];
@@ -82,8 +70,8 @@ const testimonials = [
   }
 
   .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    justify-content: center;
     gap: 24px;
     max-width: 1100px;
     margin: 0 auto;
@@ -98,6 +86,8 @@ const testimonials = [
     flex-direction: column;
     gap: 20px;
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+    max-width: 450px;
+    width: 100%;
   }
 
   .testimonial-card:hover {
@@ -161,7 +151,6 @@ const testimonials = [
 
   @media (max-width: 900px) {
     .testimonials-grid {
-      grid-template-columns: 1fr;
       max-width: 500px;
     }
   }

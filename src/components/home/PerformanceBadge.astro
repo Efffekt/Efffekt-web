@@ -1,0 +1,204 @@
+---
+// Lighthouse Performance Badge - viser egne ytelsestall
+// Oppdater scores manuelt etter å ha kjørt Lighthouse på efffekt.no
+
+const scores = [
+  { label: 'Performance', score: 100 },
+  { label: 'Accessibility', score: 100 },
+  { label: 'Best Practices', score: 100 },
+  { label: 'SEO', score: 100 },
+];
+
+function getColor(score: number): string {
+  if (score >= 90) return 'green';
+  if (score >= 70) return 'yellow';
+  if (score >= 50) return 'orange';
+  return 'red';
+}
+
+// SVG ring calculations (circumference = 2 * PI * radius)
+const radius = 36;
+const circumference = 2 * Math.PI * radius;
+---
+
+<section class="performance-badge-section">
+  <div class="container">
+    <div class="performance-badge reveal">
+      <p class="badge-label">Lighthouse-score for denne nettsiden</p>
+      <div class="scores-grid">
+        {scores.map((item) => {
+          const offset = circumference - (item.score / 100) * circumference;
+          const color = getColor(item.score);
+          return (
+            <div class="score-item">
+              <div class="ring-container">
+                <svg class="ring" viewBox="0 0 80 80">
+                  <circle class="ring-bg" cx="40" cy="40" r={radius} />
+                  <circle
+                    class={`ring-progress ${color}`}
+                    cx="40"
+                    cy="40"
+                    r={radius}
+                    style={`stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset};`}
+                  />
+                </svg>
+                <span class="ring-value">{item.score}</span>
+              </div>
+              <span class="score-label">{item.label}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div class="badge-explanation">
+        <p>
+          <strong>Lighthouse</strong> er Googles verktøy for å måle nettsiders kvalitet.
+          Scorer over 90 regnes som utmerket. Vi bygger alle våre nettsider med samme standard.
+        </p>
+        <a href="#kontakt" class="badge-cta">Få en like rask nettside →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .performance-badge-section {
+    padding: 60px 0;
+    background: var(--bg);
+  }
+
+  .performance-badge {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .badge-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .scores-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ring-container {
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+
+  .ring {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 5;
+  }
+
+  .ring-progress {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ring-progress.green {
+    stroke: var(--success);
+  }
+
+  .ring-progress.yellow {
+    stroke: var(--accent-secondary);
+  }
+
+  .ring-progress.orange {
+    stroke: #f97316;
+  }
+
+  .ring-progress.red {
+    stroke: var(--accent);
+  }
+
+  .ring-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .score-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .badge-explanation {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .badge-explanation p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .badge-explanation strong {
+    color: var(--text);
+  }
+
+  .badge-cta {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .badge-cta:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 500px) {
+    .scores-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .ring-container {
+      width: 56px;
+      height: 56px;
+    }
+
+    .ring-value {
+      font-size: 1rem;
+    }
+  }
+</style>
