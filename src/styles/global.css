@@ -4491,7 +4491,7 @@ textarea:focus {
   border-top: 1px solid var(--border);
 }
 
-.contact-people h4 {
+.contact-people h3 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text);
