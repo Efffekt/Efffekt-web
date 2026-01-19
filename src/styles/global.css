@@ -3734,29 +3734,29 @@ textarea:focus {
 }
 
 .detail-section.collapsible .detail-header::after {
-  content: '\f078';
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(45deg);
   transition: transform 0.3s var(--ease-out);
   margin-left: auto;
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .detail-section.collapsible .detail-items {
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 16px;
-  transition: max-height 0.4s var(--ease-out), padding 0.3s var(--ease-out);
+  display: none;
+  padding: 12px 16px;
 }
 
 .detail-section.collapsible.expanded .detail-header::after {
-  transform: rotate(180deg);
+  transform: rotate(-135deg);
 }
 
 .detail-section.collapsible.expanded .detail-items {
-  max-height: 800px;
-  padding: 12px 16px;
+  display: block;
 }
 
 /* Benchmark Comparison */

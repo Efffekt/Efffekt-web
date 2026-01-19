@@ -502,6 +502,16 @@ import Icon from '../icons/Icon.astro';
 
   // Event delegation for all interactive elements (replaces inline onclick)
   function setupEventDelegation(container: HTMLElement): void {
+    // Direct event listeners for toggle sections (more reliable)
+    container.querySelectorAll('[data-action="toggle-section"]').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.closest('.detail-section');
+        if (section) {
+          section.classList.toggle('expanded');
+        }
+      });
+    });
+
     container.addEventListener('click', (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
@@ -509,14 +519,6 @@ import Icon from '../icons/Icon.astro';
       const closeBtn = target.closest('[data-action="close"]');
       if (closeBtn) {
         container.style.display = 'none';
-        return;
-      }
-
-      // Toggle detail section
-      const toggleHeader = target.closest('[data-action="toggle-section"]');
-      if (toggleHeader) {
-        const section = toggleHeader.parentElement;
-        section?.classList.toggle('expanded');
         return;
       }
 
