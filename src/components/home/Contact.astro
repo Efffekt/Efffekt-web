@@ -41,47 +41,150 @@ import danielImg from '../../assets/daniel.jpg';
         </div>
       </div>
 
-      <form class="contact-form reveal-right" action="https://formsubmit.co/sander@efffekt.no" method="POST">
-        <input type="hidden" name="_cc" value="daniel@efffekt.no">
-        <input type="hidden" name="_subject" value="Ny foresporsel fra efffekt.no">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="text" name="_honey" style="display:none">
-        <div class="form-group">
-          <label for="name">Navn</label>
-          <input type="text" id="name" name="name" required>
+      <div class="contact-form-wrapper reveal-right">
+        <form class="contact-form" id="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
+          <input type="hidden" name="_cc" value="daniel@efffekt.no">
+          <input type="hidden" name="_subject" value="Ny foresporsel fra efffekt.no">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+          <div class="form-group">
+            <label for="name">Navn</label>
+            <input type="text" id="name" name="name" required>
+            <span class="error-message">Vennligst fyll inn navnet ditt</span>
+          </div>
+          <div class="form-group">
+            <label for="email">E-post</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error-message">Vennligst fyll inn en gyldig e-postadresse</span>
+          </div>
+          <div class="form-group">
+            <label for="project-type">Hva trenger du?</label>
+            <select id="project-type" name="project-type" required>
+              <option value="" disabled selected>Velg type</option>
+              <option value="nettside">Nettside (fra 549 kr/mnd)</option>
+              <option value="integrasjon">Integrasjon (fra 799 kr/mnd)</option>
+              <option value="plugin">Plugin (fra 649 kr/mnd)</option>
+              <option value="ai">AI-automatisering (fra 999 kr/mnd)</option>
+              <option value="annet">Annet / Usikker</option>
+            </select>
+            <span class="error-message">Vennligst velg en type</span>
+          </div>
+          <div class="form-group">
+            <label for="payment-type">Hvordan vil du betale?</label>
+            <select id="payment-type" name="payment-type" required>
+              <option value="" disabled selected>Velg betalingstype</option>
+              <option value="leie">Leie (månedspris)</option>
+              <option value="kjop">Kjøpe (engangspris - eie koden)</option>
+            </select>
+            <span class="error-message">Vennligst velg betalingstype</span>
+          </div>
+          <div class="form-group">
+            <label for="message">Beskriv kort hva du trenger</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+          <div class="form-response-time">
+            <Icon name="clock" size={16} />
+            <span>Vanligvis svar innen 2-4 timer i arbeidstiden</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-full btn-shimmer glow-focus" id="submit-btn">
+            <span class="btn-text">Send forespørsel</span>
+            <span class="btn-loading">
+              <Icon name="spinner" size={20} class="spin" />
+              Sender...
+            </span>
+          </button>
+        </form>
+
+        <div class="form-success" id="form-success">
+          <div class="success-icon">
+            <Icon name="check-circle" size={48} />
+          </div>
+          <h3>Takk for din henvendelse!</h3>
+          <p>Vi har mottatt meldingen din og svarer deg så raskt som mulig, vanligvis innen 24 timer.</p>
+          <button class="btn btn-ghost" id="send-another">Send ny melding</button>
         </div>
-        <div class="form-group">
-          <label for="email">E-post</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-          <label for="project-type">Hva trenger du?</label>
-          <select id="project-type" name="project-type" required>
-            <option value="" disabled selected>Velg type</option>
-            <option value="nettside">Nettside (fra 549 kr/mnd)</option>
-            <option value="integrasjon">Integrasjon (fra 799 kr/mnd)</option>
-            <option value="plugin">Plugin (fra 649 kr/mnd)</option>
-            <option value="ai">AI-automatisering (fra 999 kr/mnd)</option>
-            <option value="annet">Annet / Usikker</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="payment-type">Hvordan vil du betale?</label>
-          <select id="payment-type" name="payment-type" required>
-            <option value="" disabled selected>Velg betalingstype</option>
-            <option value="leie">Leie (månedspris)</option>
-            <option value="kjop">Kjøpe (engangspris - eie koden)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">Beskriv kort hva du trenger</label>
-          <textarea id="message" name="message" rows="4"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-full btn-shimmer glow-focus">
-          Send forespørsel
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn');
+    const formSuccess = document.getElementById('form-success');
+    const sendAnother = document.getElementById('send-another');
+
+    if (!form || !submitBtn || !formSuccess) return;
+
+    // Inline validation
+    const validateField = (field: HTMLInputElement | HTMLSelectElement) => {
+      const group = field.closest('.form-group');
+      if (!group) return;
+
+      if (!field.validity.valid || (field.tagName === 'SELECT' && !field.value)) {
+        group.classList.add('error');
+      } else {
+        group.classList.remove('error');
+      }
+    };
+
+    form.querySelectorAll('input, select').forEach(field => {
+      field.addEventListener('blur', () => validateField(field as HTMLInputElement | HTMLSelectElement));
+      field.addEventListener('change', () => validateField(field as HTMLInputElement | HTMLSelectElement));
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validate all fields
+      let hasErrors = false;
+      form.querySelectorAll('input[required], select[required]').forEach(el => {
+        const field = el as HTMLInputElement | HTMLSelectElement;
+        validateField(field);
+        if (!field.validity.valid || (field.tagName === 'SELECT' && !field.value)) {
+          hasErrors = true;
+        }
+      });
+
+      if (hasErrors) return;
+
+      // Show loading state
+      submitBtn.classList.add('loading');
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          formSuccess.classList.add('visible');
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (error) {
+        alert('Beklager, noe gikk galt. Prøv igjen eller kontakt oss direkte.');
+        submitBtn.classList.remove('loading');
+      }
+    });
+
+    // Send another message
+    sendAnother?.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'flex';
+      formSuccess.classList.remove('visible');
+      submitBtn.classList.remove('loading');
+    });
+  }
+
+  initContactForm();
+  document.addEventListener('astro:page-load', initContactForm);
+</script>

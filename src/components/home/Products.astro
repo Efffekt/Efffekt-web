@@ -38,10 +38,11 @@ const products = [
     name: 'Integrasjon',
     price: 799,
     hook: 'Koble systemene dine sammen',
+    popular: true,
     features: [
-      'API-tilkoblinger',
-      'Automatisk dataflyt',
-      'Sanntidssynkronisering',
+      'Kobler systemene automatisk',
+      'Data flyter av seg selv',
+      'Alltid oppdatert',
       'Overvåkning inkludert'
     ],
     href: '/integrasjon'
@@ -111,7 +112,8 @@ const products = [
 
     <div class="product-grid">
       {products.map((product, index) => (
-        <article class="product-card reveal" style={`animation-delay: ${index * 0.1}s`}>
+        <article class={`product-card reveal ${product.popular ? 'popular' : ''}`} style={`animation-delay: ${index * 0.1}s`}>
+          {product.popular && <span class="popular-badge">Mest populært</span>}
           <div class="product-card-icon">
             <Icon name={product.icon} size={24} />
           </div>
@@ -141,9 +143,28 @@ const products = [
       ))}
     </div>
 
-    <p class="ownership-note reveal">
-      Vil du heller betale en engangssum? <a href="#kontakt">Ta kontakt</a> for pris.
-    </p>
+    <div class="pricing-choice reveal">
+      <div class="pricing-choice-content">
+        <h3>Lei eller kjøp - du velger</h3>
+        <div class="pricing-options">
+          <div class="pricing-option">
+            <Icon name="refresh" size={20} />
+            <div>
+              <strong>Månedspris</strong>
+              <p>Betal en fast sum hver måned. Alt inkludert, avslutt når du vil.</p>
+            </div>
+          </div>
+          <div class="pricing-option">
+            <Icon name="key" size={20} />
+            <div>
+              <strong>Engangspris</strong>
+              <p>Betal én gang og eie koden selv. Perfekt om du vil ha full kontroll.</p>
+            </div>
+          </div>
+        </div>
+        <a href="#kontakt" class="btn btn-primary btn-lg">Få pristilbud</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -185,6 +206,27 @@ const products = [
   .product-card {
     display: flex;
     flex-direction: column;
+    position: relative;
+  }
+
+  .product-card.popular {
+    border-color: var(--success);
+    box-shadow: 0 0 0 1px var(--success), 0 8px 32px rgba(16, 185, 129, 0.15);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--success);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 1;
   }
 
   .product-card .btn {
@@ -264,15 +306,71 @@ const products = [
     }
   }
 
-  .ownership-note {
-    text-align: center;
-    margin-top: 32px;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
+  .pricing-choice {
+    margin-top: 48px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .ownership-note a {
+  .pricing-choice-content h3 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .pricing-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .pricing-option {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .pricing-option :global(svg) {
     color: var(--accent);
-    text-decoration: underline;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pricing-option strong {
+    display: block;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .pricing-option p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .pricing-choice .btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 600px) {
+    .pricing-options {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .pricing-choice {
+      padding: 24px;
+    }
   }
 </style>

@@ -1,0 +1,178 @@
+---
+import Icon from '../icons/Icon.astro';
+
+const testimonials = [
+  {
+    name: 'Kundenavn',
+    company: 'Bedriftsnavn AS',
+    quote: 'EFFFEKT leverte over forventning. Løsningen har spart oss for flere timer hver uke, og supporten er fantastisk.',
+    rating: 5
+  },
+  {
+    name: 'Kundenavn',
+    company: 'Bedriftsnavn AS',
+    quote: 'Profesjonelt arbeid fra start til slutt. De forstod behovene våre og leverte en løsning som faktisk fungerer.',
+    rating: 5
+  },
+  {
+    name: 'Kundenavn',
+    company: 'Bedriftsnavn AS',
+    quote: 'Endelig en leverandør som holder det de lover. Fast pris, ingen overraskelser, og en løsning vi er stolte av.',
+    rating: 5
+  }
+];
+---
+
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Hva kundene sier</span>
+      <h2>Fornøyde <span class="text-accent">kunder</span></h2>
+    </div>
+
+    <div class="testimonials-grid">
+      {testimonials.map((testimonial, index) => (
+        <article class="testimonial-card reveal" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="testimonial-rating">
+            {[...Array(testimonial.rating)].map(() => (
+              <Icon name="star" size={16} />
+            ))}
+          </div>
+          <blockquote class="testimonial-quote">
+            <Icon name="quote-left" size={24} class="quote-icon" />
+            <p>{testimonial.quote}</p>
+          </blockquote>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <strong>{testimonial.name}</strong>
+              <span>{testimonial.company}</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: 100px 0;
+    background: var(--bg);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .testimonial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .testimonial-rating {
+    display: flex;
+    gap: 4px;
+  }
+
+  .testimonial-rating :global(svg) {
+    color: var(--accent-secondary);
+    fill: var(--accent-secondary);
+  }
+
+  .testimonial-quote {
+    position: relative;
+    flex: 1;
+  }
+
+  .testimonial-quote :global(.quote-icon) {
+    position: absolute;
+    top: -8px;
+    left: -4px;
+    color: var(--accent);
+    opacity: 0.2;
+  }
+
+  .testimonial-quote p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    padding-left: 20px;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .author-info strong {
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .author-info span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 900px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      max-width: 500px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .testimonials-section {
+      padding: 60px 0;
+    }
+
+    .testimonial-card {
+      padding: 24px;
+    }
+  }
+</style>

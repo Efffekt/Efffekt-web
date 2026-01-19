@@ -1,0 +1,143 @@
+---
+import Icon from '../icons/Icon.astro';
+---
+
+<a href="#kontakt" class="floating-cta" id="floating-cta" aria-label="Book gratis demo">
+  <Icon name="comments" size={24} />
+  <span class="floating-cta-text">Book demo</span>
+</a>
+
+<script>
+  function initFloatingCTA() {
+    const cta = document.getElementById('floating-cta');
+    if (!cta) return;
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateCTA = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight * 0.8;
+
+      if (scrollY > heroHeight) {
+        cta.classList.add('visible');
+      } else {
+        cta.classList.remove('visible');
+      }
+
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateCTA);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateCTA();
+  }
+
+  initFloatingCTA();
+  document.addEventListener('astro:page-load', initFloatingCTA);
+</script>
+
+<style>
+  .floating-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out),
+      box-shadow 0.2s var(--ease-out);
+  }
+
+  .floating-cta.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .floating-cta:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+  }
+
+  .floating-cta:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .floating-cta :global(svg) {
+    flex-shrink: 0;
+  }
+
+  /* Pulse animation */
+  .floating-cta.visible::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    opacity: 0;
+    z-index: -1;
+    animation: ctaPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes ctaPulse {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.08);
+    }
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .floating-cta {
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 16px;
+      font-size: 0.875rem;
+    }
+
+    .floating-cta-text {
+      display: none;
+    }
+
+    .floating-cta {
+      padding: 14px;
+      border-radius: 50%;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .floating-cta {
+      transition: opacity 0.2s;
+    }
+
+    .floating-cta.visible::before {
+      animation: none;
+    }
+  }
+</style>

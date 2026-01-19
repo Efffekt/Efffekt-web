@@ -51,6 +51,11 @@ import treAllserviceLogo from '../../assets/tre-allservice-logo.png';
         </div>
       </div>
 
+      <blockquote class="case-quote reveal">
+        <p>"Systemet har gjort hverdagen vår mye enklere. Vi har full oversikt over alle kunder og slipper å bekymre oss for å glemme inspeksjoner."</p>
+        <cite>— TRE Allservice AS</cite>
+      </blockquote>
+
       <div class="case-solution reveal-right">
         <h3>Løsningen vi bygget:</h3>
         <ul>
@@ -189,6 +194,29 @@ import treAllserviceLogo from '../../assets/tre-allservice-logo.png';
   .case-solution li :global(svg) {
     color: var(--success);
     flex-shrink: 0;
+  }
+
+  .case-quote {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    font-style: italic;
+  }
+
+  .case-quote p {
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .case-quote cite {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: normal;
   }
 
   .case-cta {

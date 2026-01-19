@@ -23,6 +23,7 @@ const {
 
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
+import FloatingCTA from '../components/common/FloatingCTA.astro';
 import '../styles/global.css';
 ---
 
@@ -260,6 +261,7 @@ import '../styles/global.css';
   <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
 
   <Header transition:persist />
+  <FloatingCTA />
 
   <main id="main-content" transition:animate="fade">
     <slot />

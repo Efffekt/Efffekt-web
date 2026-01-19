@@ -4,14 +4,14 @@ import Icon from '../icons/Icon.astro';
 
 <section class="hero">
   <div class="hero-content">
-    <h1 class="hero-heading">Systemer som <span class="text-accent">fungerer</span><br>fra 500 kr/mnd</h1>
+    <h1 class="hero-heading">Spar <span class="text-accent">10-20 timer</span> i uken<br>med digitale systemer</h1>
     <p class="hero-text">
-      Nettside, integrasjon, plugin eller AI-automatisering.<br>
-      Prøv uten risiko, avslutt når som helst.
+      Nettside, CRM, automasjon og integrasjoner - på fast månedspris fra 549 kr.<br>
+      Ingen risiko, avslutt når du vil.
     </p>
     <div class="hero-actions">
-      <a href="#kontakt" class="btn btn-primary btn-lg">Prøv gratis</a>
-      <a href="#tjenester" class="btn btn-ghost btn-lg">Se tjenester</a>
+      <a href="#kontakt" class="btn btn-primary btn-lg">Book gratis demo</a>
+      <a href="#tjenester" class="btn btn-ghost btn-lg">Se hva vi kan bygge</a>
     </div>
 
     <div class="trust-bar">
@@ -21,7 +21,7 @@ import Icon from '../icons/Icon.astro';
       </div>
       <div class="trust-bar-item">
         <Icon name="gift" size={18} />
-        <span>Alt inkludert i prisen</span>
+        <span>Lei eller kjøp - du velger</span>
       </div>
       <div class="trust-bar-item">
         <Icon name="bolt" size={18} />
@@ -121,12 +121,60 @@ import Icon from '../icons/Icon.astro';
       padding: 0 20px;
     }
 
+    .hero-heading {
+      font-size: clamp(1.75rem, 6vw, 2.5rem);
+    }
+
+    .hero-text {
+      font-size: 1.1rem;
+    }
+
     .trust-bar {
       gap: 16px;
     }
 
     .trust-bar-item {
       font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      padding-top: 60px;
+    }
+
+    .hero-heading {
+      font-size: 1.75rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-text {
+      font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .trust-bar {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .trust-bar-item {
+      width: 100%;
+      justify-content: center;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius);
     }
   }
 </style>
