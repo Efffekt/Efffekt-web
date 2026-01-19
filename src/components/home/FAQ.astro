@@ -4,7 +4,7 @@ import Icon from '../icons/Icon.astro';
 const faqs = [
   {
     question: 'Hva er inkludert i månedsprisen?',
-    answer: 'Alt du trenger for at løsningen skal fungere optimalt: hosting, vedlikehold, sikkerhetskopier, oppdateringer og kontinuerlige forbedringer. Du får også support og hjelp når du trenger det.'
+    answer: 'Alt du trenger for at løsningen skal fungere optimalt: hosting, vedlikehold, sikkerhetskopier, oppdateringer og kontinuerlige forbedringer. Du får også support og hjelp når du trenger det. Våre kunder sparer typisk 10-15 timer per uke på manuelle oppgaver.'
   },
   {
     question: 'Kan jeg avslutte når som helst?',
@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     question: 'Hvordan fungerer demoen?',
-    answer: 'Vi bygger en fungerende prototype basert på dine behov - helt gratis. Du får se og teste løsningen før du bestemmer deg. Liker du det du ser, starter vi samarbeidet. Hvis ikke, har du ikke tapt noe.'
+    answer: 'Vi bygger en fungerende prototype basert på dine behov - helt gratis. Du får se og teste løsningen med dine egne data, så du kan vurdere effekten før du bestemmer deg. Liker du det du ser, starter vi samarbeidet. Hvis ikke, har du ikke tapt noe.'
   },
   {
     question: 'Hvem eier løsningen?',
@@ -21,6 +21,14 @@ const faqs = [
   {
     question: 'Hva skjer hvis noe går galt?',
     answer: 'Vi overvåker alle løsninger 24/7 og tar automatiske sikkerhetskopier daglig. Ved problemer varsles vi umiddelbart og fikser det - vanligvis før du merker noe. Support er alltid inkludert.'
+  },
+  {
+    question: 'Hva om løsningen ikke passer for oss?',
+    answer: 'Du tester alltid gratis først med en fungerende prototype. Hvis du ikke er fornøyd, har du ikke forpliktet deg til noe. Ingen risiko, ingen bindingstid.'
+  },
+  {
+    question: 'Hvor mye koster det egentlig?',
+    answer: 'Månedsprisene starter fra 549 kr for nettsider, 649 kr for plugins, 799 kr for integrasjoner og 999 kr for AI-automatisering. Alt er inkludert – hosting, vedlikehold, support og forbedringer. Ingen skjulte kostnader.'
   }
 ];
 ---
@@ -44,6 +52,14 @@ const faqs = [
           </div>
         </div>
       ))}
+    </div>
+
+    <div class="faq-cta reveal">
+      <p>Fant du ikke svaret du lette etter?</p>
+      <a href="#kontakt" class="btn btn-primary btn-lg">
+        Spør oss direkte
+        <Icon name="arrow-right" size={16} />
+      </a>
     </div>
   </div>
 </section>
@@ -100,5 +116,29 @@ const faqs = [
     letter-spacing: 0.1em;
     color: var(--accent);
     margin-bottom: 12px;
+  }
+
+  .faq-cta {
+    text-align: center;
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .faq-cta p {
+    color: var(--text);
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+
+  .faq-cta .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
 </style>
