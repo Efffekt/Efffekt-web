@@ -230,8 +230,8 @@ body.intro-active {
   }
 }
 
-/* Video Background - single video that blurs on scroll */
-.video-background {
+/* Hero Background - image that blurs on scroll */
+.hero-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -241,14 +241,14 @@ body.intro-active {
   overflow: hidden;
 }
 
-.video-background video {
+.hero-background img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: filter 0.1s ease-out, transform 0.1s ease-out;
 }
 
-.video-overlay {
+.hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -260,28 +260,13 @@ body.intro-active {
   transition: opacity 0.1s ease-out;
 }
 
-/* Video intro states */
-.video-background.intro-hidden {
+/* Hero intro states */
+.hero-background.intro-hidden {
   clip-path: circle(0% at 50% 50%);
 }
 
-.video-background.intro-animating {
+.hero-background.intro-animating {
   animation: videoRevealCircle 0.4s var(--ease-out) forwards;
-}
-
-/* Respekter reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .video-background video {
-    display: none;
-  }
-}
-
-/* Fallback gradient når video ikke er tilgjengelig */
-.video-background.no-video {
-  background:
-    radial-gradient(ellipse 70% 40% at 50% 0%, var(--gradient-primary) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 100% 20%, var(--gradient-secondary) 0%, transparent 40%),
-    radial-gradient(ellipse 40% 30% at 0% 80%, var(--gradient-tertiary) 0%, transparent 40%);
 }
 
 /* ===== View Transition Animations (Manyone-Style) ===== */

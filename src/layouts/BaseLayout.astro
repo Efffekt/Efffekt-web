@@ -173,12 +173,10 @@ import '../styles/global.css';
 </head>
 <body class="intro-active">
 
-  <!-- Video Background (single video that blurs on scroll) -->
-  <div class="video-background intro-hidden" id="hero-video-container" transition:persist>
-    <video id="hero-video" autoplay muted loop playsinline preload="metadata">
-      <source src="/assets/video/hero.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay" id="video-overlay"></div>
+  <!-- Hero Background Image -->
+  <div class="hero-background intro-hidden" id="hero-bg-container" transition:persist>
+    <img src="/assets/hero-bg.jpg" alt="" id="hero-bg" loading="eager" fetchpriority="high">
+    <div class="hero-overlay" id="hero-overlay"></div>
   </div>
 
 
@@ -186,16 +184,14 @@ import '../styles/global.css';
     (function() {
       let scrollHandler = null;
 
-      function initVideoBlur() {
-        const video = document.getElementById('hero-video');
-        const overlay = document.getElementById('video-overlay');
+      function initHeroBlur() {
+        const heroBg = document.getElementById('hero-bg');
+        const overlay = document.getElementById('hero-overlay');
 
-        if (video) {
-          video.currentTime = 2;
-          video.playbackRate = 0.75;
+        if (heroBg) {
           // Reset blur on init (viktig for navigasjon)
-          video.style.filter = 'blur(0px)';
-          video.style.transform = 'scale(1)';
+          heroBg.style.filter = 'blur(0px)';
+          heroBg.style.transform = 'scale(1)';
         }
 
         if (overlay) {
@@ -219,9 +215,9 @@ import '../styles/global.css';
           const blurAmount = progress * 8;
           const overlayOpacity = progress * 0.4;
 
-          if (video) {
-            video.style.filter = `blur(${blurAmount}px)`;
-            video.style.transform = `scale(${1 + blurAmount * 0.01})`;
+          if (heroBg) {
+            heroBg.style.filter = `blur(${blurAmount}px)`;
+            heroBg.style.transform = `scale(${1 + blurAmount * 0.01})`;
           }
 
           if (overlay) {
@@ -236,17 +232,17 @@ import '../styles/global.css';
       }
 
       // Kjør ved første lasting
-      initVideoBlur();
+      initHeroBlur();
 
       // Re-initialiser ved View Transitions navigasjon
-      document.addEventListener('astro:page-load', initVideoBlur);
+      document.addEventListener('astro:page-load', initHeroBlur);
     })();
   </script>
 
   <!-- Intro Animation Controller -->
   <script is:inline>
     function initIntro() {
-      const heroContainer = document.getElementById('hero-video-container');
+      const heroContainer = document.getElementById('hero-bg-container');
 
       // Skip intro if already seen this session or on navigation
       const hasSeenIntro = sessionStorage.getItem('intro-seen');
