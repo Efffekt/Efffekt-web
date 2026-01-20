@@ -64,12 +64,22 @@ import Icon from '../icons/Icon.astro';
 </style>
 
 <script>
+  function getSystemTheme(): string {
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
   function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      // Use system preference as default
+      const systemTheme = getSystemTheme();
+      if (systemTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      // Dark is default (no attribute needed)
     }
-    // Dark theme is default (no attribute needed)
   }
 
   function toggleTheme() {
@@ -80,8 +90,24 @@ import Icon from '../icons/Icon.astro';
     localStorage.setItem('theme', newTheme);
   }
 
+  // Listen for system theme changes (only if user hasn't set a preference)
+  function handleSystemThemeChange(e: MediaQueryListEvent) {
+    const savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+      const newTheme = e.matches ? 'light' : 'dark';
+      if (newTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    }
+  }
+
   // Initialize on page load
   initTheme();
+
+  // Listen for system preference changes
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', handleSystemThemeChange);
 
   // Re-initialize on View Transitions
   document.addEventListener('astro:page-load', () => {

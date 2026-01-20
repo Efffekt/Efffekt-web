@@ -35,14 +35,16 @@ import '../styles/global.css';
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <!-- Prevent theme flash - dark is default -->
+  <!-- Prevent theme flash - respects system preference -->
   <script is:inline>
     (function() {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme) {
         document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
       }
-      // Dark theme is default (no attribute needed), only set if explicitly light
+      // Dark theme is default (no attribute needed)
     })();
   </script>
   <ClientRouter />

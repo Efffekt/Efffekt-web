@@ -1358,6 +1358,12 @@ textarea:focus {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* ===== Hero ===== */
 .hero {
   min-height: 100vh;

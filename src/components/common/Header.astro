@@ -1,5 +1,7 @@
 ---
 // Header component with navigation
+import ThemeToggle from './ThemeToggle.astro';
+
 interface Props {
   showCenteredLogo?: boolean;
 }
@@ -20,21 +22,18 @@ const { showCenteredLogo = true } = Astro.props;
         <a href="/#portefolje">Kunder</a>
         <a href="/#kontakt" class="btn btn-primary btn-sm">Kontakt oss</a>
       </div>
-      <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div class="nav-actions">
+        <ThemeToggle />
+        <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </nav>
   </div>
 </header>
 
-{showCenteredLogo && (
-  <div class="welcome-text intro-hidden" id="welcomeText">
-    <span class="welcome-label">Velkommen til</span>
-    <img src="/assets/logo.svg" alt="EFFFEKT" class="welcome-logo" width="200" height="40">
-  </div>
-)}
 
 <style is:global>
   /* Skjul elementer før intro-animasjon */
