@@ -1,0 +1,339 @@
+---
+// Font theme switcher - dropdown with 24 font pairings
+---
+
+<div class="font-switcher-wrap" id="font-switcher-wrap">
+  <button
+    class="font-switcher"
+    id="font-switcher"
+    aria-label="Bytt skrifttype"
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    title="Bytt mellom skrifttyper"
+  >
+    <span class="font-icon">Aa</span>
+    <span class="font-label" id="font-label">Modern</span>
+  </button>
+  <div class="font-dropdown" id="font-dropdown" role="listbox" aria-label="Velg skrifttype">
+    <div class="font-dropdown-header">Skrifttyper</div>
+    <div class="font-dropdown-grid" id="font-dropdown-grid"></div>
+  </div>
+</div>
+
+<style>
+  .font-switcher-wrap {
+    position: relative;
+  }
+
+  .font-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s var(--ease-out);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+
+  .font-switcher:hover {
+    border-color: var(--border-light);
+    transform: scale(1.05);
+  }
+
+  .font-icon {
+    font-family: 'Recoleta', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .font-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+
+  /* Dropdown panel */
+  .font-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 340px;
+    max-height: 480px;
+    overflow-y: auto;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-deep);
+    padding: 12px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  }
+
+  .font-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .font-dropdown-header {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    padding: 0 4px 8px;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 8px;
+  }
+
+  .font-dropdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .font-dropdown :global(.font-option) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: none;
+    text-align: left;
+    width: 100%;
+    color: var(--text);
+  }
+
+  .font-dropdown :global(.font-option:hover) {
+    background: var(--glass-bg);
+    border-color: var(--border-light);
+  }
+
+  .font-dropdown :global(.font-option.active) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  .font-dropdown :global(.font-option-name) {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .font-dropdown :global(.font-option-preview) {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    opacity: 0.7;
+  }
+
+  .font-dropdown :global(.font-option-meta) {
+    font-size: 0.6rem;
+    opacity: 0.5;
+    margin-top: 1px;
+  }
+
+  /* Scrollbar styling */
+  .font-dropdown::-webkit-scrollbar {
+    width: 4px;
+  }
+  .font-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .font-dropdown::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .font-label {
+      display: none;
+    }
+
+    .font-switcher {
+      width: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    .font-dropdown {
+      width: 300px;
+      right: -40px;
+    }
+  }
+</style>
+
+<script>
+  interface FontTheme {
+    id: string;
+    name: string;
+    heading: string;
+    body: string;
+    headingFont: string;
+    bodyFont: string;
+  }
+
+  const FONT_THEMES: FontTheme[] = [
+    // --- Original 4 ---
+    { id: 'modern',    name: 'Modern',    heading: 'Inter',            body: 'Inter',            headingFont: "'Inter', sans-serif",                bodyFont: "'Inter', sans-serif" },
+    { id: 'editorial', name: 'Editorial', heading: 'Recoleta',         body: 'Inter',            headingFont: "'Recoleta', Georgia, serif",         bodyFont: "'Inter', sans-serif" },
+    { id: 'bold',      name: 'Bold',      heading: 'Recoleta',         body: 'Recoleta',         headingFont: "'Recoleta', Georgia, serif",         bodyFont: "'Recoleta', Georgia, serif" },
+    { id: 'klassisk',  name: 'Klassisk',  heading: 'Recoleta',         body: 'Inter',            headingFont: "'Recoleta', Georgia, serif",         bodyFont: "'Inter', sans-serif" },
+    // --- Sans-serif combos ---
+    { id: 'tech',      name: 'Tech',      heading: 'Space Grotesk',    body: 'Space Grotesk',    headingFont: "'Space Grotesk', sans-serif",        bodyFont: "'Space Grotesk', sans-serif" },
+    { id: 'jakarta',   name: 'Jakarta',   heading: 'Plus Jakarta Sans',body: 'Plus Jakarta Sans',headingFont: "'Plus Jakarta Sans', sans-serif",    bodyFont: "'Plus Jakarta Sans', sans-serif" },
+    { id: 'clean',     name: 'Clean',     heading: 'DM Sans',          body: 'DM Sans',          headingFont: "'DM Sans', sans-serif",              bodyFont: "'DM Sans', sans-serif" },
+    { id: 'futur',     name: 'Futur',     heading: 'Sora',             body: 'Sora',             headingFont: "'Sora', sans-serif",                 bodyFont: "'Sora', sans-serif" },
+    { id: 'outfit',    name: 'Outfit',    heading: 'Outfit',           body: 'Outfit',           headingFont: "'Outfit', sans-serif",               bodyFont: "'Outfit', sans-serif" },
+    { id: 'manrope',   name: 'Manrope',   heading: 'Manrope',          body: 'Manrope',          headingFont: "'Manrope', sans-serif",              bodyFont: "'Manrope', sans-serif" },
+    { id: 'work',      name: 'Work',      heading: 'Work Sans',        body: 'Work Sans',        headingFont: "'Work Sans', sans-serif",            bodyFont: "'Work Sans', sans-serif" },
+    // --- Serif heading + sans body ---
+    { id: 'elegant',   name: 'Elegant',   heading: 'Playfair Display', body: 'Inter',            headingFont: "'Playfair Display', Georgia, serif", bodyFont: "'Inter', sans-serif" },
+    { id: 'serif',     name: 'Serif',     heading: 'Lora',             body: 'Inter',            headingFont: "'Lora', Georgia, serif",             bodyFont: "'Inter', sans-serif" },
+    { id: 'display',   name: 'Display',   heading: 'DM Serif Display', body: 'Inter',            headingFont: "'DM Serif Display', Georgia, serif", bodyFont: "'Inter', sans-serif" },
+    // --- Mixed pairings ---
+    { id: 'kontrast',  name: 'Kontrast',  heading: 'Playfair Display', body: 'DM Sans',          headingFont: "'Playfair Display', Georgia, serif", bodyFont: "'DM Sans', sans-serif" },
+    { id: 'dm-par',    name: 'DM Par',    heading: 'DM Serif Display', body: 'DM Sans',          headingFont: "'DM Serif Display', Georgia, serif", bodyFont: "'DM Sans', sans-serif" },
+    { id: 'nordisk',   name: 'Nordisk',   heading: 'Space Grotesk',    body: 'Inter',            headingFont: "'Space Grotesk', sans-serif",        bodyFont: "'Inter', sans-serif" },
+    { id: 'startup',   name: 'Startup',   heading: 'Plus Jakarta Sans',body: 'Inter',            headingFont: "'Plus Jakarta Sans', sans-serif",    bodyFont: "'Inter', sans-serif" },
+    { id: 'sora-mix',  name: 'Sora Mix',  heading: 'Sora',             body: 'Inter',            headingFont: "'Sora', sans-serif",                 bodyFont: "'Inter', sans-serif" },
+    { id: 'myk',       name: 'Myk',       heading: 'Outfit',           body: 'DM Sans',          headingFont: "'Outfit', sans-serif",               bodyFont: "'DM Sans', sans-serif" },
+    { id: 'grotesk',   name: 'Grotesk',   heading: 'Manrope',          body: 'Inter',            headingFont: "'Manrope', sans-serif",              bodyFont: "'Inter', sans-serif" },
+    { id: 'ren',       name: 'Ren',       heading: 'DM Sans',          body: 'Inter',            headingFont: "'DM Sans', sans-serif",              bodyFont: "'Inter', sans-serif" },
+    // --- Full serif ---
+    { id: 'lora-duo',  name: 'Lora Duo',  heading: 'Lora',             body: 'Lora',             headingFont: "'Lora', Georgia, serif",             bodyFont: "'Lora', Georgia, serif" },
+    { id: 'avis',      name: 'Avis',      heading: 'Playfair Display', body: 'Lora',             headingFont: "'Playfair Display', Georgia, serif", bodyFont: "'Lora', Georgia, serif" },
+  ];
+
+  function getStoredFont(): string {
+    return localStorage.getItem('font-theme') || 'modern';
+  }
+
+  function applyFont(theme: string): void {
+    if (theme === 'modern') {
+      document.documentElement.removeAttribute('data-font');
+    } else {
+      document.documentElement.setAttribute('data-font', theme);
+    }
+  }
+
+  function updateLabel(theme: string): void {
+    const label = document.getElementById('font-label');
+    const entry = FONT_THEMES.find(t => t.id === theme);
+    if (label) {
+      label.textContent = entry?.name || 'Modern';
+    }
+  }
+
+  function updateActiveState(theme: string): void {
+    const grid = document.getElementById('font-dropdown-grid');
+    if (!grid) return;
+    grid.querySelectorAll('.font-option').forEach(el => {
+      el.classList.toggle('active', (el as HTMLElement).dataset.font === theme);
+    });
+  }
+
+  function selectFont(theme: string): void {
+    localStorage.setItem('font-theme', theme);
+    applyFont(theme);
+    updateLabel(theme);
+    updateActiveState(theme);
+    closeDropdown();
+  }
+
+  function toggleDropdown(): void {
+    const dropdown = document.getElementById('font-dropdown');
+    const btn = document.getElementById('font-switcher');
+    if (!dropdown || !btn) return;
+    const isOpen = dropdown.classList.contains('open');
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      dropdown.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function closeDropdown(): void {
+    const dropdown = document.getElementById('font-dropdown');
+    const btn = document.getElementById('font-switcher');
+    dropdown?.classList.remove('open');
+    btn?.setAttribute('aria-expanded', 'false');
+  }
+
+  function buildDropdown(): void {
+    const grid = document.getElementById('font-dropdown-grid');
+    if (!grid || grid.children.length > 0) return;
+
+    const current = getStoredFont();
+
+    FONT_THEMES.forEach(theme => {
+      const btn = document.createElement('button');
+      btn.className = `font-option${theme.id === current ? ' active' : ''}`;
+      btn.dataset.font = theme.id;
+      btn.setAttribute('role', 'option');
+      btn.setAttribute('aria-selected', String(theme.id === current));
+
+      const sameFont = theme.heading === theme.body;
+      const meta = sameFont ? theme.heading : `${theme.heading} + ${theme.body}`;
+
+      btn.innerHTML = `
+        <span class="font-option-name">${theme.name}</span>
+        <span class="font-option-preview" style="font-family: ${theme.headingFont}">Aa Bb Cc</span>
+        <span class="font-option-meta">${meta}</span>
+      `;
+
+      btn.addEventListener('click', () => selectFont(theme.id));
+      grid.appendChild(btn);
+    });
+  }
+
+  function initFontSwitcher(): void {
+    const stored = getStoredFont();
+    applyFont(stored);
+    updateLabel(stored);
+
+    const btn = document.getElementById('font-switcher');
+    // Remove old listeners by cloning
+    if (btn && !btn.dataset.init) {
+      btn.dataset.init = 'true';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+    }
+
+    buildDropdown();
+    updateActiveState(stored);
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('font-switcher-wrap');
+    if (wrap && !wrap.contains(e.target as Node)) {
+      closeDropdown();
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDropdown();
+  });
+
+  // Initialize
+  initFontSwitcher();
+  document.addEventListener('astro:page-load', initFontSwitcher);
+</script>

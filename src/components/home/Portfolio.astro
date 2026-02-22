@@ -1,264 +1,256 @@
 ---
-// Portfolio / Case Study section - TRE Allservice AS
-import Icon from '../icons/Icon.astro';
-import { Image } from 'astro:assets';
-import treAllserviceLogo from '../../assets/tre-allservice-logo.png';
+// Portfolio / Showcase section — bento grid with blurred bg + sharp overlay
 ---
 
 <section id="portefolje" class="section">
   <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Kunder vi har jobbet med</p>
-      <h2>TREkontroll: Full <span class="text-accent">oversikt</span> over kundene</h2>
-    </div>
-
-    <div class="case-content">
-      <div class="case-client reveal">
-        <a href="https://treallservice.no" target="_blank" rel="noopener" class="client-logo-link">
-          <Image src={treAllserviceLogo} alt="TRE Allservice AS logo" class="client-logo" />
-        </a>
-      </div>
-
-      <div class="case-intro reveal-left">
-        <p>
-          <strong>Kunden:</strong> TRE Allservice AS – elektro- og brannvernbedrift i Nord-Norge med el-kontroll, termografi og brannvarsling for næring, landbruk og bolig.
-        </p>
-        <p>
-          <strong>Utfordringen:</strong> Hundrevis av kunder med ulike kontrollintervaller. Vanskelig å holde oversikt over hvem som trengte inspeksjon, og mye tid gikk til manuell planlegging av kjøreruter.
-        </p>
-        <p class="case-price">
-          <Icon name="check-circle" size={18} />
-          <span>Kunden valgte <strong>fastpris</strong> for dette prosjektet</span>
-        </p>
-      </div>
-
-      <div class="case-results reveal-stagger">
-        <div class="case-result">
-          <span class="result-number">100%</span>
-          <span class="result-label">Kontroll på forfall</span>
-        </div>
-        <div class="case-result">
-          <span class="result-number">3x</span>
-          <span class="result-label">Raskere ruteplanlegging</span>
-        </div>
-        <div class="case-result">
-          <span class="result-number">0</span>
-          <span class="result-label">Glemte inspeksjoner</span>
-        </div>
-        <div class="case-result">
-          <span class="result-number">1</span>
-          <span class="result-label">System for alt</span>
+    <div class="bento-grid">
+      {/* Row 1: two large side by side */}
+      <div class="project-card bento-wide reveal">
+        <div class="project-visual">
+          <img src="/treallservice.png" alt="" class="project-bg" aria-hidden="true" />
+          <div class="project-frame">
+            <img src="/treallservice.png" alt="TRE Allservice AS" class="project-screen" loading="lazy" />
+          </div>
+          <div class="project-bar">
+            <div class="bar-left">
+              <span class="bar-label">Kundeportal</span>
+              <span class="bar-divider"></span>
+              <span class="project-status">Produksjon</span>
+            </div>
+            <a href="https://trekontroll.no" target="_blank" rel="noopener" class="project-live">Se live</a>
+          </div>
         </div>
       </div>
 
-      <blockquote class="case-quote reveal">
-        <p>"Systemet har gjort hverdagen vår mye enklere. Vi har full oversikt over alle kunder og slipper å bekymre oss for å glemme inspeksjoner."</p>
-        <cite>— TRE Allservice AS</cite>
-      </blockquote>
-
-      <div class="case-solution reveal-right">
-        <h3>Løsningen vi bygget:</h3>
-        <ul>
-          <li><Icon name="check" size={16} /> Kundedatabase med søk, filtrering og kategorisering</li>
-          <li><Icon name="check" size={16} /> Forfallsoversikt med fargekoding og varsler</li>
-          <li><Icon name="check" size={16} /> Kartvisning med ruteoptimalisering for inspeksjoner</li>
-          <li><Icon name="check" size={16} /> Sjekklister og kontaktlogg for kvalitetssikring</li>
-          <li><Icon name="check" size={16} /> Dashboard med statistikk og datakvalitet</li>
-        </ul>
+      <div class="project-card bento-wide reveal" style="animation-delay: 0.12s">
+        <div class="project-visual">
+          <img src="/preik.png" alt="" class="project-bg" aria-hidden="true" />
+          <div class="project-frame">
+            <img src="/preik.png" alt="Preik.ai" class="project-screen" loading="lazy" />
+          </div>
+          <div class="project-bar">
+            <div class="bar-left">
+              <span class="bar-label">AI-chatbot</span>
+              <span class="bar-divider"></span>
+              <span class="project-status">Produksjon</span>
+            </div>
+            <a href="https://preik.ai" target="_blank" rel="noopener" class="project-live">Se live</a>
+          </div>
+        </div>
       </div>
 
-      <div class="case-cta reveal-scale">
-        <a href="https://trekontroll.no" target="_blank" rel="noopener" class="btn btn-primary btn-lg btn-shimmer">
-          Se systemet <Icon name="arrow-right" size={16} />
-        </a>
+      {/* Row 2: RK + SkyPlanner stacked left, Chatbot tall right */}
+      <div class="bento-stack">
+        <div class="project-card reveal" style="animation-delay: 0.24s">
+          <div class="project-visual">
+            <img src="/rk.png" alt="" class="project-bg" aria-hidden="true" />
+            <div class="project-frame">
+              <img src="/rk.png" alt="RK" class="project-screen" loading="lazy" />
+            </div>
+            <div class="project-bar">
+              <div class="bar-left">
+                <span class="bar-label">Nettside</span>
+                <span class="bar-divider"></span>
+                <span class="project-status">Produksjon</span>
+              </div>
+              <a href="#" class="project-live">Se live</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-card reveal" style="animation-delay: 0.36s">
+          <div class="project-visual">
+            <img src="/skyplanner.png" alt="" class="project-bg" aria-hidden="true" />
+            <div class="project-frame">
+              <img src="/skyplanner.png" alt="SkyPlanner" class="project-screen" loading="lazy" />
+            </div>
+            <div class="project-bar">
+              <div class="bar-left">
+                <span class="bar-label">System</span>
+                <span class="bar-divider"></span>
+                <span class="project-status">Produksjon</span>
+              </div>
+              <a href="#" class="project-live">Se live</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card bento-tall reveal" style="animation-delay: 0.3s">
+        <div class="project-visual">
+          <img src="/chatbot.png" alt="" class="project-bg" aria-hidden="true" />
+          <div class="project-frame">
+            <img src="/chatbot.png" alt="Chatbot" class="project-screen" loading="lazy" />
+          </div>
+          <div class="project-bar">
+            <div class="bar-left">
+              <span class="bar-label">AI-assistent</span>
+              <span class="bar-divider"></span>
+              <span class="project-status">Produksjon</span>
+            </div>
+            <a href="#" class="project-live">Se live</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .case-content {
-    max-width: 800px;
-    margin: 0 auto;
+  #portefolje {
+    background: #fff;
   }
 
-  .case-client {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .client-logo-link {
-    display: inline-block;
-    transition: transform 0.2s var(--ease-out), opacity 0.2s;
-  }
-
-  .client-logo-link:hover {
-    transform: scale(1.03);
-    opacity: 0.9;
-  }
-
-  .client-logo {
-    max-width: 280px;
-    height: auto;
-  }
-
-  .case-intro {
-    margin-bottom: 48px;
-  }
-
-  .case-intro p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 16px;
-  }
-
-  .case-intro strong {
-    color: var(--text);
-  }
-
-  .case-price {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 20px;
-    margin-top: 8px;
-  }
-
-  .case-price :global(svg) {
-    color: var(--success);
-    flex-shrink: 0;
-  }
-
-  .case-results {
+  .bento-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
-    margin-bottom: 48px;
-    padding: 32px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
   }
 
-  .case-result {
-    text-align: center;
+  .bento-wide {
+    grid-column: span 1;
   }
 
-  .result-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
-  .result-label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 8px;
-  }
-
-  .case-solution {
-    margin-bottom: 48px;
-  }
-
-  .case-solution h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  .case-solution ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .bento-stack {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 24px;
   }
 
-  .case-solution li {
+  .bento-tall {
+    grid-column: span 1;
+  }
+
+  .bento-tall .project-visual {
+    height: 100%;
+  }
+
+  .project-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  /* Visual container */
+  .project-visual {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 12px;
-    color: var(--text-secondary);
-    font-size: 1.05rem;
+    justify-content: center;
+    padding: 28px;
+    border-radius: 8px;
+    overflow: hidden;
   }
 
-  .case-solution li :global(svg) {
-    color: var(--success);
-    flex-shrink: 0;
+  /* Blurred expanded background */
+  .project-bg {
+    position: absolute;
+    inset: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    object-fit: cover;
+    filter: blur(20px) saturate(1.2);
+    transform: scale(1.1);
+    z-index: 0;
   }
 
-  .case-quote {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 24px 28px;
-    margin-bottom: 48px;
-    font-style: italic;
+  .project-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.08);
+    z-index: 1;
   }
 
-  .case-quote p {
-    color: var(--text);
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 12px;
+  /* Sharp foreground frame */
+  .project-frame {
+    position: relative;
+    z-index: 2;
+    width: 88%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.15);
   }
 
-  .case-quote cite {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-style: normal;
+  .project-screen {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
-  .case-cta {
-    text-align: center;
+  /* Floating glass bar — hidden by default, appears on hover */
+  .project-bar {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 1.25rem;
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.35) 50%,
+        rgba(0, 0, 0, 0.35)
+      );
+    background-clip: padding-box;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 100px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
   }
 
-  .btn-primary {
-    display: inline-flex;
+  .project-card:hover .project-bar {
+    opacity: 1;
+  }
+
+  .bar-left {
+    display: flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 32px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: var(--radius);
-    text-decoration: none;
-    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(239, 68, 68, 0.35);
+  .bar-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .bar-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .project-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .project-live {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
   }
 
   @media (max-width: 768px) {
-    .case-results {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding: 24px;
+    .bento-grid {
+      grid-template-columns: 1fr;
     }
 
-    .result-number {
-      font-size: 2rem;
-    }
-
-    .case-intro p {
-      font-size: 1rem;
-    }
-
-    .case-solution li {
-      font-size: 1rem;
+    .bento-tall .project-visual {
+      height: auto;
     }
   }
 </style>

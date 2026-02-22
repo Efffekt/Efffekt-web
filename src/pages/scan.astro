@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Scanner from '../components/home/Scanner.astro';
+---
+
+<BaseLayout
+  title="Gratis nettside-analyse | EFFFEKT"
+  description="Få en komplett analyse av hastighet, SEO, sikkerhet og mobilvennlighet — helt gratis."
+>
+  <div class="scan-page">
+    <Scanner />
+  </div>
+</BaseLayout>
+
+<style>
+  .scan-page {
+    background: var(--bg);
+    min-height: 60vh;
+  }
+</style>
+
+<script>
+  function initReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '-20px' });
+    (window as any).__scanReveal = (el: HTMLElement) => {
+      el.querySelectorAll('.reveal, .reveal-stagger').forEach(r => observer.observe(r));
+    };
+  }
+
+  function prefillScanner() {
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get('url');
+    if (!url) return;
+
+    // Hide the form — this is a results-only page when url is provided
+    const header = document.querySelector('#scanner .section-header') as HTMLElement;
+    const box = document.querySelector('#scanner .scanner-box') as HTMLElement;
+    if (header) header.style.display = 'none';
+    if (box) box.style.display = 'none';
+
+    // Wait a tick so initScanner has time to attach its submit listener
+    requestAnimationFrame(() => {
+      const input = document.getElementById('scannerUrl') as HTMLInputElement;
+      const form = document.getElementById('scannerForm') as HTMLFormElement;
+      if (input && form) {
+        input.value = url;
+        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      }
+    });
+  }
+
+  initReveal();
+  prefillScanner();
+  document.addEventListener('astro:page-load', () => { initReveal(); prefillScanner(); });
+</script>

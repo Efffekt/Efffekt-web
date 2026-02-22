@@ -1,5 +1,5 @@
 ---
-import ServiceLayout from '../layouts/ServiceLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/icons/Icon.astro';
 
 const faqItems = [
@@ -13,44 +13,57 @@ const faqItems = [
   },
   {
     question: "Er det trygt å koble sammen systemer?",
-    answer: "Ja! Vi bruker sikre koblinger med kryptering. All dataoverføring logges, og vi setter opp varsler hvis noe går galt. Data forblir hos deg - vi lagrer ingenting."
+    answer: "Ja! Vi bruker sikre koblinger med kryptering. All dataoverføring logges, og vi setter opp varsler hvis noe går galt. Data forblir hos deg — vi lagrer ingenting."
   },
   {
     question: "Hva skjer hvis noe går galt?",
-    answer: "Vi bygger inn automatisk feilhåndtering og varsler. Hvis en integrasjon feiler, får du beskjed med en gang. Overvåkning og feilretting er inkludert i prisen."
+    answer: "Vi bygger inn automatisk feilhåndtering og varsler. Hvis en integrasjon feiler, får du beskjed med en gang. Overvåkning og feilretting er inkludert."
   },
   {
     question: "Kan jeg endre integrasjonene senere?",
-    answer: "Ja! Integrasjoner kan justeres når som helst. Trenger du å koble på et nytt system eller endre dataflyt? Det er inkludert i abonnementet."
+    answer: "Ja! Integrasjoner kan justeres når som helst. Trenger du å koble på et nytt system eller endre dataflyt? Det er inkludert."
   }
 ];
 ---
 
-<ServiceLayout
-  title="Integrasjon | Fra 799 kr/mnd | EFFFEKT"
-  description="Koble systemene dine sammen. Systemene snakker sammen automatisk - data flyter av seg selv. Ingen bindingstid, overvåkning inkludert."
+<BaseLayout
+  title="Integrasjon | EFFFEKT"
+  description="Koble systemene dine sammen. Data flyter automatisk, alltid oppdatert. Overvåkning og vedlikehold inkludert. Ingen bindingstid."
   canonical="https://efffekt.no/integrasjon"
-  serviceName="Systemintegrasjon"
-  serviceDescription="Koble systemene dine sammen med skreddersydde løsninger. Data flyter automatisk mellom systemene dine, alltid oppdatert."
-  price="7900"
-  faqItems={faqItems}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Systemintegrasjon",
+      "description": "Koble systemene dine sammen med skreddersydde løsninger. Data flyter automatisk mellom systemene dine, alltid oppdatert.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "EFFFEKT",
+        "url": "https://efffekt.no"
+      },
+      "areaServed": { "@type": "Country", "name": "Norge" },
+      "offers": { "@type": "Offer", "price": "7900", "priceCurrency": "NOK" }
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    })} />
+  </Fragment>
+
   <!-- Hero Section -->
   <section class="service-hero">
     <div class="container">
       <div class="service-hero-content reveal">
-        <h1>Koble systemene <span class="gradient-text">sammen</span></h1>
-        <p class="service-hero-subtitle">Slutt på manuell dataoverføring. La systemene snakke sammen automatisk - spar tid og unngå feil.</p>
-        <div class="service-hero-prices">
-          <div class="price-box featured">
-            <span class="price-label">Integrasjon</span>
-            <span class="price-amount">Fra 799 kr/mnd</span>
-            <span class="price-alt">Overvåkning og vedlikehold inkludert</span>
-          </div>
-        </div>
-        <a href="#kontakt" class="btn btn-primary btn-large">
-          <Icon name="comments" size={16} /> Book gratis samtale
-        </a>
+        <span class="section-label">Tjeneste</span>
+        <p class="editorial-statement split-words">Koble systemene sammen</p>
+        <p class="editorial-body">Slutt på manuell dataoverføring. La systemene snakke sammen automatisk — spar tid og unngå feil.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
       </div>
     </div>
   </section>
@@ -58,10 +71,11 @@ const faqItems = [
   <!-- What's Included -->
   <section class="service-details">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Hva du <span class="gradient-text">får</span></h2>
+      <div class="service-details-header reveal">
+        <span class="section-label">Hva er inkludert</span>
+        <h2 class="efffekt-bar">Alt du trenger for sømløs integrasjon</h2>
       </div>
-      <div class="included-grid reveal">
+      <div class="included-grid reveal-stagger">
         <div class="included-item">
           <div class="included-icon"><Icon name="plug" size={24} /></div>
           <h3>Systemkoblinger</h3>
@@ -99,70 +113,27 @@ const faqItems = [
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
-      </div>
-      <div class="faq-list reveal">
-        {faqItems.map(item => (
-          <div class="faq-item">
-            <button class="faq-question" >
-              <span>{item.question}</span>
-              <Icon name="chevron-down" size={16} />
-            </button>
-            <div class="faq-answer">
-              <p>{item.answer}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Form -->
-  <section id="kontakt" class="contact-section">
-    <div class="container">
-      <div class="contact-grid">
-        <div class="contact-text reveal-left">
-          <h2>Klar for å <span class="gradient-text">koble sammen?</span></h2>
-          <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
-          <div class="contact-trust">
-            <div class="trust-item">
-              <Icon name="gift" size={16} />
-              <span>Gratis demo først</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="check-circle" size={16} />
-              <span>Ingen bindingstid</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="chart-line" size={16} />
-              <span>Overvåkning inkludert</span>
-            </div>
-          </div>
+      <div class="faq-grid">
+        <div class="faq-left reveal">
+          <p class="editorial-statement split-words">Vanlige spørsmål</p>
+          <p class="editorial-body">Alt du lurer på om integrasjoner.</p>
+          <a href="/#kontakt" class="faq-cta-link">
+            Spør oss direkte
+            <span class="faq-cta-circle"><Icon name="arrow-right" size={12} /></span>
+          </a>
         </div>
-        <div class="contact-form-wrapper reveal-right">
-          <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
-            <input type="hidden" name="_cc" value="daniel@efffekt.no">
-            <input type="hidden" name="_subject" value="Forespørsel: Integrasjon">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-            <div class="form-group">
-              <label for="name">Navn *</label>
-              <input type="text" id="name" name="name" required placeholder="Ditt navn">
+        <div class="faq-list">
+          {faqItems.map((item, index) => (
+            <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
+              <button class="faq-question" aria-expanded="false">
+                <span>{item.question}</span>
+                <Icon name="chevron-down" size={20} />
+              </button>
+              <div class="faq-answer">
+                <p>{item.answer}</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="email">E-post *</label>
-              <input type="email" id="email" name="email" required placeholder="din@epost.no">
-            </div>
-            <div class="form-group">
-              <label for="message">Fortell kort om behovet</label>
-              <textarea id="message" name="message" rows="3" placeholder="Hvilke systemer vil du koble sammen?"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-large btn-full">
-              <Icon name="paper-plane" size={16} /> Send forespørsel
-            </button>
-          </form>
+          ))}
         </div>
       </div>
     </div>
@@ -171,26 +142,82 @@ const faqItems = [
   <!-- Other Services -->
   <section class="other-services">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Andre <span class="gradient-text">tjenester</span></h2>
+      <div class="other-services-header reveal">
+        <span class="section-label">Andre tjenester</span>
+        <h2 class="efffekt-bar">Se hva mer vi kan hjelpe med</h2>
       </div>
-      <div class="other-services-grid reveal">
+      <div class="other-services-grid reveal-stagger">
         <a href="/nettside" class="other-service-card">
           <Icon name="globe" size={24} />
-          <h3>Profesjonell nettside</h3>
-          <span class="other-price">Fra 549 kr/mnd</span>
+          <h3>Nettside</h3>
+          <p class="other-desc">Nettsider som konverterer</p>
         </a>
         <a href="/plugin" class="other-service-card">
           <Icon name="laptop-code" size={24} />
           <h3>Plugin</h3>
-          <span class="other-price">Fra 649 kr/mnd</span>
+          <p class="other-desc">Utvid systemene du allerede har</p>
         </a>
         <a href="/ai" class="other-service-card">
           <Icon name="robot" size={24} />
           <h3>AI-automatisering</h3>
-          <span class="other-price">Fra 999 kr/mnd</span>
+          <p class="other-desc">Automatiser repeterende oppgaver</p>
         </a>
       </div>
     </div>
   </section>
-</ServiceLayout>
+
+  <!-- CTA Band -->
+  <section class="service-cta-section">
+    <div class="container">
+      <div class="service-cta-band reveal">
+        <p class="editorial-statement split-words">Klar for å koble sammen?</p>
+        <p class="editorial-body">Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function initServicePage() {
+      const revealElements = document.querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger'
+      );
+      const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        revealElements.forEach(el => {
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight * 0.85) {
+            el.classList.add('visible');
+          }
+        });
+      };
+      window.addEventListener('scroll', revealOnScroll, { passive: true });
+      revealOnScroll();
+    }
+    initServicePage();
+    document.addEventListener('astro:page-load', initServicePage);
+  </script>
+
+  <script is:inline>
+    if (!window.__faqInitialized) {
+      window.__faqInitialized = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.faq-question');
+        if (!btn) return;
+        e.preventDefault();
+        var item = btn.parentElement;
+        if (!item) return;
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(function(el) {
+          el.classList.remove('open');
+          var elBtn = el.querySelector('.faq-question');
+          if (elBtn) elBtn.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  </script>
+</BaseLayout>

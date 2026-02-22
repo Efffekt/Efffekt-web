@@ -1,11 +1,11 @@
 ---
-import ServiceLayout from '../layouts/ServiceLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/icons/Icon.astro';
 
 const faqItems = [
   {
     question: "Hva kan AI faktisk gjøre for min bedrift?",
-    answer: "AI kan automatisere repetitive oppgaver som å svare på kundehenvendelser, sortere e-post, generere dokumenter, og søke i bedriftens data. Konkret sparer dette typisk 10+ timer per uke."
+    answer: "AI kan automatisere repetitive oppgaver som å svare på kundehenvendelser, sortere e-post, generere dokumenter, og søke i bedriftens data."
   },
   {
     question: "Er det trygt å bruke AI med kundedata?",
@@ -13,44 +13,57 @@ const faqItems = [
   },
   {
     question: "Trenger jeg teknisk kompetanse?",
-    answer: "Nei. Vi lager brukergrensesnitt som er like enkle å bruke som vanlige apper. Du trenger ikke kode eller teknisk bakgrunn - bare fortelle AI hva du vil."
+    answer: "Nei. Vi lager brukergrensesnitt som er like enkle å bruke som vanlige apper. Du trenger ikke kode eller teknisk bakgrunn — bare fortelle AI hva du vil."
   },
   {
     question: "Kan AI integreres med systemene vi allerede har?",
     answer: "Ja! Vi har erfaring med å koble AI til CRM-systemer, e-post, kundesystemer og nettsider. AI-en kan bruke data fra dine eksisterende løsninger."
   },
   {
-    question: "Hva koster AI-løsninger?",
-    answer: "Fra 999 kr/mnd med alt inkludert - utvikling, hosting, vedlikehold og API-kostnader. Ingen bindingstid, avslutt når du vil."
+    question: "Er det bindingstid?",
+    answer: "Nei, ingen bindingstid. Alt er inkludert — utvikling, hosting, vedlikehold og API-kostnader. Avslutt når du vil."
   }
 ];
 ---
 
-<ServiceLayout
-  title="AI-automatisering | Fra 999 kr/mnd | EFFFEKT"
-  description="AI-løsninger for norske bedrifter. Chatbot, automatisering og smart dokumenthåndtering. Spar 10+ timer i uka. Ingen bindingstid."
+<BaseLayout
+  title="AI-automatisering | EFFFEKT"
+  description="AI-løsninger for norske bedrifter. Chatbot, automatisering og smart dokumenthåndtering. GDPR-vennlig. Ingen bindingstid."
   canonical="https://efffekt.no/ai"
-  serviceName="AI-integrasjon"
-  serviceDescription="AI-løsninger for norske bedrifter. Chatbot, automatisering, smart dokumentgenerering og naturlig språk-søk."
-  price="9900"
-  faqItems={faqItems}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "AI-integrasjon",
+      "description": "AI-løsninger for norske bedrifter. Chatbot, automatisering, smart dokumentgenerering og naturlig språk-søk.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "EFFFEKT",
+        "url": "https://efffekt.no"
+      },
+      "areaServed": { "@type": "Country", "name": "Norge" },
+      "offers": { "@type": "Offer", "price": "9900", "priceCurrency": "NOK" }
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    })} />
+  </Fragment>
+
   <!-- Hero Section -->
   <section class="service-hero">
     <div class="container">
       <div class="service-hero-content reveal">
-        <h1>AI som <span class="gradient-text">faktisk hjelper</span></h1>
-        <p class="service-hero-subtitle">Spar 10+ timer i uka. La AI svare kunder, sortere henvendelser og generere dokumenter - mens du fokuserer på det viktige.</p>
-        <div class="service-hero-prices">
-          <div class="price-box featured">
-            <span class="price-label">AI-automatisering</span>
-            <span class="price-amount">Fra 999 kr/mnd</span>
-            <span class="price-alt">Ingen bindingstid, alt inkludert</span>
-          </div>
-        </div>
-        <a href="#kontakt" class="btn btn-primary btn-large">
-          <Icon name="comments" size={16} /> Book gratis samtale
-        </a>
+        <span class="section-label">Tjeneste</span>
+        <p class="editorial-statement split-words">AI som faktisk hjelper</p>
+        <p class="editorial-body">Automatiser repeterende oppgaver og la teamet fokusere på det som betyr noe. GDPR-vennlig og tilpasset din bedrift.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
       </div>
     </div>
   </section>
@@ -58,10 +71,11 @@ const faqItems = [
   <!-- What's Included -->
   <section class="service-details">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Hva du <span class="gradient-text">får</span></h2>
+      <div class="service-details-header reveal">
+        <span class="section-label">Hva er inkludert</span>
+        <h2 class="efffekt-bar">Alt du trenger for smart automatisering</h2>
       </div>
-      <div class="included-grid reveal">
+      <div class="included-grid reveal-stagger">
         <div class="included-item">
           <div class="included-icon"><Icon name="robot" size={24} /></div>
           <h3>Chatbot 24/7</h3>
@@ -99,70 +113,27 @@ const faqItems = [
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
-      </div>
-      <div class="faq-list reveal">
-        {faqItems.map(item => (
-          <div class="faq-item">
-            <button class="faq-question" >
-              <span>{item.question}</span>
-              <Icon name="chevron-down" size={16} />
-            </button>
-            <div class="faq-answer">
-              <p>{item.answer}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Form -->
-  <section id="kontakt" class="contact-section">
-    <div class="container">
-      <div class="contact-grid">
-        <div class="contact-text reveal-left">
-          <h2>Klar for <span class="gradient-text">AI?</span></h2>
-          <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
-          <div class="contact-trust">
-            <div class="trust-item">
-              <Icon name="gift" size={16} />
-              <span>Gratis demo først</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="shield-alt" size={16} />
-              <span>GDPR-vennlig oppsett</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="clock" size={16} />
-              <span>Spar 10+ timer/uke</span>
-            </div>
-          </div>
+      <div class="faq-grid">
+        <div class="faq-left reveal">
+          <p class="editorial-statement split-words">Vanlige spørsmål</p>
+          <p class="editorial-body">Alt du lurer på om AI-løsninger.</p>
+          <a href="/#kontakt" class="faq-cta-link">
+            Spør oss direkte
+            <span class="faq-cta-circle"><Icon name="arrow-right" size={12} /></span>
+          </a>
         </div>
-        <div class="contact-form-wrapper reveal-right">
-          <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
-            <input type="hidden" name="_cc" value="daniel@efffekt.no,michael@efffekt.no">
-            <input type="hidden" name="_subject" value="Forespørsel: AI-integrasjon">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-            <div class="form-group">
-              <label for="name">Navn *</label>
-              <input type="text" id="name" name="name" required placeholder="Ditt navn">
+        <div class="faq-list">
+          {faqItems.map((item, index) => (
+            <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
+              <button class="faq-question" aria-expanded="false">
+                <span>{item.question}</span>
+                <Icon name="chevron-down" size={20} />
+              </button>
+              <div class="faq-answer">
+                <p>{item.answer}</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="email">E-post *</label>
-              <input type="email" id="email" name="email" required placeholder="din@epost.no">
-            </div>
-            <div class="form-group">
-              <label for="message">Fortell kort om behovet</label>
-              <textarea id="message" name="message" rows="3" placeholder="Hva vil du automatisere med AI?"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-large btn-full">
-              <Icon name="paper-plane" size={16} /> Send forespørsel
-            </button>
-          </form>
+          ))}
         </div>
       </div>
     </div>
@@ -171,21 +142,82 @@ const faqItems = [
   <!-- Other Services -->
   <section class="other-services">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Andre <span class="gradient-text">tjenester</span></h2>
+      <div class="other-services-header reveal">
+        <span class="section-label">Andre tjenester</span>
+        <h2 class="efffekt-bar">Se hva mer vi kan hjelpe med</h2>
       </div>
-      <div class="other-services-grid reveal">
+      <div class="other-services-grid reveal-stagger">
         <a href="/nettside" class="other-service-card">
           <Icon name="globe" size={24} />
-          <h3>Profesjonell nettside</h3>
-          <span class="other-price">Fra 549 kr/mnd</span>
+          <h3>Nettside</h3>
+          <p class="other-desc">Nettsider som konverterer</p>
         </a>
-        <a href="/system" class="other-service-card">
+        <a href="/integrasjon" class="other-service-card">
+          <Icon name="plug" size={24} />
+          <h3>Integrasjon</h3>
+          <p class="other-desc">Koble systemene dine sammen</p>
+        </a>
+        <a href="/plugin" class="other-service-card">
           <Icon name="laptop-code" size={24} />
-          <h3>Skreddersydd system</h3>
-          <span class="other-price">Fra 649 kr/mnd</span>
+          <h3>Plugin</h3>
+          <p class="other-desc">Utvid systemene du allerede har</p>
         </a>
       </div>
     </div>
   </section>
-</ServiceLayout>
+
+  <!-- CTA Band -->
+  <section class="service-cta-section">
+    <div class="container">
+      <div class="service-cta-band reveal">
+        <p class="editorial-statement split-words">Klar for AI?</p>
+        <p class="editorial-body">Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function initServicePage() {
+      const revealElements = document.querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger'
+      );
+      const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        revealElements.forEach(el => {
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight * 0.85) {
+            el.classList.add('visible');
+          }
+        });
+      };
+      window.addEventListener('scroll', revealOnScroll, { passive: true });
+      revealOnScroll();
+    }
+    initServicePage();
+    document.addEventListener('astro:page-load', initServicePage);
+  </script>
+
+  <script is:inline>
+    if (!window.__faqInitialized) {
+      window.__faqInitialized = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.faq-question');
+        if (!btn) return;
+        e.preventDefault();
+        var item = btn.parentElement;
+        if (!item) return;
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(function(el) {
+          el.classList.remove('open');
+          var elBtn = el.querySelector('.faq-question');
+          if (elBtn) elBtn.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  </script>
+</BaseLayout>

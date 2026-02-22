@@ -3,63 +3,75 @@ import Icon from '../icons/Icon.astro';
 
 const faqs = [
   {
-    question: 'Hva er inkludert i månedsprisen?',
-    answer: 'Alt du trenger for at løsningen skal fungere optimalt: hosting, vedlikehold, sikkerhetskopier, oppdateringer og kontinuerlige forbedringer. Du får også support og hjelp når du trenger det. Våre kunder sparer typisk 10-15 timer per uke på manuelle oppgaver.'
+    question: 'Hva er inkludert?',
+    answer: 'Alt du trenger: hosting, vedlikehold, sikkerhetskopier, oppdateringer og kontinuerlige forbedringer. Support er alltid inkludert.'
   },
   {
-    question: 'Kan jeg avslutte når som helst?',
-    answer: 'Ja, det er ingen bindingstid. Du kan avslutte abonnementet når som helst med én måneds varsel. Vi tror på å levere så god verdi at du ønsker å bli.'
+    question: 'Er det bindingstid?',
+    answer: 'Nei. Du kan avslutte når som helst med én måneds varsel. Vi tror på å levere så god verdi at du velger å bli.'
   },
   {
-    question: 'Hvordan fungerer demoen?',
-    answer: 'Vi bygger en fungerende prototype basert på dine behov - helt gratis. Du får se og teste løsningen med dine egne data, så du kan vurdere effekten før du bestemmer deg. Liker du det du ser, starter vi samarbeidet. Hvis ikke, har du ikke tapt noe.'
+    question: 'Hvordan fungerer den gratis demoen?',
+    answer: 'Vi bygger en fungerende prototype basert på dine behov — helt gratis. Du tester løsningen med egne data før du bestemmer deg. Liker du det, starter vi samarbeidet. Hvis ikke, har du ikke tapt noe.'
   },
   {
     question: 'Hvem eier løsningen?',
-    answer: 'Du eier all data og innhold. Hvis du avslutter, får du eksportert alt du trenger. For nettsider og systemer vi har utviklet, tilbyr vi også mulighet for å kjøpe ut kildekoden.'
+    answer: 'Du eier all data og innhold. Avslutter du, får du eksportert alt du trenger. Vi tilbyr også mulighet for å kjøpe ut kildekoden.'
   },
   {
     question: 'Hva skjer hvis noe går galt?',
-    answer: 'Vi overvåker alle løsninger 24/7 og tar automatiske sikkerhetskopier daglig. Ved problemer varsles vi umiddelbart og fikser det - vanligvis før du merker noe. Support er alltid inkludert.'
+    answer: 'Vi overvåker alle løsninger 24/7 med automatiske sikkerhetskopier daglig. Ved problemer varsles vi umiddelbart og fikser det — vanligvis før du merker noe.'
   },
   {
     question: 'Hva om løsningen ikke passer for oss?',
-    answer: 'Du tester alltid gratis først med en fungerende prototype. Hvis du ikke er fornøyd, har du ikke forpliktet deg til noe. Ingen risiko, ingen bindingstid.'
+    answer: 'Du tester alltid gratis først med en fungerende prototype. Er du ikke fornøyd, har du ikke forpliktet deg til noe. Ingen risiko, ingen bindingstid.'
   },
   {
-    question: 'Hvor mye koster det egentlig?',
-    answer: 'Månedsprisene starter fra 549 kr for nettsider, 649 kr for plugins, 799 kr for integrasjoner og 999 kr for AI-automatisering. Alt er inkludert – hosting, vedlikehold, support og forbedringer. Ingen skjulte kostnader.'
+    question: 'Hvor lang tid tar det å få en ferdig løsning?',
+    answer: 'Det avhenger av kompleksiteten, men de fleste prosjekter er klare innen 2–6 uker. Du får en fungerende prototype allerede etter første uke, slik at du kan gi tilbakemelding tidlig.'
+  },
+  {
+    question: 'Kan jeg oppdatere innholdet selv?',
+    answer: 'Ja. Vi setter opp et brukervennlig innholdssystem tilpasset dine behov, slik at du enkelt kan endre tekst, bilder og annet innhold uten teknisk kompetanse.'
+  },
+  {
+    question: 'Hva med SEO og ytelse?',
+    answer: 'Alle løsninger bygges med rask lastetid, ren kode og søkemotoroptimalisering fra dag én. Vi følger beste praksis for Core Web Vitals, tilgjengelighet og teknisk SEO.'
+  },
+  {
+    question: 'Kan dere integrere med systemer vi allerede bruker?',
+    answer: 'Absolutt. Vi har erfaring med de fleste CRM-, ERP- og betalingsløsninger. Vi kobler sammen systemene dine slik at data flyter automatisk og du slipper dobbeltarbeid.'
   }
 ];
 ---
 
-<section id="faq" class="section section-dark">
+<section id="faq" class="section">
   <div class="container">
-    <div class="section-header reveal">
-      <span class="section-label">FAQ</span>
-      <h2 class="efffekt-bar center">Ofte stilte spørsmål</h2>
-    </div>
+    <div class="faq-grid">
+      <div class="faq-left reveal">
+        <p class="editorial-statement split-words">Ofte stilte spørsmål</p>
+        <p class="editorial-body">Det meste du lurer på, samlet på ett sted.</p>
+        <a href="#kontakt" class="faq-cta-link">
+          Spør oss direkte
+          <span class="faq-cta-circle">
+            <Icon name="arrow-right" size={12} />
+          </span>
+        </a>
+      </div>
 
-    <div class="faq-list">
-      {faqs.map((faq, index) => (
-        <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
-          <button class="faq-question" aria-expanded="false">
-            <span>{faq.question}</span>
-            <Icon name="chevron-down" size={20} />
-          </button>
-          <div class="faq-answer">
-            <p>{faq.answer}</p>
+      <div class="faq-list">
+        {faqs.map((faq, index) => (
+          <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
+            <button class="faq-question" aria-expanded="false">
+              <span>{faq.question}</span>
+              <Icon name="chevron-down" size={20} />
+            </button>
+            <div class="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-
-    <div class="faq-cta reveal">
-      <p>Fant du ikke svaret du lette etter?</p>
-      <a href="#kontakt" class="btn btn-primary btn-lg">
-        Spør oss direkte
-        <Icon name="arrow-right" size={16} />
-      </a>
+        ))}
+      </div>
     </div>
   </div>
 </section>
@@ -95,50 +107,7 @@ const faqs = [
 </script>
 
 <style>
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
-  .section-header h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-  }
-
-  .section-label {
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  .faq-cta {
-    text-align: center;
-    margin-top: 48px;
-    padding: 32px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .faq-cta p {
-    color: var(--text);
-    font-size: 1.1rem;
-    margin-bottom: 16px;
-  }
-
-  .faq-cta .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+  #faq {
+    background: #fff;
   }
 </style>

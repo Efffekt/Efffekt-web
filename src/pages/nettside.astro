@@ -1,5 +1,5 @@
 ---
-import ServiceLayout from '../layouts/ServiceLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/icons/Icon.astro';
 
 const faqItems = [
@@ -8,8 +8,8 @@ const faqItems = [
     answer: "En standard nettside tar vanligvis 1-2 uker fra oppstart til lansering. Du får en fungerende demo innen 2-7 dager som du kan teste før du bestemmer deg."
   },
   {
-    question: "Hva er inkludert i prisen?",
-    answer: "Alt er inkludert: Design, utvikling, hosting, SSL-sertifikat, vedlikehold og oppdateringer. Du trenger ikke tenke på noe teknisk - vi tar oss av det."
+    question: "Hva er inkludert?",
+    answer: "Alt du trenger: design, utvikling, hosting, SSL-sertifikat, vedlikehold og oppdateringer. Du trenger ikke tenke på noe teknisk — vi tar oss av det."
   },
   {
     question: "Er det bindingstid?",
@@ -17,7 +17,7 @@ const faqItems = [
   },
   {
     question: "Kan jeg oppdatere nettsiden selv?",
-    answer: "Ja! Vi kan sette opp et enkelt CMS (innholdssystem) slik at du kan endre tekst og bilder selv. Eller så gjør vi endringene for deg - det er inkludert i prisen."
+    answer: "Ja! Vi kan sette opp et enkelt CMS slik at du kan endre tekst og bilder selv. Eller så gjør vi endringene for deg — det er inkludert."
   },
   {
     question: "Hva om jeg ikke liker resultatet?",
@@ -26,31 +26,44 @@ const faqItems = [
 ];
 ---
 
-<ServiceLayout
-  title="Profesjonell Nettside | Fra 549 kr/mnd | EFFFEKT"
-  description="Profesjonelle nettsider for norske bedrifter. Fra 549 kr/mnd, ingen bindingstid. SEO-optimalisert, responsivt design, vedlikehold inkludert."
+<BaseLayout
+  title="Profesjonell Nettside | EFFFEKT"
+  description="Profesjonelle nettsider for norske bedrifter. SEO-optimalisert, responsivt design, vedlikehold inkludert. Ingen bindingstid."
   canonical="https://efffekt.no/nettside"
-  serviceName="Profesjonell Nettside"
-  serviceDescription="Profesjonelle nettsider for norske bedrifter. Responsivt design, SEO-optimalisert, kontaktskjema, og rask lasting."
-  price="14900"
-  faqItems={faqItems}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Profesjonell Nettside",
+      "description": "Profesjonelle nettsider for norske bedrifter. Responsivt design, SEO-optimalisert, kontaktskjema, og rask lasting.",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "EFFFEKT",
+        "url": "https://efffekt.no"
+      },
+      "areaServed": { "@type": "Country", "name": "Norge" },
+      "offers": { "@type": "Offer", "price": "14900", "priceCurrency": "NOK" }
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+      }))
+    })} />
+  </Fragment>
+
   <!-- Hero Section -->
   <section class="service-hero">
     <div class="container">
       <div class="service-hero-content reveal">
-        <h1>En nettside som <span class="gradient-text">jobber for deg</span></h1>
-        <p class="service-hero-subtitle">Få flere henvendelser - med alt inkludert. Ingen bindingstid, avslutt når du vil.</p>
-        <div class="service-hero-prices">
-          <div class="price-box featured">
-            <span class="price-label">Profesjonell nettside</span>
-            <span class="price-amount">Fra 549 kr/mnd</span>
-            <span class="price-alt">Vedlikehold og hosting inkludert</span>
-          </div>
-        </div>
-        <a href="#kontakt" class="btn btn-primary btn-large">
-          <Icon name="comments" size={16} /> Book gratis samtale
-        </a>
+        <span class="section-label">Tjeneste</span>
+        <p class="editorial-statement split-words">En nettside som jobber for deg</p>
+        <p class="editorial-body">Rask, mobilvennlig og bygget for å konvertere besøkende til kunder. Alt inkludert — ingen bindingstid.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
       </div>
     </div>
   </section>
@@ -58,10 +71,11 @@ const faqItems = [
   <!-- What's Included -->
   <section class="service-details">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Hva du <span class="gradient-text">får</span></h2>
+      <div class="service-details-header reveal">
+        <span class="section-label">Hva er inkludert</span>
+        <h2 class="efffekt-bar">Alt du trenger for en profesjonell nettside</h2>
       </div>
-      <div class="included-grid reveal">
+      <div class="included-grid reveal-stagger">
         <div class="included-item">
           <div class="included-icon"><Icon name="palette" size={24} /></div>
           <h3>Skreddersydd design</h3>
@@ -96,115 +110,30 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- Pricing Info -->
-  <section class="pricing-tiers">
-    <div class="container">
-      <div class="section-header reveal">
-        <h2>Enkelt og <span class="gradient-text">forutsigbart</span></h2>
-        <p class="section-subtitle">Ingen overraskelser, ingen skjulte kostnader</p>
-      </div>
-      <div class="pricing-grid reveal">
-        <!-- Abonnement -->
-        <div class="pricing-tier featured">
-          <div class="tier-badge">Anbefalt</div>
-          <h3>Månedlig</h3>
-          <p class="tier-desc">Alt inkludert</p>
-          <p class="tier-price">Fra 549 kr/mnd</p>
-          <ul class="tier-features">
-            <li><Icon name="check" size={14} /> Profesjonell nettside</li>
-            <li><Icon name="check" size={14} /> Hosting og SSL inkludert</li>
-            <li><Icon name="check" size={14} /> Vedlikehold og oppdateringer</li>
-            <li><Icon name="check" size={14} /> Ingen bindingstid</li>
-          </ul>
-        </div>
-
-        <!-- Gratis demo -->
-        <div class="pricing-tier">
-          <h3>Gratis demo</h3>
-          <p class="tier-desc">Test før du betaler</p>
-          <p class="tier-price">0 kr</p>
-          <ul class="tier-features">
-            <li><Icon name="check" size={14} /> Se nettsiden før du bestemmer deg</li>
-            <li><Icon name="check" size={14} /> Ingen forpliktelser</li>
-            <li><Icon name="check" size={14} /> Ferdig på 2-7 dager</li>
-          </ul>
-          <p class="tier-note">
-            Vi bygger en fungerende demo du kan teste. Liker du den ikke? Da betaler du ingenting.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- FAQ Section -->
   <section class="faq-section">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Vanlige <span class="gradient-text">spørsmål</span></h2>
-      </div>
-      <div class="faq-list reveal">
-        {faqItems.map(item => (
-          <div class="faq-item">
-            <button class="faq-question" >
-              <span>{item.question}</span>
-              <Icon name="chevron-down" size={16} />
-            </button>
-            <div class="faq-answer">
-              <p>{item.answer}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Form -->
-  <section id="kontakt" class="contact-section">
-    <div class="container">
-      <div class="contact-grid">
-        <div class="contact-text reveal-left">
-          <h2>Klar for en <span class="gradient-text">ny nettside?</span></h2>
-          <p>Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
-          <div class="contact-trust">
-            <div class="trust-item">
-              <Icon name="gift" size={16} />
-              <span>Gratis demo først</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="check-circle" size={16} />
-              <span>Ingen bindingstid</span>
-            </div>
-            <div class="trust-item">
-              <Icon name="headset" size={16} />
-              <span>Support inkludert</span>
-            </div>
-          </div>
-
-          <!-- MIDLERTIDIG SKJULT - MICHAEL: contact-people seksjon -->
+      <div class="faq-grid">
+        <div class="faq-left reveal">
+          <p class="editorial-statement split-words">Vanlige spørsmål</p>
+          <p class="editorial-body">Alt du lurer på om nettsider.</p>
+          <a href="/#kontakt" class="faq-cta-link">
+            Spør oss direkte
+            <span class="faq-cta-circle"><Icon name="arrow-right" size={12} /></span>
+          </a>
         </div>
-        <div class="contact-form-wrapper reveal-right">
-          <form class="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
-            <input type="hidden" name="_cc" value="daniel@efffekt.no">
-            <input type="hidden" name="_subject" value="Forespørsel: Nettside">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-            <div class="form-group">
-              <label for="name">Navn *</label>
-              <input type="text" id="name" name="name" required placeholder="Ditt navn">
+        <div class="faq-list">
+          {faqItems.map((item, index) => (
+            <div class="faq-item reveal" style={`animation-delay: ${index * 0.05}s`}>
+              <button class="faq-question" aria-expanded="false">
+                <span>{item.question}</span>
+                <Icon name="chevron-down" size={20} />
+              </button>
+              <div class="faq-answer">
+                <p>{item.answer}</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="email">E-post *</label>
-              <input type="email" id="email" name="email" required placeholder="din@epost.no">
-            </div>
-            <div class="form-group">
-              <label for="message">Fortell kort om prosjektet</label>
-              <textarea id="message" name="message" rows="3" placeholder="Hva slags nettside trenger du?"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-large btn-full">
-              <Icon name="paper-plane" size={16} /> Send forespørsel
-            </button>
-          </form>
+          ))}
         </div>
       </div>
     </div>
@@ -213,21 +142,82 @@ const faqItems = [
   <!-- Other Services -->
   <section class="other-services">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>Andre <span class="gradient-text">tjenester</span></h2>
+      <div class="other-services-header reveal">
+        <span class="section-label">Andre tjenester</span>
+        <h2 class="efffekt-bar">Se hva mer vi kan hjelpe med</h2>
       </div>
-      <div class="other-services-grid reveal">
-        <a href="/system" class="other-service-card">
+      <div class="other-services-grid reveal-stagger">
+        <a href="/integrasjon" class="other-service-card">
+          <Icon name="plug" size={24} />
+          <h3>Integrasjon</h3>
+          <p class="other-desc">Koble systemene dine sammen</p>
+        </a>
+        <a href="/plugin" class="other-service-card">
           <Icon name="laptop-code" size={24} />
-          <h3>Skreddersydd system</h3>
-          <span class="other-price">Fra 649 kr/mnd</span>
+          <h3>Plugin</h3>
+          <p class="other-desc">Utvid systemene du allerede har</p>
         </a>
         <a href="/ai" class="other-service-card">
           <Icon name="robot" size={24} />
           <h3>AI-automatisering</h3>
-          <span class="other-price">Fra 999 kr/mnd</span>
+          <p class="other-desc">Automatiser repeterende oppgaver</p>
         </a>
       </div>
     </div>
   </section>
-</ServiceLayout>
+
+  <!-- CTA Band -->
+  <section class="service-cta-section">
+    <div class="container">
+      <div class="service-cta-band reveal">
+        <p class="editorial-statement split-words">Klar for en ny nettside?</p>
+        <p class="editorial-body">Ta kontakt for en uforpliktende samtale. Vi svarer innen 24 timer.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Ta kontakt</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function initServicePage() {
+      const revealElements = document.querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger'
+      );
+      const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        revealElements.forEach(el => {
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight * 0.85) {
+            el.classList.add('visible');
+          }
+        });
+      };
+      window.addEventListener('scroll', revealOnScroll, { passive: true });
+      revealOnScroll();
+    }
+    initServicePage();
+    document.addEventListener('astro:page-load', initServicePage);
+  </script>
+
+  <script is:inline>
+    if (!window.__faqInitialized) {
+      window.__faqInitialized = true;
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.faq-question');
+        if (!btn) return;
+        e.preventDefault();
+        var item = btn.parentElement;
+        if (!item) return;
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(function(el) {
+          el.classList.remove('open');
+          var elBtn = el.querySelector('.faq-question');
+          if (elBtn) elBtn.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  </script>
+</BaseLayout>

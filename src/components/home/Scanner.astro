@@ -1,65 +1,43 @@
 ---
-// Scanner section component - Website analysis tool
 import Icon from '../icons/Icon.astro';
 ---
 
-<section id="scanner" class="section section-dark">
+<section id="scanner" class="section scanner-section">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">Gratis verktøy</p>
-      <h2>Sjekk nettsiden din <span class="text-accent">nå</span></h2>
-      <p class="section-desc">Få en komplett analyse av hastighet, SEO og mobilvennlighet på sekunder.</p>
+      <span class="section-label">Gratis analyse</span>
+      <h2 class="efffekt-bar">Sjekk nettsiden din</h2>
+      <p>Få en komplett analyse av hastighet, SEO, sikkerhet og mobilvennlighet.</p>
     </div>
 
-    <div class="scanner-box reveal-scale">
+    <div class="scanner-box reveal">
       <form id="scannerForm" class="scanner-form">
         <label for="scannerUrl" class="sr-only">Skriv inn nettadresse</label>
-        <input type="text" id="scannerUrl" placeholder="dinside.no" required>
-        <button type="submit" class="btn btn-primary btn-lg">
-          <span class="btn-text">Analyser gratis</span>
-          <span class="btn-loading"><Icon name="spinner" size={14} class="spin" /> Analyserer...</span>
+        <input type="text" id="scannerUrl" placeholder="dinside.no" required />
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text">Analyser</span>
+          <span class="btn-loading">
+            <Icon name="spinner" size={14} />
+            Analyserer...
+          </span>
         </button>
       </form>
     </div>
 
-    <!-- Resultater (skjult til skanning er ferdig) -->
-    <div id="scannerResults" class="scanner-results" style="display: none;">
-      <!-- Fylles dynamisk med JavaScript -->
-    </div>
+    <div id="scannerResults" class="scanner-results" style="display: none;"></div>
   </div>
 </section>
 
-<script>
-  // Lazy-load scanner logic when section becomes visible
-  // This reduces initial JS bundle by ~28KB
-  let scannerInitialized = false;
-
-  async function initScannerWhenVisible(): Promise<void> {
-    if (scannerInitialized) return;
-
-    const section = document.getElementById('scanner');
-    if (!section) return;
-
-    const observer = new IntersectionObserver(async (entries) => {
-      if (entries[0].isIntersecting && !scannerInitialized) {
-        scannerInitialized = true;
-        observer.disconnect();
-
-        // Dynamically import scanner logic
-        const { initScanner } = await import('./scanner-logic');
-        initScanner();
-      }
-    }, { rootMargin: '200px' }); // Load 200px before visible
-
-    observer.observe(section);
+<style>
+  .scanner-section {
+    padding: 120px 0;
+    background: var(--bg);
   }
+</style>
 
-  // Initialize on page load
-  initScannerWhenVisible();
+<script>
+  import { initScanner } from './scanner-logic';
 
-  // Re-initialize on View Transitions navigation
-  document.addEventListener('astro:page-load', () => {
-    scannerInitialized = false;
-    initScannerWhenVisible();
-  });
+  initScanner();
+  document.addEventListener('astro:page-load', initScanner);
 </script>

@@ -1,93 +1,70 @@
 ---
-// Contact section component
 import { Image } from 'astro:assets';
 import Icon from '../icons/Icon.astro';
 import sanderImg from '../../assets/sander.jpg';
 import danielImg from '../../assets/daniel.jpg';
 ---
 
-<section id="kontakt" class="section">
+<section id="kontakt" class="section contact-section">
   <div class="container">
     <div class="contact-grid">
-      <div class="contact-info reveal-left">
-        <p class="section-label">Ta kontakt</p>
-        <h2>Klar for å <span class="text-accent">prøve?</span></h2>
-        <p class="contact-text">
-          Book en uforpliktende samtale eller send oss en melding. Vi svarer vanligvis innen 24 timer.
-        </p>
-        <div class="contact-methods">
-        </div>
+      <div class="contact-left reveal">
+        <p class="editorial-statement split-words">Klar for å snakke?</p>
+        <p class="editorial-body">Fortell oss hva du trenger — vi svarer innen et par timer.</p>
+        <a href="mailto:sander@efffekt.no" class="contact-cta-link">
+          Eller send oss en e-post direkte
+          <span class="contact-cta-circle">
+            <Icon name="arrow-right" size={12} />
+          </span>
+        </a>
 
         <div class="contact-people">
-          <h3>Snakk med oss direkte</h3>
           <div class="contact-person">
-            <Image src={sanderImg} alt="Sander Martinsen" class="contact-avatar" width={96} height={96} quality={90} />
+            <Image src={sanderImg} alt="Sander" class="contact-avatar" width={96} height={96} quality={90} />
             <div class="contact-person-info">
-              <strong>Sander Martinsen</strong>
-              <span class="contact-specialty">System & AI</span>
-              <a href="tel:+4745140089" class="contact-phone"><Icon name="phone" size={14} /> +47 451 40 089</a>
-              <a href="mailto:sander@efffekt.no" class="contact-email"><Icon name="envelope" size={14} /> sander@efffekt.no</a>
+              <strong>Sander</strong>
+              <a href="mailto:sander@efffekt.no">sander@efffekt.no</a>
+              <a href="tel:+4745140089">451 40 089</a>
             </div>
           </div>
           <div class="contact-person">
-            <Image src={danielImg} alt="Daniel Barlag" class="contact-avatar" width={96} height={96} quality={90} />
+            <Image src={danielImg} alt="Daniel" class="contact-avatar contact-avatar-daniel" width={96} height={96} quality={90} />
             <div class="contact-person-info">
-              <strong>Daniel Barlag</strong>
-              <span class="contact-specialty">System & AI</span>
-              <a href="tel:+4798035064" class="contact-phone"><Icon name="phone" size={14} /> +47 980 35 064</a>
-              <a href="mailto:daniel@efffekt.no" class="contact-email"><Icon name="envelope" size={14} /> daniel@efffekt.no</a>
+              <strong>Daniel</strong>
+              <a href="mailto:daniel@efffekt.no">daniel@efffekt.no</a>
+              <a href="tel:+4798035064">980 35 064</a>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="contact-form-wrapper reveal-right">
+      <div class="contact-form-col">
         <form class="contact-form" id="contact-form" action="https://formsubmit.co/sander@efffekt.no" method="POST">
           <input type="hidden" name="_cc" value="daniel@efffekt.no">
           <input type="hidden" name="_subject" value="Ny foresporsel fra efffekt.no">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
           <input type="text" name="_honey" style="display:none">
+
           <div class="form-group">
-            <label for="name">Navn</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" placeholder="Navn" aria-label="Navn" required>
             <span class="error-message">Vennligst fyll inn navnet ditt</span>
           </div>
+
           <div class="form-group">
-            <label for="email">E-post</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" placeholder="E-post" aria-label="E-post" required>
             <span class="error-message">Vennligst fyll inn en gyldig e-postadresse</span>
           </div>
+
           <div class="form-group">
-            <label for="project-type">Hva trenger du?</label>
-            <select id="project-type" name="project-type" required>
-              <option value="" disabled selected>Velg type</option>
-              <option value="nettside">Nettside (fra 549 kr/mnd)</option>
-              <option value="integrasjon">Integrasjon (fra 799 kr/mnd)</option>
-              <option value="plugin">Plugin (fra 649 kr/mnd)</option>
-              <option value="ai">AI-automatisering (fra 999 kr/mnd)</option>
-              <option value="annet">Annet / Usikker</option>
-            </select>
-            <span class="error-message">Vennligst velg en type</span>
+            <input type="text" id="company" name="company" placeholder="Bedrift (valgfritt)" aria-label="Bedrift">
           </div>
+
           <div class="form-group">
-            <label for="payment-type">Hvordan vil du betale?</label>
-            <select id="payment-type" name="payment-type" required>
-              <option value="" disabled selected>Velg betalingstype</option>
-              <option value="leie">Leie (månedspris)</option>
-              <option value="kjop">Kjøpe (engangspris - eie koden)</option>
-            </select>
-            <span class="error-message">Vennligst velg betalingstype</span>
+            <textarea id="message" name="message" rows="5" placeholder="Fortell oss om prosjektet ditt" aria-label="Melding"></textarea>
           </div>
-          <div class="form-group">
-            <label for="message">Beskriv kort hva du trenger</label>
-            <textarea id="message" name="message" rows="4"></textarea>
-          </div>
-          <div class="form-response-time">
-            <Icon name="clock" size={16} />
-            <span>Vanligvis svar innen 2-4 timer i arbeidstiden</span>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg btn-full btn-shimmer glow-focus" id="submit-btn">
+
+          <button type="submit" class="btn btn-primary btn-lg btn-shimmer glow-focus" id="submit-btn">
             <span class="btn-text">Send forespørsel</span>
             <span class="btn-loading">
               <Icon name="spinner" size={20} class="spin" />
@@ -109,11 +86,19 @@ import danielImg from '../../assets/daniel.jpg';
       </div>
     </div>
   </div>
+
 </section>
 
 <script>
   function launchConfetti() {
-    const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
+    const style = getComputedStyle(document.documentElement);
+    const colors = [
+      style.getPropertyValue('--accent').trim() || '#40798c',
+      style.getPropertyValue('--accent-secondary').trim() || '#70a9a1',
+      style.getPropertyValue('--accent-hover').trim() || '#5a9aa8',
+      style.getPropertyValue('--text').trim() || '#f6f1d1',
+      style.getPropertyValue('--success').trim() || '#8fbcbb'
+    ];
     const confettiCount = 100;
     const container = document.getElementById('kontakt');
     if (!container) return;
@@ -151,52 +136,44 @@ import danielImg from '../../assets/daniel.jpg';
 
     if (!form || !submitBtn || !formSuccess) return;
 
-    // Inline validation
-    const validateField = (field: HTMLInputElement | HTMLSelectElement) => {
+    const validateField = (field: HTMLInputElement) => {
       const group = field.closest('.form-group');
       if (!group) return;
-
-      if (!field.validity.valid || (field.tagName === 'SELECT' && !field.value)) {
+      if (!field.validity.valid) {
         group.classList.add('error');
       } else {
         group.classList.remove('error');
       }
     };
 
-    form.querySelectorAll('input, select').forEach(field => {
-      field.addEventListener('blur', () => validateField(field as HTMLInputElement | HTMLSelectElement));
-      field.addEventListener('change', () => validateField(field as HTMLInputElement | HTMLSelectElement));
-    });
-
-    // Form submission
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Validate all fields
-      let hasErrors = false;
-      form.querySelectorAll('input[required], select[required]').forEach(el => {
-        const field = el as HTMLInputElement | HTMLSelectElement;
-        validateField(field);
-        if (!field.validity.valid || (field.tagName === 'SELECT' && !field.value)) {
-          hasErrors = true;
+    form.querySelectorAll('input[type="text"][required], input[type="email"][required]').forEach(field => {
+      field.addEventListener('blur', () => validateField(field as HTMLInputElement));
+      field.addEventListener('input', () => {
+        const group = (field as HTMLElement).closest('.form-group');
+        if (group && group.classList.contains('error')) {
+          validateField(field as HTMLInputElement);
         }
       });
+    });
 
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let hasErrors = false;
+      form.querySelectorAll('input[type="text"][required], input[type="email"][required]').forEach(el => {
+        const field = el as HTMLInputElement;
+        validateField(field);
+        if (!field.validity.valid) hasErrors = true;
+      });
       if (hasErrors) return;
 
-      // Show loading state
       submitBtn.classList.add('loading');
-
       try {
         const formData = new FormData(form);
         const response = await fetch(form.action, {
           method: 'POST',
           body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
+          headers: { 'Accept': 'application/json' }
         });
-
         if (response.ok) {
           form.style.display = 'none';
           formSuccess.classList.add('visible');
@@ -210,7 +187,6 @@ import danielImg from '../../assets/daniel.jpg';
       }
     });
 
-    // Send another message
     sendAnother?.addEventListener('click', () => {
       form.reset();
       form.style.display = 'flex';
@@ -224,6 +200,190 @@ import danielImg from '../../assets/daniel.jpg';
 </script>
 
 <style>
+  .contact-section {
+    position: relative;
+    background: var(--bg-elevated);
+  }
+
+  /* ── Two-column grid (mirrors FAQ) ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* ── Left column: sticky editorial ── */
+  .contact-left {
+    position: sticky;
+    top: 40vh;
+  }
+
+  .contact-left .editorial-statement {
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-left .editorial-body {
+    margin-bottom: 2rem;
+  }
+
+  /* CTA link (mirrors FAQ) */
+  .contact-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.3s ease;
+  }
+
+  .contact-cta-link:hover {
+    color: var(--text);
+    gap: 0.85rem;
+  }
+
+  .contact-cta-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.03);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .contact-cta-circle :global(svg) {
+    color: var(--text-secondary);
+    width: 12px;
+    height: 12px;
+    transition: color 0.2s ease;
+  }
+
+  .contact-cta-link:hover .contact-cta-circle {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.25);
+  }
+
+  .contact-cta-link:hover .contact-cta-circle :global(svg) {
+    color: var(--text);
+  }
+
+  /* ── People / signatures ── */
+  .contact-people {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-person {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .contact-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .contact-avatar-daniel { object-position: center 65%; }
+
+  .contact-person-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .contact-person-info strong {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .contact-person-info a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+  }
+
+  .contact-person-info a:hover { color: var(--accent); }
+
+  /* ── Form ── */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .contact-form .form-group {
+    margin-bottom: 0;
+  }
+
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0;
+    padding: 16px 0;
+    font-size: 1rem;
+    color: var(--text);
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+    box-shadow: none;
+  }
+
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact-form .btn {
+    margin-top: 2rem;
+    align-self: flex-start;
+  }
+
+  /* Error states */
+  .contact-form .error-message {
+    display: none;
+    color: var(--error, #e74c3c);
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+  }
+
+  .contact-form .form-group.error .error-message {
+    display: block;
+  }
+
+  .contact-form .form-group.error input,
+  .contact-form .form-group.error textarea {
+    border-bottom-color: var(--error, #e74c3c);
+  }
+
   @keyframes confetti-fall {
     0% {
       transform: translateY(0) rotate(0deg);
@@ -232,6 +392,23 @@ import danielImg from '../../assets/daniel.jpg';
     100% {
       transform: translateY(600px) rotate(720deg);
       opacity: 0;
+    }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .contact-left {
+      position: static;
+    }
+
+    .contact-people {
+      flex-direction: row;
+      gap: 2rem;
     }
   }
 </style>

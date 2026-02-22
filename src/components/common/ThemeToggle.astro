@@ -28,6 +28,17 @@ import Icon from '../icons/Icon.astro';
     position: relative;
   }
 
+  /* On transparent header over dark hero (homepage only) */
+  :global(.has-dark-hero .header:not(.scrolled)) .theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  :global(.has-dark-hero .header:not(.scrolled)) .theme-icon-light,
+  :global(.has-dark-hero .header:not(.scrolled)) .theme-icon-dark {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
   .theme-toggle:hover {
     border-color: var(--border-light);
     transform: scale(1.05);

@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Portfolio from '../components/home/Portfolio.astro';
+---
+
+<BaseLayout
+  title="Portefølje | EFFFEKT"
+  description="Se et utvalg av prosjektene vi har levert — fra nettsider og kundeportaler til AI-løsninger og skreddersydde systemer."
+>
+  <div class="portfolio-page">
+    <div class="container">
+      <div class="portfolio-header reveal">
+        <p class="editorial-statement split-words">Det vi har bygget</p>
+        <p class="editorial-body">Et utvalg prosjekter vi har levert — fra nettsider og kundeportaler til AI-løsninger og skreddersydde systemer.</p>
+      </div>
+    </div>
+    <Portfolio />
+  </div>
+</BaseLayout>
+
+<script>
+  function initPortfolioPage() {
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight * 0.85) {
+          el.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll, { passive: true });
+    revealOnScroll();
+  }
+
+  initPortfolioPage();
+  document.addEventListener('astro:page-load', initPortfolioPage);
+</script>
+
+<style>
+  .portfolio-page {
+    background: #fff;
+    min-height: 100vh;
+  }
+
+  .portfolio-page :global(#portefolje) {
+    padding-top: 2rem;
+  }
+
+  .portfolio-header {
+    padding-top: 10rem;
+    padding-bottom: 0.5rem;
+    max-width: 640px;
+  }
+
+  .portfolio-header .editorial-statement {
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+  }
+
+  .portfolio-header .editorial-body {
+    color: #6b7280;
+    margin-bottom: 0;
+  }
+</style>

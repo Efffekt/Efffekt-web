@@ -1,27 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
-import PerformanceBadge from '../components/home/PerformanceBadge.astro';
-import TrustLogos from '../components/home/TrustLogos.astro';
 import Products from '../components/home/Products.astro';
-import Portfolio from '../components/home/Portfolio.astro';
-import Scanner from '../components/home/Scanner.astro';
+import Banner from '../components/home/Banner.astro';
+import Editorial from '../components/home/Editorial.astro';
+
 import FAQ from '../components/home/FAQ.astro';
-import Team from '../components/home/Team.astro';
 import Contact from '../components/home/Contact.astro';
 ---
 
 <BaseLayout
-  title="EFFFEKT | Digitale systemer på abonnement fra 500 kr/mnd"
-  description="Nettside, integrasjon, plugin eller AI-automatisering på abonnement. Ingen bindingstid, alt inkludert. Prøv gratis."
+  title="EFFFEKT | Nettsider, integrasjoner og AI-automatisering"
+  description="Vi bygger nettsider, integrasjoner, plugins og AI-løsninger som gir resultater. Ta kontakt for en uforpliktende samtale."
 >
   <Hero />
   <Products />
-  <Portfolio />
-  <Team />
-  <TrustLogos />
-  <Scanner />
-  <PerformanceBadge />
+  <Banner />
+  <Editorial />
   <FAQ />
   <Contact />
 </BaseLayout>

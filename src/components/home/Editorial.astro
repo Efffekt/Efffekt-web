@@ -1,0 +1,87 @@
+---
+// Editorial section — quote + portfolio CTA
+import Icon from '../icons/Icon.astro';
+---
+
+<section class="section editorial-section">
+  <div class="container">
+    <div class="editorial-content reveal">
+      <blockquote class="editorial-quote">
+        Hvert prosjekt starter med et problem — vi graver oss inn i det, forstår det fra alle sider, og slutter ikke før løsningen sitter som den skal.
+      </blockquote>
+      <a href="/portefolje" class="portfolio-link">
+        Se hva vi har bygget
+        <span class="portfolio-link-circle">
+          <Icon name="arrow-right" size={12} />
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .editorial-section {
+    background: var(--bg);
+  }
+
+  .editorial-content {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .editorial-quote {
+    font-family: var(--font-editorial);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--text);
+    margin: 0 0 2.5rem;
+    padding: 0;
+    border: none;
+  }
+
+  .portfolio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.3s ease;
+  }
+
+  .portfolio-link:hover {
+    color: var(--text);
+    gap: 0.85rem;
+  }
+
+  .portfolio-link-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.03);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .portfolio-link-circle :global(svg) {
+    color: var(--text-secondary);
+    width: 12px;
+    height: 12px;
+    transition: color 0.2s ease;
+  }
+
+  .portfolio-link:hover .portfolio-link-circle {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.25);
+  }
+
+  .portfolio-link:hover .portfolio-link-circle :global(svg) {
+    color: var(--text);
+  }
+</style>

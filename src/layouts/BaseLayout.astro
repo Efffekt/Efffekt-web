@@ -12,6 +12,54 @@ import '@fontsource/inter/latin-ext-600.css';
 import '@fontsource/inter/latin-700.css';
 import '@fontsource/inter/latin-ext-700.css';
 
+// Additional fonts for font theme switcher
+import '@fontsource/space-grotesk/latin-400.css';
+import '@fontsource/space-grotesk/latin-500.css';
+import '@fontsource/space-grotesk/latin-600.css';
+import '@fontsource/space-grotesk/latin-700.css';
+
+import '@fontsource/plus-jakarta-sans/latin-400.css';
+import '@fontsource/plus-jakarta-sans/latin-500.css';
+import '@fontsource/plus-jakarta-sans/latin-600.css';
+import '@fontsource/plus-jakarta-sans/latin-700.css';
+
+import '@fontsource/dm-sans/latin-400.css';
+import '@fontsource/dm-sans/latin-500.css';
+import '@fontsource/dm-sans/latin-600.css';
+import '@fontsource/dm-sans/latin-700.css';
+
+import '@fontsource/dm-serif-display/latin-400.css';
+
+import '@fontsource/playfair-display/latin-400.css';
+import '@fontsource/playfair-display/latin-500.css';
+import '@fontsource/playfair-display/latin-600.css';
+import '@fontsource/playfair-display/latin-700.css';
+
+import '@fontsource/sora/latin-400.css';
+import '@fontsource/sora/latin-500.css';
+import '@fontsource/sora/latin-600.css';
+import '@fontsource/sora/latin-700.css';
+
+import '@fontsource/outfit/latin-400.css';
+import '@fontsource/outfit/latin-500.css';
+import '@fontsource/outfit/latin-600.css';
+import '@fontsource/outfit/latin-700.css';
+
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-500.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+
+import '@fontsource/lora/latin-400.css';
+import '@fontsource/lora/latin-500.css';
+import '@fontsource/lora/latin-600.css';
+import '@fontsource/lora/latin-700.css';
+
+import '@fontsource/work-sans/latin-400.css';
+import '@fontsource/work-sans/latin-500.css';
+import '@fontsource/work-sans/latin-600.css';
+import '@fontsource/work-sans/latin-700.css';
+
 interface Props {
   title: string;
   description: string;
@@ -28,30 +76,23 @@ const {
 
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
-import FloatingCTA from '../components/common/FloatingCTA.astro';
 import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <!-- Prevent theme flash - respects system preference -->
+  <!-- Prevent font flash -->
   <script is:inline>
     (function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        document.documentElement.setAttribute('data-theme', 'light');
+      var savedFont = localStorage.getItem('font-theme');
+      if (savedFont && savedFont !== 'modern') {
+        document.documentElement.setAttribute('data-font', savedFont);
       }
-      // Dark theme is default (no attribute needed)
     })();
   </script>
   <ClientRouter />
 
-  <!-- Preload critical fonts to reduce critical path delay -->
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="/_astro/inter-latin-400-normal.C38fXH4l.woff2" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="/_astro/inter-latin-600-normal.LgqL8muc.woff2" />
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,13 +147,11 @@ import '../styles/global.css';
     "founder": [
       {
         "@type": "Person",
-        "name": "Sander Martinsen",
-        "jobTitle": "Full-Stack Developer"
+        "name": "Sander Martinsen"
       },
       {
         "@type": "Person",
-        "name": "Daniel Barlag",
-        "jobTitle": "Full-Stack Developer"
+        "name": "Daniel Barlag"
       }
     ],
     "offers": {
@@ -171,104 +210,21 @@ import '../styles/global.css';
     })();
   </script>
 </head>
-<body class="intro-active">
-
-  <!-- Hero Background Image -->
-  <div class="hero-background intro-hidden" id="hero-bg-container" transition:persist>
-    <img src="/assets/hero-bg.jpg" alt="" id="hero-bg" loading="eager" fetchpriority="high">
-    <div class="hero-overlay" id="hero-overlay"></div>
-  </div>
-
-
-  <script is:inline>
-    (function() {
-      let scrollHandler = null;
-
-      function initHeroBlur() {
-        const heroBg = document.getElementById('hero-bg');
-        const overlay = document.getElementById('hero-overlay');
-
-        if (heroBg) {
-          // Reset blur on init (viktig for navigasjon)
-          heroBg.style.filter = 'blur(0px)';
-          heroBg.style.transform = 'scale(1)';
-        }
-
-        if (overlay) {
-          overlay.style.opacity = '0';
-        }
-
-        // Fjern gammel handler hvis den finnes
-        if (scrollHandler) {
-          window.removeEventListener('scroll', scrollHandler);
-        }
-
-        scrollHandler = () => {
-          const scrollY = window.scrollY;
-          const windowHeight = window.innerHeight;
-
-          // Myk overgang: blur øker gradvis over første 30% av viewport
-          const blurEnd = windowHeight * 0.3;
-          const progress = Math.min(1, scrollY / blurEnd);
-
-          // Blur fra 0 til 8px, overlay fra 0 til 0.4
-          const blurAmount = progress * 8;
-          const overlayOpacity = progress * 0.4;
-
-          if (heroBg) {
-            heroBg.style.filter = `blur(${blurAmount}px)`;
-            heroBg.style.transform = `scale(${1 + blurAmount * 0.01})`;
-          }
-
-          if (overlay) {
-            overlay.style.opacity = overlayOpacity;
-          }
-        };
-
-        window.addEventListener('scroll', scrollHandler);
-
-        // Kjør umiddelbart for å sette riktig tilstand basert på scroll-posisjon
-        scrollHandler();
-      }
-
-      // Kjør ved første lasting
-      initHeroBlur();
-
-      // Re-initialiser ved View Transitions navigasjon
-      document.addEventListener('astro:page-load', initHeroBlur);
-    })();
-  </script>
-
+<body>
   <!-- Intro Animation Controller -->
   <script is:inline>
     function initIntro() {
-      const heroContainer = document.getElementById('hero-bg-container');
-
       // Skip intro if already seen this session or on navigation
       const hasSeenIntro = sessionStorage.getItem('intro-seen');
       const isNavigation = window.performance && window.performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (hasSeenIntro || isNavigation || prefersReducedMotion) {
-        document.body.classList.remove('intro-active');
-        if (heroContainer) heroContainer.classList.remove('intro-hidden');
         return;
       }
 
-      // Start intro animation
+      // Mark intro as seen
       sessionStorage.setItem('intro-seen', 'true');
-
-      if (heroContainer) {
-        heroContainer.classList.remove('intro-hidden');
-        heroContainer.classList.add('intro-animating');
-      }
-
-      setTimeout(() => {
-        document.body.classList.remove('intro-active');
-        if (heroContainer) {
-          heroContainer.classList.remove('intro-animating');
-        }
-      }, 500);
     }
 
     initIntro();
@@ -278,7 +234,6 @@ import '../styles/global.css';
   <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
 
   <Header transition:persist />
-  <FloatingCTA />
 
   <main id="main-content" transition:animate="fade">
     <slot />
@@ -287,5 +242,39 @@ import '../styles/global.css';
   <Footer transition:persist />
 
   <slot name="scripts" />
+
+  <script>
+    function initSplitWords() {
+      document.querySelectorAll('.split-words').forEach(el => {
+        if (el.querySelector('.word')) return;
+        const text = el.textContent || '';
+        el.innerHTML = text.split(/\s+/).filter(Boolean).map(w =>
+          `<span class="word">${w}</span>`
+        ).join(' ');
+      });
+    }
+    initSplitWords();
+    document.addEventListener('astro:page-load', initSplitWords);
+  </script>
+
+  <script>
+    function initGlobalReveal() {
+      const els = document.querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, .reveal-hero, .reveal-elegant, .split-words, .text-underline-draw'
+      );
+      if (!els.length) return;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '-50px' });
+      els.forEach(el => observer.observe(el));
+    }
+    initGlobalReveal();
+    document.addEventListener('astro:page-load', initGlobalReveal);
+  </script>
 </body>
 </html>

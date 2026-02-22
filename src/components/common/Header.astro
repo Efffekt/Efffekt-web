@@ -1,61 +1,28 @@
 ---
 // Header component with navigation
-import ThemeToggle from './ThemeToggle.astro';
-
-interface Props {
-  showCenteredLogo?: boolean;
-}
-
-const { showCenteredLogo = true } = Astro.props;
 ---
 
-<header class="header" data-centered-logo={showCenteredLogo}>
-  <div class="header-line"></div>
-  <div class="container">
-    <nav class="nav">
-      <a href="/" class="logo intro-hidden">
-        <img src="/assets/logo.svg" alt="EFFFEKT" width="140" height="28">
-      </a>
-      <div class="nav-links" id="nav-links">
-        <a href="/#scanner">Gratis analyse</a>
-        <a href="/#tjenester">Tjenester</a>
-        <a href="/#portefolje">Kunder</a>
-        <a href="/#kontakt" class="btn btn-primary btn-sm">Kontakt oss</a>
-      </div>
-      <div class="nav-actions">
-        <ThemeToggle />
-        <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </nav>
-  </div>
+<header class="header">
+  <nav class="nav">
+    <div class="nav-links" id="nav-links">
+      <a href="/#tjenester">Tjenester</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/portefolje">Portefølje</a>
+      <a href="/#kontakt" class="btn btn-primary btn-sm">Kontakt oss</a>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
 </header>
-
-
-<style is:global>
-  /* Skjul elementer før intro-animasjon */
-  .intro-hidden {
-    opacity: 0 !important;
-  }
-
-  /* Fade-in klasser */
-  .intro-fade-in {
-    opacity: 1 !important;
-    transition: opacity 1.2s ease-out, filter 1.2s ease-out;
-  }
-
-  .intro-fade-in-logo {
-    opacity: 1 !important;
-    transition: opacity 1.5s ease-out, filter 1.5s ease-out;
-  }
-</style>
 
 <script>
   import { createListenerScope } from '../../utils/events';
-  import { $, $id } from '../../utils/dom';
+  import { $ } from '../../utils/dom';
 
   // Store the current listener scope for cleanup
   let listenerScope: ReturnType<typeof createListenerScope> | null = null;
@@ -69,69 +36,11 @@ const { showCenteredLogo = true } = Astro.props;
     const navToggle = $<HTMLButtonElement>('.nav-toggle');
     const navLinks = $<HTMLElement>('.nav-links');
     const header = $<HTMLElement>('.header');
-    const headerLine = $<HTMLElement>('.header-line');
-    const logo = $<HTMLAnchorElement>('.logo');
-    const welcomeText = $id('welcomeText');
 
     // Early return if required elements are missing
-    if (!header || !logo || !headerLine || !navLinks) {
+    if (!header || !navLinks) {
       console.warn('[Header] Required elements not found, skipping initialization');
       return;
-    }
-
-    const showCenteredLogo = header.dataset.centeredLogo === 'true';
-
-    // Forhindre reload når man klikker logo på forsiden (unngå duplikate listeners)
-    if (!logo.dataset.clickHandlerAdded) {
-      logo.dataset.clickHandlerAdded = 'true';
-      listenerScope.add(logo, 'click', (e: MouseEvent) => {
-        if (window.location.pathname === '/') {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    }
-
-    // Sjekk om vi allerede har scrollet forbi intro
-    const alreadyScrolled = window.scrollY > window.innerHeight * 0.8;
-
-    if (showCenteredLogo && !alreadyScrolled) {
-      // Fade-in velkomsttekst
-      if (welcomeText) {
-        welcomeText.style.filter = 'blur(10px)';
-
-        setTimeout(() => {
-          welcomeText.classList.remove('intro-hidden');
-          welcomeText.classList.add('intro-fade-in');
-          welcomeText.style.filter = 'blur(0)';
-        }, 100);
-
-        // Fjern animasjonsklasse etter intro
-        setTimeout(() => {
-          welcomeText.classList.remove('intro-fade-in');
-        }, 2500);
-      }
-
-      // Logo vises i header umiddelbart (ikke sentrert)
-      logo.classList.remove('intro-hidden');
-      logo.style.transform = 'none';
-      logo.style.opacity = '0';
-      logo.style.filter = 'blur(0)';
-
-    } else if (!showCenteredLogo) {
-      // På undersider: vis header umiddelbart
-      logo.classList.remove('intro-hidden');
-      logo.style.transform = 'none';
-      logo.style.opacity = '1';
-      headerLine.style.transform = 'scaleX(1)';
-      navLinks.style.opacity = '1';
-      navLinks.style.transform = 'none';
-      header.classList.add('header-visible');
-      header.style.setProperty('--header-progress', '1');
-    } else {
-      // Allerede scrollet - vis alt umiddelbart
-      logo.classList.remove('intro-hidden');
-      if (welcomeText) welcomeText.classList.remove('intro-hidden');
     }
 
     // Mobile nav toggle with aria-expanded
@@ -146,62 +55,25 @@ const { showCenteredLogo = true } = Astro.props;
       });
     }
 
-    // Dynamisk header basert på scroll
+    // Scroll handler: .scrolled for compact header, .header-dark when past hero
+    const hero = document.querySelector('.hero-wrapper') as HTMLElement;
+
     const handleScroll = (): void => {
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
+      header.classList.toggle('scrolled', window.scrollY > 50);
 
-      // Myk overgang: synkronisert med video blur (30% av viewport)
-      const fadeEnd = viewportHeight * 0.3;
-      const headerProgress = Math.min(1, scrollY / fadeEnd);
-
-      // På undersider: enklere logikk
-      if (!showCenteredLogo) {
-        header.classList.toggle('scrolled', scrollY > 100);
-        header.style.setProperty('--header-progress', String(headerProgress));
-        header.classList.toggle('header-visible', headerProgress > 0);
-        return;
+      if (hero) {
+        const heroBottom = hero.offsetTop + hero.offsetHeight;
+        header.classList.toggle('header-dark', window.scrollY > heroBottom - 80);
       }
-
-      // Sett CSS custom property for blur-bakgrunn
-      header.style.setProperty('--header-progress', String(headerProgress));
-
-      // Header synlighet - aktiver border når scrollet
-      header.classList.toggle('header-visible', headerProgress > 0);
-
-      // Strek - tegnes gradvis med scroll
-      headerLine.style.transform = `scaleX(${headerProgress})`;
-
-      // Nav-links - fade inn gradvis (kun på desktop)
-      if (window.innerWidth > 768) {
-        navLinks.style.opacity = String(headerProgress);
-        navLinks.style.transform = `translateX(${(1 - headerProgress) * 20}px)`;
-      }
-
-      // Logo i header - fade inn gradvis
-      logo.style.transform = 'none';
-      logo.style.opacity = String(headerProgress);
-      logo.style.filter = 'blur(0)';
-
-      // Velkomsttekst - fade ut raskt (over 10% av viewport), kun på desktop
-      if (welcomeText && window.innerWidth > 768) {
-        const welcomeFadeEnd = viewportHeight * 0.1;
-        const welcomeProgress = Math.min(1, scrollY / welcomeFadeEnd);
-        welcomeText.style.opacity = String(1 - welcomeProgress);
-        welcomeText.style.display = welcomeProgress >= 1 ? 'none' : 'flex';
-      }
-
-      // Scrolled state for kompakt header
-      header.classList.toggle('scrolled', scrollY > viewportHeight);
     };
 
-    // Add managed listeners (will be cleaned up on navigation)
-    listenerScope.add(window, 'scroll', handleScroll);
+    // No hero (service pages etc.) — always dark
+    if (!hero) {
+      header.classList.add('header-dark');
+    }
 
-    // Ikke kall handleScroll umiddelbart - la fade-in fullføre først
-    setTimeout(() => {
-      handleScroll();
-    }, 2500);
+    listenerScope.add(window, 'scroll', handleScroll);
+    handleScroll();
   }
 
   // Cleanup on page navigation (View Transitions)

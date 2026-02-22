@@ -2,178 +2,324 @@
 import Icon from '../icons/Icon.astro';
 ---
 
-<section class="hero">
+<section class="hero-wrapper">
+  <!-- Background layer (masked, decorative only) -->
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- Content layer (not masked, supports sticky) -->
   <div class="hero-content">
-    <h1 class="hero-heading">Få digitale systemer som gir deg<br><span class="text-accent">flere kunder</span> – og spar 10-20 timer i uka</h1>
-    <p class="hero-text">
-      Nettsider som konverterer, integrasjoner som fjerner manuelt arbeid – fra 549 kr/mnd.<br>
-      Ingen risiko, avslutt når du vil.
-    </p>
-    <div class="hero-actions">
-      <a href="#kontakt" class="btn btn-primary btn-lg">Se hva vi kan gjøre for deg</a>
-      <a href="#tjenester" class="btn btn-ghost btn-lg">Utforsk løsningene</a>
+    <!-- Centered headline at top -->
+    <div class="hero-headline">
+      <h1 class="hero-title">Efffekt</h1>
     </div>
 
-    <div class="trust-bar">
-      <div class="trust-bar-item">
-        <Icon name="check-circle" size={18} />
-        <span>Ingen bindingstid</span>
+    <div class="hero-grid">
+
+      <!-- Left: spacer for scroll room -->
+      <div class="hero-left-spacer"></div>
+
+      <!-- Right: sticky glass mission card -->
+      <div class="hero-right-card">
+        <div class="mission-card">
+          <h2 class="mission-title split-words">Teknologi som gir små bedrifter superkrefter</h2>
+          <p class="mission-body">
+            Vi gir små og mellomstore bedrifter tilgang til de samme digitale verktøyene som de store — slik at du kan fokusere på det du gjør best.
+          </p>
+          <a href="#kontakt" class="mission-link">
+            Bli kjent med oss
+            <span class="mission-link-circle">
+              <Icon name="arrow-right" size={12} />
+            </span>
+          </a>
+        </div>
       </div>
-      <div class="trust-bar-item">
-        <Icon name="gift" size={18} />
-        <span>Lei eller kjøp - du velger</span>
-      </div>
-      <div class="trust-bar-item">
-        <Icon name="bolt" size={18} />
-        <span>Gratis demo først</span>
-      </div>
-      <div class="trust-bar-item">
-        <Icon name="clock" size={18} />
-        <span>Svar innen 24 timer</span>
-      </div>
+
     </div>
   </div>
+
 </section>
 
+<script>
+  function initTimeOfDay(): void {
+    const heroBg = document.querySelector('.hero-bg') as HTMLElement;
+    if (!heroBg) return;
+
+    const hour = new Date().getHours();
+    let period: string;
+    if (hour >= 6 && hour < 12) {
+      period = 'morning';
+    } else if (hour >= 12 && hour < 17) {
+      period = 'noon';
+    } else if (hour >= 17 && hour < 21) {
+      period = 'evening';
+    } else {
+      period = 'night';
+    }
+    heroBg.setAttribute('data-timeofday', period);
+    document.documentElement.setAttribute('data-timeofday', period);
+  }
+
+  initTimeOfDay();
+  document.addEventListener('astro:page-load', initTimeOfDay);
+
+</script>
+
 <style>
-  .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* ===== Hero Wrapper ===== */
+  .hero-wrapper {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    overflow: visible;
+    z-index: 10;
+  }
+
+  /* ===== Background layer (absolute, masked) ===== */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-color: #02090b;
+    background-image: url('/pastel-hero-night.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+
+  .hero-bg[data-timeofday="morning"] {
+    background-image: url('/pastel-hero-morning.png');
+  }
+
+  .hero-bg[data-timeofday="noon"] {
+    background-image: url('/pastel-hero-noon.png');
+  }
+
+  .hero-bg[data-timeofday="evening"] {
+    background-image: url('/pastel-hero-evening.png');
+  }
+
+  .hero-bg[data-timeofday="night"] {
+    background-image: url('/pastel-hero-night.png');
+  }
+
+  /* ===== Content layer (above bg, not masked) ===== */
+  .hero-content {
     position: relative;
     z-index: 1;
+    padding: 7rem 2rem 50px;
+    width: 100%;
   }
 
-  .hero-content {
+  /* ===== Two-column grid ===== */
+  .hero-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* ===== Centered headline ===== */
+  .hero-headline {
     text-align: center;
-    max-width: 800px;
-    padding: 0 24px;
+    margin-bottom: 4rem;
   }
 
-  .hero-label {
+  /* ===== Left column: Spacer for scroll room ===== */
+  .hero-left-spacer {
+    padding-top: 6vh;
+    padding-bottom: 75vh;
+  }
+
+.hero-title {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 0.85; transform: translateY(0); }
+  }
+
+  /* ===== Right column: Sticky Glass Mission Card ===== */
+  .hero-right-card {
+    position: sticky;
+    top: 32vh;
+    padding-top: 6vh;
+    margin-right: -18rem;
+  }
+
+  .mission-card {
+    position: relative;
+    max-width: 540px;
+    width: 100%;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.12),
+        rgba(0, 0, 0, 0.07) 50%,
+        rgba(0, 0, 0, 0.07)
+      );
+    background-clip: padding-box;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+
+    /* Entrance */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+
+  /* Subtle top-edge specular highlight */
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.15) 30%,
+      rgba(255, 255, 255, 0.15) 70%,
+      transparent
+    );
+    border-radius: 1px;
+  }
+
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .mission-title {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--card-text, #fff);
+    transition: color 0.1s ease;
+    margin: 0 0 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .mission-body {
+    font-size: 0.925rem;
+    line-height: 1.7;
+    color: var(--card-text-muted, #fff);
+    transition: color 0.1s ease;
+    margin: 0 0 2rem;
+  }
+
+  .mission-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.8125rem;
+    gap: 0.6rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 24px;
-    padding: 8px 16px;
-    background: rgba(239, 68, 68, 0.15);
-    border-radius: 100px;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    backdrop-filter: blur(8px);
+    color: var(--card-text, #fff);
+    transition: color 0.1s ease;
+    text-decoration: none;
+    transition: gap 0.3s ease;
   }
 
-  .hero-heading {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 28px;
-    color: #fff;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  .mission-link:hover {
+    gap: 0.85rem;
   }
 
-  .hero-text {
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 580px;
-    margin: 0 auto 40px;
-    line-height: 1.7;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
-  }
-
-  .hero-actions {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .trust-bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 48px;
-  }
-
-  .trust-bar-item {
-    display: flex;
+  .mission-link-circle {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.875rem;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
-  .trust-bar-item :global(svg) {
-    color: var(--accent);
-    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+  .mission-link-circle :global(svg) {
+    color: var(--card-text, #fff);
+    transition: color 0.1s ease;
+    width: 12px;
+    height: 12px;
+  }
+
+  .mission-link:hover .mission-link-circle {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 960px) {
+    .hero-content {
+      padding-bottom: 6rem;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .hero-left-spacer {
+      padding-top: 0;
+      padding-bottom: 0;
+      order: 2;
+      display: none;
+    }
+
+    .hero-right-card {
+      position: relative;
+      top: auto;
+      padding-top: 0;
+      margin-right: 0;
+      order: 1;
+    }
+
+    .mission-card {
+      max-width: 420px;
+    }
   }
 
   @media (max-width: 768px) {
     .hero-content {
-      padding: 0 20px;
-    }
-
-    .hero-heading {
-      font-size: clamp(1.75rem, 6vw, 2.5rem);
-    }
-
-    .hero-text {
-      font-size: 1.1rem;
-    }
-
-    .trust-bar {
-      gap: 16px;
-    }
-
-    .trust-bar-item {
-      font-size: 0.8rem;
+      padding: 7rem 1.5rem 5rem;
     }
   }
 
   @media (max-width: 480px) {
-    .hero {
-      padding-top: 60px;
+    .hero-content {
+      padding: 6rem 1.25rem 4rem;
     }
 
-    .hero-heading {
-      font-size: 1.75rem;
-      margin-bottom: 20px;
+    .mission-card {
+      padding: 1.75rem;
     }
+  }
 
-    .hero-text {
-      font-size: 1rem;
-      margin-bottom: 32px;
+  @media (min-width: 1920px) {
+    .hero-content {
+      min-height: 70vh;
     }
+  }
 
-    .hero-actions {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .hero-actions .btn {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .trust-bar {
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 36px;
-    }
-
-    .trust-bar-item {
-      width: 100%;
-      justify-content: center;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius);
+  @media (min-width: 2560px) {
+    .hero-content {
+      min-height: 60vh;
     }
   }
 </style>

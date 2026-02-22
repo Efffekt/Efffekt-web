@@ -259,51 +259,68 @@ function displayResults(data: AnalysisResult): void {
 
   const colorClass = getScoreColorClass(data.totalScore);
 
+  // Get display URL from the input
+  const scannerInput = $id('scannerUrl') as HTMLInputElement | null;
+  const displayUrl = scannerInput ? scannerInput.value.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+
   resultsDiv.innerHTML = `
-    <button class="scanner-close" data-action="close">
-      ${icon('times')} Lukk resultater
-    </button>
-    <div class="score-overview">
-      <div class="score-circle ${colorClass} animating">
-        <span class="score-number">0</span>
+    <!-- RESULTS HERO -->
+    <div class="results-hero reveal">
+      <button class="results-close" data-action="close" aria-label="Lukk resultater">
+        ${icon('times')}
+      </button>
+      <div class="results-hero-text">
+        <span class="section-label">Analyse fullført</span>
+        <h2 class="editorial-statement" style="margin-bottom: 8px;">Din analyse er klar</h2>
+        ${displayUrl ? `<p class="editorial-body" style="margin-bottom: 0;">${escapeHtml(displayUrl)}</p>` : ''}
       </div>
-      <p>Total score av 100</p>
-      <div class="score-summary">
-        ${criticalCount > 0 ? `<span class="issue-badge critical">${criticalCount} kritiske</span>` : ''}
-        ${warningCount > 0 ? `<span class="issue-badge warning">${warningCount} advarsler</span>` : ''}
-        ${successCount > 0 ? `<span class="issue-badge success">${successCount} godkjent</span>` : ''}
-      </div>
-    </div>
-
-    <div class="score-feedback ${colorClass}">
-      <div class="feedback-icon">${getFeedbackIcon(data.totalScore)}</div>
-      <div class="feedback-content">
-        <h4>${escapeHtml(getFeedbackTitle(data.totalScore))}</h4>
-        <p>${escapeHtml(generateFeedback(data))}</p>
-      </div>
-    </div>
-
-    <div class="score-categories with-rings">
-      ${(Object.entries(data.categories) as [CategoryKey, CategoryResult][]).map(([key, val]) => `
-        <div class="score-category" data-category="${sanitizeDataAttr(key)}" data-action="filter-category">
-          <div class="category-ring-container">
-            <svg class="category-ring" viewBox="0 0 80 80">
-              <circle class="ring-bg" cx="40" cy="40" r="36"></circle>
-              <circle class="ring-progress ${val.status}" cx="40" cy="40" r="36" data-score="${val.score}"></circle>
-            </svg>
-            <span class="category-ring-value">${val.score}</span>
-          </div>
-          <div class="score-category-label">${escapeHtml(getCategoryLabel(key))}</div>
-          <div class="score-category-desc">${escapeHtml(getCategoryDesc(key))}</div>
+      <div class="results-hero-score">
+        <div class="score-circle ${colorClass} animating">
+          <span class="score-number">0</span>
         </div>
-      `).join('')}
+        <div class="score-meta">
+          <div class="score-meta-label">Total score</div>
+          <div class="score-tally">
+            ${criticalCount > 0 ? `<span class="tally-item tally-critical">${criticalCount} kritiske</span>` : ''}
+            ${warningCount > 0 ? `<span class="tally-item tally-warning">${warningCount} advarsler</span>` : ''}
+            ${successCount > 0 ? `<span class="tally-item tally-ok">${successCount} godkjent</span>` : ''}
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- NARRATIVE FEEDBACK -->
+    <div class="results-narrative reveal">
+      <p class="results-narrative-statement">${escapeHtml(getFeedbackTitle(data.totalScore))}</p>
+      <p class="results-narrative-body">${escapeHtml(generateFeedback(data))}</p>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="reveal">
+      <span class="section-label">Kategorier</span>
+      <div class="score-categories with-rings reveal-stagger">
+        ${(Object.entries(data.categories) as [CategoryKey, CategoryResult][]).map(([key, val]) => `
+          <div class="score-category" data-category="${sanitizeDataAttr(key)}" data-action="filter-category">
+            <div class="category-ring-container">
+              <svg class="category-ring" viewBox="0 0 80 80">
+                <circle class="ring-bg" cx="40" cy="40" r="36"></circle>
+                <circle class="ring-progress ${val.status}" cx="40" cy="40" r="36" data-score="${val.score}"></circle>
+              </svg>
+              <span class="category-ring-value">${val.score}</span>
+            </div>
+            <div class="score-category-label">${escapeHtml(getCategoryLabel(key))}</div>
+            <div class="score-category-desc">${escapeHtml(getCategoryDesc(key))}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- QUICK WINS -->
     ${quickWins.length > 0 ? `
-    <div class="quick-wins">
-      <h3>${icon('bolt')} Raskeste forbedringer</h3>
-      <p class="quick-wins-subtitle">Disse endringene gir størst effekt med minst innsats</p>
-      <div class="quick-wins-list">
+    <div class="quick-wins reveal">
+      <span class="section-label">Raskeste gevinster</span>
+      <h3 class="results-section-heading efffekt-bar">Forbedringer med høy effekt</h3>
+      <div class="quick-wins-list" style="margin-top: 32px;">
         ${quickWins.slice(0, 5).map((win: QuickWin) => `
           <div class="quick-win-item">
             <div class="quick-win-icon">
@@ -322,29 +339,9 @@ function displayResults(data: AnalysisResult): void {
     </div>
     ` : ''}
 
-    ${data.benchmarks ? `
-    <div class="benchmark-comparison">
-      <h4>${icon('chart-bar')} Sammenligning med norsk gjennomsnitt</h4>
-      <div class="benchmark-bars">
-        ${(Object.entries(data.categories) as [CategoryKey, CategoryResult][]).map(([key, val]) => `
-          <div class="benchmark-row">
-            <span class="benchmark-label">${escapeHtml(getCategoryLabel(key))}</span>
-            <div class="benchmark-bar-container">
-              <div class="benchmark-bar yours" style="width: ${val.score}%">
-                <span>Du: ${val.score}</span>
-              </div>
-              <div class="benchmark-bar average" style="width: ${val.benchmark}%">
-                <span>Snitt: ${val.benchmark}</span>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    ` : ''}
-
+    <!-- IMPROVEMENT POTENTIAL -->
     ${data.totalScore < 85 ? `
-    <div class="improvement-potential">
+    <div class="improvement-potential reveal">
       <div class="potential-visual">
         <div class="potential-score potential-current">
           <span class="score-value">${data.totalScore}</span>
@@ -367,29 +364,34 @@ function displayResults(data: AnalysisResult): void {
     </div>
     ` : ''}
 
-    <div class="scanner-filters">
-      <button class="filter-btn active" data-action="filter-severity" data-filter="all">
-        ${icon('list')} Vis alle
-      </button>
-      ${criticalCount > 0 ? `
-      <button class="filter-btn filter-critical" data-action="filter-severity" data-filter="critical">
-        ${icon('times-circle')} Kun kritiske (${criticalCount})
-      </button>
-      ` : ''}
-      ${warningCount > 0 ? `
-      <button class="filter-btn filter-warning" data-action="filter-severity" data-filter="warning">
-        ${icon('exclamation-triangle')} Kun advarsler (${warningCount})
-      </button>
-      ` : ''}
-      ${successCount > 0 ? `
-      <button class="filter-btn filter-success" data-action="filter-severity" data-filter="success">
-        ${icon('check-circle')} Kun godkjent (${successCount})
-      </button>
-      ` : ''}
+    <!-- FILTERS -->
+    <div class="reveal">
+      <div class="scanner-filters">
+        <button class="filter-btn active" data-action="filter-severity" data-filter="all">
+          ${icon('list')} Vis alle
+        </button>
+        ${criticalCount > 0 ? `
+        <button class="filter-btn filter-critical" data-action="filter-severity" data-filter="critical">
+          ${icon('times-circle')} Kun kritiske (${criticalCount})
+        </button>
+        ` : ''}
+        ${warningCount > 0 ? `
+        <button class="filter-btn filter-warning" data-action="filter-severity" data-filter="warning">
+          ${icon('exclamation-triangle')} Kun advarsler (${warningCount})
+        </button>
+        ` : ''}
+        ${successCount > 0 ? `
+        <button class="filter-btn filter-success" data-action="filter-severity" data-filter="success">
+          ${icon('check-circle')} Kun godkjent (${successCount})
+        </button>
+        ` : ''}
+      </div>
     </div>
 
-    <div class="scanner-details">
-      <h3>${icon('clipboard-list')} Detaljert analyse <span class="filter-label"></span></h3>
+    <!-- DETAILED ANALYSIS -->
+    <div class="scanner-details reveal">
+      <span class="section-label">Detaljert analyse</span>
+      <h3 class="results-section-heading efffekt-bar" style="margin-bottom: 32px;">Fullstendig gjennomgang <span class="filter-label"></span></h3>
       ${(Object.entries(data.categories) as [CategoryKey, CategoryResult][]).map(([key, val]) => `
         <div class="detail-section collapsible" data-category="${sanitizeDataAttr(key)}">
           <div class="detail-header" data-action="toggle-section">
@@ -419,31 +421,35 @@ function displayResults(data: AnalysisResult): void {
       `).join('')}
     </div>
 
-    <div class="scanner-cta enhanced">
-      <div class="cta-badge">
-        ${icon('gift')} Gratis tilbud
-      </div>
-      <h3>Få en personlig forbedringsplan</h3>
-      <p>Vi går gjennom analysen med deg og lager en konkret plan for å forbedre nettsiden din. Helt gratis, ingen forpliktelser.</p>
+    <!-- CTA -->
+    <div class="reveal">
+      <span class="section-label">Neste steg</span>
+      <div class="scanner-cta enhanced">
+        <div class="cta-badge">
+          ${icon('gift')} Gratis tilbud
+        </div>
+        <h3>Få en personlig forbedringsplan</h3>
+        <p>Vi går gjennom analysen med deg og lager en konkret plan for å forbedre nettsiden din. Helt gratis, ingen forpliktelser.</p>
 
-      <div class="cta-trust-signals">
-        <div class="trust-signal">
-          ${icon('clock')}
-          <span>15 min uforpliktende samtale</span>
+        <div class="cta-trust-signals">
+          <div class="trust-signal">
+            ${icon('clock')}
+            <span>15 min uforpliktende samtale</span>
+          </div>
+          <div class="trust-signal">
+            ${icon('file-alt')}
+            <span>Skriftlig rapport inkludert</span>
+          </div>
+          <div class="trust-signal">
+            ${icon('ban')}
+            <span>Ingen bindingstid</span>
+          </div>
         </div>
-        <div class="trust-signal">
-          ${icon('file-alt')}
-          <span>Skriftlig rapport inkludert</span>
-        </div>
-        <div class="trust-signal">
-          ${icon('ban')}
-          <span>Ingen bindingstid</span>
-        </div>
-      </div>
 
-      <a href="#kontakt" class="btn btn-primary btn-lg">
-        ${icon('calendar-check')} Book gratis gjennomgang
-      </a>
+        <a href="#kontakt" class="btn btn-primary btn-lg">
+          ${icon('calendar-check')} Book gratis gjennomgang
+        </a>
+      </div>
     </div>
   `;
 
@@ -480,6 +486,9 @@ function displayResults(data: AnalysisResult): void {
   // Setup event delegation and tooltips
   setupEventDelegation(resultsDiv);
   setupTooltips();
+
+  // Trigger reveal animations
+  (window as any).__scanReveal?.(resultsDiv);
 }
 
 // Event delegation for all interactive elements (replaces inline onclick)
