@@ -96,7 +96,7 @@ import '../styles/global.css';
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#3b82f6">
+  <meta name="theme-color" content="#1a1a1a">
   <title>{title}</title>
 
   <!-- Preload hero image based on time of day -->
@@ -115,8 +115,7 @@ import '../styles/global.css';
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
-  <link rel="icon" type="image/svg+xml" href="/assets/logo-icon.svg">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.png">
   <link rel="manifest" href="/manifest.json">
 
   <!-- Meta -->
@@ -149,8 +148,8 @@ import '../styles/global.css';
     "@type": "Organization",
     "name": "EFFFEKT",
     "url": "https://efffekt.no",
-    "logo": "https://efffekt.no/assets/logo.svg",
-    "description": "To utviklere som bygger nettsider, webapplikasjoner og AI-løsninger for norske bedrifter.",
+    "logo": "https://efffekt.no/assets/favicon.png",
+"description": "To utviklere som bygger nettsider, webapplikasjoner og AI-løsninger for norske bedrifter.",
     "email": "sander@efffekt.no",
     "telephone": "+47 451 40 089",
     "address": {
@@ -274,7 +273,7 @@ import '../styles/global.css';
   <script>
     function initGlobalReveal() {
       const els = document.querySelectorAll(
-        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, .reveal-hero, .reveal-elegant, .split-words, .text-underline-draw'
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, .reveal-hero, .reveal-elegant, .reveal-fade, .split-words, .text-underline-draw'
       );
       if (!els.length) return;
       const observer = new IntersectionObserver((entries) => {

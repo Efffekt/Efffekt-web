@@ -93,11 +93,11 @@ import danielImg from '../../assets/daniel.jpg';
   function launchConfetti() {
     const style = getComputedStyle(document.documentElement);
     const colors = [
-      style.getPropertyValue('--accent').trim() || '#40798c',
-      style.getPropertyValue('--accent-secondary').trim() || '#70a9a1',
-      style.getPropertyValue('--accent-hover').trim() || '#5a9aa8',
+      style.getPropertyValue('--accent').trim() || '#2d2d2d',
+      style.getPropertyValue('--accent-secondary').trim() || '#444444',
+      style.getPropertyValue('--accent-hover').trim() || '#3a3a3a',
       style.getPropertyValue('--text').trim() || '#f6f1d1',
-      style.getPropertyValue('--success').trim() || '#8fbcbb'
+      style.getPropertyValue('--success').trim() || '#444444'
     ];
     const confettiCount = 100;
     const container = document.getElementById('kontakt');

@@ -5,18 +5,17 @@
 <header class="header">
   <nav class="nav">
     <div class="nav-links" id="nav-links">
+      <a href="/" data-home-link>Hjem</a>
       <a href="/#tjenester">Tjenester</a>
       <a href="/#faq">FAQ</a>
       <a href="/portefolje">Portefølje</a>
       <a href="/#kontakt" class="btn btn-primary btn-sm">Kontakt oss</a>
     </div>
-    <div class="nav-actions">
-      <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
+    <button class="nav-toggle" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 </header>
 
@@ -70,6 +69,13 @@
     // No hero (service pages etc.) — always dark
     if (!hero) {
       header.classList.add('header-dark');
+    }
+
+    // Show/hide home link based on current page
+    const homeLink = document.querySelector<HTMLElement>('[data-home-link]');
+    if (homeLink) {
+      const isHome = window.location.pathname === '/' || window.location.pathname === '';
+      homeLink.style.display = isHome ? 'none' : '';
     }
 
     listenerScope.add(window, 'scroll', handleScroll);
