@@ -71,8 +71,9 @@ const {
   title,
   description,
   canonical = 'https://efffekt.no/',
-  ogImage = 'https://efffekt.no/assets/og-image.png?v=2'
 } = Astro.props;
+
+const ogImage = Astro.props.ogImage ?? `https://efffekt.no/api/og.png?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
@@ -181,7 +182,7 @@ import '../styles/global.css';
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "EFFFEKT",
-    "image": "https://efffekt.no/assets/og-image.png?v=2",
+    "image": "https://efffekt.no/api/og.png?title=EFFFEKT",
     "url": "https://efffekt.no",
     "telephone": "+47 451 40 089",
     "email": "sander@efffekt.no",
@@ -271,9 +272,23 @@ import '../styles/global.css';
   </script>
 
   <script>
+    function initSplitLetters() {
+      document.querySelectorAll('.split-letters').forEach(el => {
+        if (el.querySelector('.letter')) return;
+        const text = el.textContent || '';
+        el.innerHTML = text.split('').map(ch =>
+          ch === ' ' ? ' ' : `<span class="letter">${ch}</span>`
+        ).join('');
+      });
+    }
+    initSplitLetters();
+    document.addEventListener('astro:page-load', initSplitLetters);
+  </script>
+
+  <script>
     function initGlobalReveal() {
       const els = document.querySelectorAll(
-        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, .reveal-hero, .reveal-elegant, .reveal-fade, .split-words, .text-underline-draw'
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-mask, .reveal-stagger, .reveal-hero, .reveal-elegant, .reveal-fade, .split-words, .split-letters, .text-underline-draw'
       );
       if (!els.length) return;
       const observer = new IntersectionObserver((entries) => {

@@ -851,6 +851,40 @@ body.intro-active {
 .split-words-fast.visible .word:nth-child(25) { transition-delay: 0.48s; }
 .split-words-fast.visible .word:nth-child(n+26) { transition-delay: 0.5s; }
 
+/* ── Split Letters (per-character stagger) ── */
+.split-letters {
+  display: inline;
+}
+
+.split-letters .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) rotateX(-15deg);
+  filter: blur(4px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center bottom;
+}
+
+.split-letters.visible .letter {
+  opacity: 1;
+  transform: translateY(0) rotateX(0);
+  filter: blur(0);
+}
+
+.split-letters.visible .letter:nth-child(1) { transition-delay: 0s; }
+.split-letters.visible .letter:nth-child(2) { transition-delay: 0.04s; }
+.split-letters.visible .letter:nth-child(3) { transition-delay: 0.08s; }
+.split-letters.visible .letter:nth-child(4) { transition-delay: 0.12s; }
+.split-letters.visible .letter:nth-child(5) { transition-delay: 0.16s; }
+.split-letters.visible .letter:nth-child(6) { transition-delay: 0.2s; }
+.split-letters.visible .letter:nth-child(7) { transition-delay: 0.24s; }
+.split-letters.visible .letter:nth-child(8) { transition-delay: 0.28s; }
+.split-letters.visible .letter:nth-child(9) { transition-delay: 0.32s; }
+.split-letters.visible .letter:nth-child(10) { transition-delay: 0.36s; }
+
 /* Subtle fade-up */
 .reveal-fade {
   opacity: 0;
