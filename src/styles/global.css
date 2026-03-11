@@ -1468,16 +1468,10 @@ textarea:focus {
   transform: translateX(-50%);
   z-index: 1000;
   padding: 0.55rem 1.5rem;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.07) 50%, rgba(0, 0, 0, 0.07));
-  background-clip: padding-box;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.20);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+  --lg-radius: var(--radius);
   width: auto;
   max-width: calc(100vw - 2rem);
-  transition: padding 0.3s ease, background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: padding 0.3s ease, background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 
@@ -1494,20 +1488,14 @@ textarea:focus {
   transition: background 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
-.header::before {
-  display: none;
-}
+/* liquid-glass handles ::before, so hide the old one on non-glass headers */
 
 .header.scrolled {
   padding: 0.45rem 1.5rem;
 }
 
 .header.header-dark {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* Overrides handled by .header-dark.liquid-glass in LiquidGlass.astro */
 }
 
 .header.header-dark .nav-links a:not(.btn) {

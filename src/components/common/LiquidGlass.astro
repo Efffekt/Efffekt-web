@@ -1,0 +1,151 @@
+---
+// Custom liquid glass effect — pure CSS + SVG filters
+// Add class="liquid-glass" to any element to apply the effect.
+---
+
+<!-- SVG filters -->
+<svg style="position:absolute;width:0;height:0;pointer-events:none;" aria-hidden="true">
+  <defs>
+    <!-- Edge refraction distortion -->
+    <filter id="lg-refract" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.01" numOctaves="5" seed="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <!-- Glass surface noise -->
+    <filter id="lg-noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch" result="n" />
+      <feColorMatrix type="saturate" values="0" in="n" result="mono" />
+      <feComponentTransfer in="mono">
+        <feFuncA type="linear" slope="0.035" />
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<style is:global>
+  /* ===== LIQUID GLASS ===== */
+  .liquid-glass {
+    --lg-radius: 1rem;
+    position: relative;
+    border-radius: var(--lg-radius);
+    overflow: hidden;
+
+    /* Core glass */
+    backdrop-filter: blur(28px) saturate(120%) brightness(1.02);
+    -webkit-backdrop-filter: blur(28px) saturate(120%) brightness(1.02);
+
+    /* Angled illumination — top-left light source */
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.10) 20%,
+        rgba(255, 255, 255, 0.04) 45%,
+        rgba(255, 255, 255, 0.06) 70%,
+        rgba(255, 255, 255, 0.12) 100%
+      ),
+      linear-gradient(
+        280deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        transparent 35%,
+        transparent 65%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+
+    /* Depth stack */
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow:
+      0 0 0 0.5px rgba(255, 255, 255, 0.15),
+      0 10px 40px -6px rgba(0, 0, 0, 0.25),
+      0 2px 8px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 3px 6px rgba(255, 255, 255, 0.12),
+      inset 1px 0 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+      inset 0 -4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* ---- All-edge rim light + prismatic ---- */
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 3px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 3px),
+      linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, transparent 3px),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0%, transparent 2px),
+      linear-gradient(90deg,
+        transparent 2%,
+        rgba(255, 60, 60, 0.08) 12%,
+        rgba(255, 180, 40, 0.10) 24%,
+        rgba(100, 255, 80, 0.10) 36%,
+        rgba(40, 160, 255, 0.12) 50%,
+        rgba(130, 60, 255, 0.10) 64%,
+        rgba(255, 80, 180, 0.08) 78%,
+        transparent 98%
+      );
+    mask-image:
+      linear-gradient(180deg, white 0%, white 4px, rgba(255,255,255,0.2) 8px, transparent 25%),
+      linear-gradient(90deg, white 0%, white 3px, transparent 8px),
+      linear-gradient(270deg, white 0%, white 3px, transparent 8px),
+      linear-gradient(0deg, white 0%, white 2px, transparent 6px);
+    -webkit-mask-image:
+      linear-gradient(180deg, white 0%, white 4px, rgba(255,255,255,0.2) 8px, transparent 25%),
+      linear-gradient(90deg, white 0%, white 3px, transparent 8px),
+      linear-gradient(270deg, white 0%, white 3px, transparent 8px),
+      linear-gradient(0deg, white 0%, white 2px, transparent 6px);
+    mask-composite: add;
+    -webkit-mask-composite: source-over;
+  }
+
+  /* ---- Caustic light pools ---- */
+  .liquid-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      radial-gradient(ellipse 60% 45% at 12% 10%, rgba(255, 255, 255, 0.12), transparent 50%),
+      radial-gradient(ellipse 45% 55% at 88% 90%, rgba(255, 255, 255, 0.06), transparent 40%),
+      radial-gradient(ellipse 80% 50% at 50% 35%, rgba(255, 255, 255, 0.04), transparent 55%);
+    mix-blend-mode: overlay;
+  }
+
+  /* ===== Light / header-dark variant ===== */
+  .header-dark.liquid-glass {
+    backdrop-filter: blur(24px) saturate(110%);
+    -webkit-backdrop-filter: blur(24px) saturate(110%);
+    background:
+      linear-gradient(145deg,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.45) 100%
+      );
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 2px 16px -4px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+  }
+
+  .header-dark.liquid-glass::before {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 2px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, transparent 2px),
+      linear-gradient(270deg, rgba(255, 255, 255, 0.08) 0%, transparent 2px);
+    mask-image: linear-gradient(180deg, white 0%, white 3px, transparent 15%);
+    -webkit-mask-image: linear-gradient(180deg, white 0%, white 3px, transparent 15%);
+  }
+
+  /* ===== Content z-index ===== */
+  .liquid-glass > * {
+    position: relative;
+    z-index: 10;
+  }
+</style>
