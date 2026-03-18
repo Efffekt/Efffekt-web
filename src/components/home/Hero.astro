@@ -26,11 +26,12 @@ import Icon from '../icons/Icon.astro';
             Vi gir små og mellomstore bedrifter tilgang til de samme digitale verktøyene som de store — slik at du kan fokusere på det du gjør best.
           </p>
           <a href="#kontakt" class="mission-link">
-            Bli kjent med oss
+            Book en uforpliktende prat
             <span class="mission-link-circle">
               <Icon name="arrow-right" size={12} />
             </span>
           </a>
+          <p class="mission-trust">Ingen bindingstid · Svar innen 24t</p>
         </div>
       </div>
 
@@ -232,6 +233,14 @@ import Icon from '../icons/Icon.astro';
   .mission-link:hover .mission-link-circle {
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .mission-trust {
+    font-size: 0.7rem;
+    color: var(--card-text-muted, #fff);
+    opacity: 0.4;
+    margin: 1rem 0 0;
+    letter-spacing: 0.02em;
   }
 
   /* ===== Responsive ===== */
