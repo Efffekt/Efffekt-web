@@ -24,6 +24,7 @@
     "@fontsource/sora": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
     "@fontsource/work-sans": "^5.2.8",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.8.6",
     "astro": "^5.16.11"
   },

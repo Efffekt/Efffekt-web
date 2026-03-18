@@ -75,6 +75,7 @@ const {
 
 const ogImage = Astro.props.ogImage ?? `https://efffekt.no/api/og.png?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
+import Analytics from '@vercel/analytics/astro';
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
 import LiquidGlass from '../components/common/LiquidGlass.astro';
@@ -259,6 +260,7 @@ import '../styles/global.css';
   <Footer transition:persist />
 
   <slot name="scripts" />
+  <Analytics />
   <LiquidGlass />
 
   <script>
