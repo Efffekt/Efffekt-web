@@ -179,6 +179,16 @@ import danielImg from '../../assets/daniel.jpg';
           form.style.display = 'none';
           formSuccess.classList.add('visible');
           launchConfetti();
+
+          // Facebook Lead event (pixel + Conversions API)
+          if (typeof window.__sendFbEvent === 'function') {
+            const nameVal = (form.querySelector('#name') as HTMLInputElement)?.value;
+            const emailVal = (form.querySelector('#email') as HTMLInputElement)?.value;
+            window.__sendFbEvent('Lead', {
+              email: emailVal || undefined,
+              first_name: nameVal || undefined,
+            });
+          }
         } else {
           throw new Error('Form submission failed');
         }

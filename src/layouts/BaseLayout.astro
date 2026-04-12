@@ -210,6 +210,66 @@ import '../styles/global.css';
 
   <slot name="head" />
 
+  <!-- Facebook Pixel + Conversions API deduplication -->
+  <script is:inline>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2400693193732959');
+
+    // Helper: get _fbp / _fbc cookies
+    function getFbCookie(name) {
+      var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    // Helper: generate unique event ID
+    function genEventId() {
+      return Date.now().toString(36) + '.' + Math.random().toString(36).slice(2, 10);
+    }
+
+    // Send event to both pixel (browser) and Conversions API (server)
+    function sendFbEvent(eventName, userData) {
+      var eventId = genEventId();
+
+      // Browser-side pixel with eventID for dedup
+      fbq('track', eventName, {}, { eventID: eventId });
+
+      // Server-side via our API route
+      var payload = {
+        event_name: eventName,
+        event_id: eventId,
+        event_source_url: window.location.href,
+        user_data: Object.assign({
+          fbp: getFbCookie('_fbp'),
+          fbc: getFbCookie('_fbc')
+        }, userData || {})
+      };
+
+      navigator.sendBeacon('/api/fb-event', JSON.stringify(payload));
+    }
+
+    // Track PageView on initial load
+    sendFbEvent('PageView');
+
+    // Track PageView on View Transitions (SPA navigation)
+    document.addEventListener('astro:page-load', function() {
+      sendFbEvent('PageView');
+    });
+
+    // Expose for use in contact form (Lead event)
+    window.__sendFbEvent = sendFbEvent;
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2400693193732959&ev=PageView&noscript=1" />
+  </noscript>
+
   <!-- Microsoft Clarity - deferred to reduce critical path -->
   <script is:inline>
     (function() {
